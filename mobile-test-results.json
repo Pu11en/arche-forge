@@ -1,0 +1,9 @@
+{
+  "animatedHero": {},
+  "responsiveBreakpoints": {},
+  "mobileCSS": {},
+  "viewportSettings": {},
+  "accessibility": {},
+  "consoleErrors": [],
+  "executionError": "page.waitForTimeout is not a function"
+}

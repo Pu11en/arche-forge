@@ -2,6 +2,173 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-specific CSS Resets */
+/* Reset touch interactions */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection for specific elements */
+input, textarea, [contenteditable], select, p, h1, h2, h3, h4, h5, h6, span, div {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* iOS Safari specific resets */
+input, textarea, select {
+  -webkit-appearance: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Prevent iOS scroll bounce */
+body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+/* Android browser specific resets */
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Touch-action properties */
+.touch-pan-x {
+  touch-action: pan-x;
+}
+
+.touch-pan-y {
+  touch-action: pan-y;
+}
+
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+.touch-none {
+  touch-action: none;
+}
+
+/* Responsive Typography Base Styles */
+html {
+  font-size: clamp(16px, 4vw, 18px);
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #1a202c;
+  background-color: #fff;
+}
+
+/* Mobile-first approach styles */
+/* Mobile styles (default) */
+.mobile-container {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 100%;
+}
+
+/* Safe area insets for modern phones with notches */
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-inset-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-inset-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-all {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
+/* Utility classes for mobile-specific behaviors */
+.mobile-hidden {
+  display: none;
+}
+
+.mobile-visible {
+  display: block;
+}
+
+.mobile-flex {
+  display: flex;
+}
+
+.mobile-grid {
+  display: grid;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .mobile-hidden {
+    display: block;
+  }
+  
+  .mobile-visible {
+    display: none;
+  }
+  
+  .mobile-container {
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .mobile-container {
+    max-width: 1024px;
+  }
+}
+
+/* Performance optimizations */
+.gpu-accelerated {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+.smooth-animation {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+}
+
+/* Preserve existing pulse animation */
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -11,5 +178,80 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* Reduced Motion Support for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable all animations and transitions */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable specific animations */
+  .animate-spin,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-ping {
+    animation: none !important;
+  }
+
+  /* Disable GPU acceleration transforms that can cause motion sickness */
+  .gpu-accelerated,
+  .smooth-animation {
+    will-change: auto !important;
+    transform: none !important;
+    -webkit-transform: none !important;
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+  }
+
+  /* Ensure hover states don't have motion */
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .hover\:scale-95:hover,
+  .hover\:scale-90:hover {
+    transform: none !important;
+  }
+
+  /* Disable parallax and other motion effects */
+  .parallax,
+  .motion-safe {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Respect reduced motion preference while allowing essential animations */
+@media (prefers-reduced-motion: no-preference) {
+  /* Keep existing animations for users who don't mind motion */
+  .motion-reduce {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Utility classes for reduced motion */
+.motion-reduce {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.motion-safe {
+  /* Only apply animations when motion is preferred */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
