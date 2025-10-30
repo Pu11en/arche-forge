@@ -11,14 +11,16 @@ function Hero() {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [userPrefersNoVideo, setUserPrefersNoVideo] = useState(false);
-  const [videoCanPlay, setVideoCanPlay] = useState(false);
+  // @ts-ignore - videoCanPlay is set but not used, kept for future implementation
+  const [_videoCanPlay, setVideoCanPlay] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Use our custom hook for reduced motion detection
   const reducedMotion = useReducedMotion();
-  const motionProps = useMotionProps();
+  // @ts-ignore - motionProps is kept for future implementation
+  const _motionProps = useMotionProps();
 
   // Detect mobile device
   useEffect(() => {
