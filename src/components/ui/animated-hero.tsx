@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { MoveRight } from "lucide-react";
-import { Button } from "./button";
+import { SocialMediaIcons } from "./social-media-icons";
 import { useReducedMotion, useMotionProps } from "../../hooks/useReducedMotion";
 
 function Hero() {
@@ -252,7 +251,7 @@ function Hero() {
       } else {
         setTitleNumber(titleNumber + 1);
       }
-    }, 3000); // Increased from 2000ms to 3000ms for better readability
+    }, 700); // Changed to 0.7s cycle for faster animation
     return () => clearTimeout(timeoutId);
   }, [titleNumber, titles]);
 
@@ -311,26 +310,49 @@ function Hero() {
         {/* Combined heading and summary with consistent spacing */}
         <div className="text-center max-w-5xl mx-auto px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-wider font-serif font-black mb-2">
-            <span className="text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] block mb-2">ARCHE FORGE</span>
+            <div className="flex justify-center mb-2">
+              <img
+                src="https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png"
+                alt="ARCHE FORGE"
+                className="max-w-full h-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+                style={{
+                  width: 'clamp(200px, 50vw, 400px)',
+                  height: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
             <div className="relative flex w-full justify-center overflow-visible min-h-[4rem] md:min-h-[5rem] lg:min-h-[6rem] mb-2">
               {titles.map((title, index) => (
                 <motion.span
                   key={index}
-                  className="absolute font-semibold text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] w-full text-center px-2 text-lg md:text-xl lg:text-2xl xl:text-3xl break-words hyphens-auto leading-normal"
-                  style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}
-                  initial={reducedMotion ? { opacity: 1, y: "0%" } : { opacity: 0, y: "-100%" }}
-                  transition={reducedMotion ? { duration: 0 } : { type: "spring", stiffness: 50, damping: 20 }}
+                  className="absolute font-black w-full text-center px-2 text-lg md:text-xl lg:text-2xl xl:text-3xl break-words hyphens-auto leading-normal"
+                  style={{
+                    wordBreak: 'break-word',
+                    overflowWrap: 'break-word',
+                    fontFamily: 'Montserrat, sans-serif',
+                    fontWeight: '900',
+                    filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',
+                    textShadow: titleNumber === index
+                      ? '0 0 10px rgba(70, 130, 180, 0.8), 0 0 20px rgba(70, 130, 180, 0.6), 0 0 30px rgba(255, 69, 0, 0.4), 0 0 40px rgba(255, 69, 0, 0.2)'
+                      : 'none'
+                  }}
+                  initial={reducedMotion ? { opacity: 1, color: "#FFFFFF" } : { opacity: 0, color: "#FFFFFF" }}
+                  transition={reducedMotion ? { duration: 0 } : {
+                    duration: titleNumber === index ? 0.2 : 0.1,
+                    ease: titleNumber === index ? "easeOut" : "easeIn"
+                  }}
                   animate={
                     titleNumber === index
                       ? {
-                          y: "0%",
                           opacity: 1,
                           zIndex: 10,
+                          color: "#FFFFFF"
                         }
                       : {
-                          y: titleNumber > index ? "-100%" : "100%",
                           opacity: 0,
                           zIndex: 1,
+                          color: "#FFFFFF"
                         }
                   }
                 >
@@ -342,7 +364,7 @@ function Hero() {
           
           {/* Summary paragraph with consistent spacing */}
           <div className="max-w-3xl mx-auto mt-0 pt-0">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-4 pb-2 px-2">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-1 pb-1 px-2">
               Today's AI interactions lack soul.<br className="hidden sm:block" />
               Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
               your identity, making AI feel less like a tool and more like you.
@@ -350,19 +372,10 @@ function Hero() {
           </div>
         </div>
         
-        {/* Button row at the bottom with consistent spacing */}
-        <div className="flex justify-center mt-4 px-4">
-          <a
-            href="https://www.linkedin.com/company/arche-forge/posts/?feedView=all"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-block focus:outline-none focus:ring-4 focus:ring-white/30 rounded-lg touch-manipulation ${reducedMotion ? '' : 'transition-all duration-300 transform hover:scale-105 active:scale-95'}`}
-            style={{ minHeight: '48px', minWidth: '48px' }}
-          >
-            <Button variant="secondary" size="lg" className={`!gap-2 !text-base sm:!text-lg !px-6 !py-4 sm:!py-3 !bg-[#0077B5] hover:!bg-[#004d7a] active:!bg-[#003d6a] focus:!bg-[#004d7a] focus:shadow-[0_0_0_4px_rgba(255,255,255,0.5)] min-h-[48px] min-w-[48px] ${reducedMotion ? '' : 'hover:shadow-[0_10px_20px_rgba(0,119,181,0.3)] active:shadow-[0_5px_10px_rgba(0,119,181,0.2)] transition-all duration-300'}`}>
-              Visit our Linkedin <MoveRight className="!w-4 !h-4" />
-            </Button>
-          </a>
+        
+        {/* Social Media Icons */}
+        <div className="mt-2 mb-4">
+          <SocialMediaIcons />
         </div>
       </div>
     </div>
