@@ -146,10 +146,10 @@ function Hero() {
   const videoSource = useMemo(() => {
     if (isMobile) {
       // Use a lower resolution video for mobile
-      return "https://res.cloudinary.com/djg0pqts6/video/upload/v1761845865/Forge1_final_oqpbsa.mp4";
+      return "https://res.cloudinary.com/djg0pqts6/video/upload/v1762222741/1103_1_zdmn3a.mp4";
     } else {
       // Use the original high resolution video for desktop
-      return "https://res.cloudinary.com/djg0pqts6/video/upload/v1761845865/Forge1_final_oqpbsa.mp4";
+      return "https://res.cloudinary.com/djg0pqts6/video/upload/v1762222741/1103_1_zdmn3a.mp4";
     }
   }, [isMobile]);
   const titles = useMemo(
@@ -330,8 +330,8 @@ function Hero() {
                   style={{
                     wordBreak: 'break-word',
                     overflowWrap: 'break-word',
-                    fontFamily: 'Montserrat, sans-serif',
-                    fontWeight: '900',
+                    fontFamily: 'Orbitron, sans-serif',
+                    fontWeight: '600',
                     filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.8))',
                     textShadow: titleNumber === index
                       ? '0 0 10px rgba(70, 130, 180, 0.8), 0 0 20px rgba(70, 130, 180, 0.6), 0 0 30px rgba(255, 69, 0, 0.4), 0 0 40px rgba(255, 69, 0, 0.2)'
@@ -364,7 +364,7 @@ function Hero() {
           
           {/* Summary paragraph with consistent spacing */}
           <div className="max-w-3xl mx-auto mt-0 pt-0">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-1 pb-1 px-2">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-1 pb-1 px-2" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
               Today's AI interactions lack soul.<br className="hidden sm:block" />
               Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
               your identity, making AI feel less like a tool and more like you.
