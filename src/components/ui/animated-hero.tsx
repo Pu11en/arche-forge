@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { SocialMediaIcons } from "./social-media-icons";
-import { useReducedMotion, useMotionProps } from "../../hooks/useReducedMotion";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { getDisplayTaglines } from "../../data/taglines";
 
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -10,16 +11,12 @@ function Hero() {
   const [isSlowConnection, setIsSlowConnection] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [userPrefersNoVideo, setUserPrefersNoVideo] = useState(false);
-  // @ts-ignore - videoCanPlay is set but not used, kept for future implementation
-  const [_videoCanPlay, setVideoCanPlay] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   // Use our custom hook for reduced motion detection
   const reducedMotion = useReducedMotion();
-  // @ts-ignore - motionProps is kept for future implementation
-  const _motionProps = useMotionProps();
 
   // Detect mobile device
   useEffect(() => {
@@ -109,7 +106,6 @@ function Hero() {
 
   // Handle video events
   const handleVideoCanPlay = useCallback(() => {
-    setVideoCanPlay(true);
     setVideoLoaded(true);
   }, []);
 
@@ -152,97 +148,8 @@ function Hero() {
       return "https://res.cloudinary.com/djg0pqts6/video/upload/v1762222741/1103_1_zdmn3a.mp4";
     }
   }, [isMobile]);
-  const titles = useMemo(
-    () => [
-      "Bye-Bye Bitches™",
-      "YFKI™",
-      "Let the Tags Testify™",
-      "Presence over Polish™",
-      "Awwwwwthentic™",
-      "parallel parenting isnt parenting™",
-      "fire doesnt dim it consumes™",
-      "Spite Clothiers™",
-      "Patent Pending™",
-      "Silence Speaks Louder Than Noise™",
-      "Support Encouraged Advice Admonished™",
-      "HalfSalt™",
-      "Rhythm over Recall™",
-      "The Drop That Started It All™",
-      "FullBurn™",
-      "Sewn with Intent™",
-      "Legacy Bleeds Into Memory™",
-      "you are the backup plan™",
-      "Thread That Threatens™",
-      "legacy isnt optional™",
-      "Legacy Transfered™",
-      "Trademarked™",
-      "Thread Counts as Evidence™",
-      "Legacy Isnt Data Its Resonance™",
-      "Soft Cotton Hard Truth™",
-      "Guilty of Spite™",
-      "AD105MF™",
-      "Admit Nothing Wear Everything™",
-      "This Fabric Remembers™",
-      "Drip That Prints™",
-      "Emotionally Elite™",
-      "Step closer™",
-      "Flinching is fatal™",
-      "You Wear the Words You'll Regret™",
-      "Silence was the loudest answer™",
-      "Pain Is the Brand™",
-      "Truth over Pressure™",
-      "Press is Back On™",
-      "Mirrors are free™",
-      "We Print the Truth™",
-      "Born for the Burn™",
-      "made you smile?™",
-      "made me grin™",
-      "TM™",
-      "Truth Doesnt Flinch™",
-      "Automation is empty without a soul™",
-      "Mark It Fucking Zero™",
-      "is this your homework",
-      "im not your assistant™",
-      "IM YOUR DIGITAL ALTER EGO™",
-      "Slow Your Roll™",
-      "This Wasnt a Meeting It Was a Warning.™",
-      "Proof of Spite™",
-      "Lipstick and Liability™",
-      "The future wont wait™",
-      "Truth burns™",
-      "Dripped for Vengeance™",
-      "Emotion over Automation™",
-      "Silence was the point™",
-      "Ink That Hurts™",
-      "Legacy isnt theirs its yours™",
-      "Corporate karma doesnt cool off™",
-      "You so strong™",
-      "Legacy wont wait for you™",
-      "Fullburn™",
-      "Abandonment is fatal™",
-      "not melted reforged™",
-      "SpitePrints Fast™",
-      "SoulPrints Last™",
-      "The edge isnt safe its necessary™",
-      "Fabric Soaked in Fuck You™",
-      "In for a dime in for a dollar™",
-      "Touché™",
-      "The forge burns hotter than fear™",
-      "Legacy isnt stored its forged™",
-      "Endings arent quiet in the forge™",
-      "Fuck with the bull get the horns™",
-      "You Wear the Words You Regret™",
-      "Born for the Burn™",
-      "Guilty of Spite™",
-      "Presence over polish. Rhythm over recall.™",
-      "No Mercy in Cotton™",
-      "Adios, Motherfucker™"
-    ]
-      .filter(title => title.includes("™"))
-      // Filter out overly long phrases that won't fit well on one line
-      .filter(title => title.length <= 40),
-    []
-  );
+  // Get filtered taglines from data file
+  const titles = useMemo(() => getDisplayTaglines(40), []);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
