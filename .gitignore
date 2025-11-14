@@ -95,4 +95,17 @@ temp_repo/
 # TernJS port file
 .tern-port
 
+
+# Test artifacts
+*.test-results.json
+*-test-report.md
+*-test.html
+*-test-helper.html
+*-testing-checklist.md
+browser-mobile-test.js
+mobile-test-*.json
+test-mobile-*.cjs
+
+# Prettier cache
+.prettercache
 # Stores VSCode versions used for testing VS
