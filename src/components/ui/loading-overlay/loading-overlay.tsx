@@ -21,8 +21,7 @@ import {
   getConsistentTextStyles,
   getOverlayStyles,
   getVideoAttributes,
-  getFlexboxStyles,
-  mediaQueries
+  getFlexboxStyles
 } from "../../../lib/cross-browser-styles";
 
 const LoadingOverlay = ({

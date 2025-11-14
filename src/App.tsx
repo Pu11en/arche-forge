@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Hero } from "./components/ui/animated-hero";
 import { LoadingOverlay } from "./components/ui/loading-overlay";
 
