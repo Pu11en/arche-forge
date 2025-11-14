@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Play } from "lucide-react";
-import { useReducedMotion } from "../../../hooks/useReducedMotion";
-import { LoadingOverlayProps, VideoState } from "./loading-types";
-import { ANIMATION_TIMING } from "../../../lib/animation-timing";
+import { useReducedMotion } from "../../hooks/useReducedMotion";
 import {
   detectBrowser,
   getOptimalVideoFormat,
   requiresUserInteractionForAutoplay,
   getSafeZIndex,
-  getEventListenerOptions,
-  supportsVideoFormat
-} from "../../../lib/browser-detection";
+  getEventListenerOptions
+} from "../../lib/browser-detection";
 import {
   getPrefixedStyles,
   getHardwareAccelerationStyles,
@@ -23,26 +20,52 @@ import {
   getOverlayStyles,
   getVideoAttributes,
   getFlexboxStyles
-} from "../../../lib/cross-browser-styles";
+} from "../../lib/cross-browser-styles";
 
-const LoadingOverlay = ({
-  isVisible = true,
-  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763122736/kling_20251114_Image_to_Video_an_animate_5015_2_d1ayqf.mp4",
-  videoUrls = {},
-  fallbackBgColor = "bg-black",
-  onVideoLoaded,
-  onVideoError,
-  onTransitionComplete,
+interface VideoIntroOverlayProps {
+  videoUrl: string;
+  onVideoComplete?: () => void;
+  onVideoError?: (error: Error) => void;
+  className?: string;
+  fallbackBgColor?: string;
+  autoPlay?: boolean;
+  showLoadingIndicator?: boolean;
+  loadingText?: string;
+  playButtonText?: string;
+}
+
+interface VideoState {
+  isLoaded: boolean;
+  hasError: boolean;
+  isPlaying: boolean;
+  isLoading: boolean;
+  isBuffering: boolean;
+  loadingProgress: number;
+  loadingState: 'idle' | 'loading' | 'buffering' | 'ready' | 'error';
+  transitionState: 'visible' | 'dissolving' | 'complete';
+  needsUserInteraction: boolean;
+  autoplayAttempted: boolean;
+  supportedFormat: 'webm' | 'mp4' | 'ogg';
+  browserInfo: {
+    isChrome: boolean;
+    isFirefox: boolean;
+    isSafari: boolean;
+    isEdge: boolean;
+    isMobile: boolean;
+  };
+}
+
+const VideoIntroOverlay = ({
+  videoUrl,
   onVideoComplete,
+  onVideoError,
   className = "",
-  attemptAutoplay = true,
-  showPlayButton = true,
+  fallbackBgColor = "bg-black",
+  autoPlay = true,
   showLoadingIndicator = true,
   loadingText = "Loading...",
-  playButtonText = "Play to Continue",
-  useFizzEffect = true,
-  orchestrationState,
-}: LoadingOverlayProps) => {
+  playButtonText = "Tap to Play"
+}: VideoIntroOverlayProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [videoState, setVideoState] = useState<VideoState>(() => {
@@ -59,7 +82,6 @@ const LoadingOverlay = ({
       loadingProgress: 0,
       loadingState: 'idle',
       transitionState: 'visible',
-      playbackState: 'idle',
       needsUserInteraction,
       autoplayAttempted: false,
       supportedFormat,
@@ -72,9 +94,6 @@ const LoadingOverlay = ({
       }
     };
   });
-  
-  const minDisplayTimeRef = useRef<NodeJS.Timeout | null>(null);
-  const hasMinDisplayTimeElapsed = useRef(false);
   
   const reducedMotion = useReducedMotion();
 
@@ -112,16 +131,7 @@ const LoadingOverlay = ({
       loadingProgress: 100,
       loadingState: 'ready'
     }));
-    
-    // Set minimum display time if not already set
-    if (!hasMinDisplayTimeElapsed.current) {
-      minDisplayTimeRef.current = setTimeout(() => {
-        hasMinDisplayTimeElapsed.current = true;
-      }, 1500); // Minimum 1.5 seconds display time
-    }
-    
-    onVideoLoaded?.();
-  }, [onVideoLoaded]);
+  }, []);
 
   const handleVideoCanPlayThrough = useCallback(() => {
     setVideoState(prev => ({
@@ -143,12 +153,10 @@ const LoadingOverlay = ({
       loadingState: 'error'
     }));
     
-    // Convert error to Error object for callback
     const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
 
-  // Native DOM event handlers for addEventListener
   const handleVideoErrorNative = useCallback((event: Event) => {
     setVideoState(prev => ({
       ...prev,
@@ -158,7 +166,6 @@ const LoadingOverlay = ({
       loadingState: 'error'
     }));
     
-    // Convert error to Error object for callback
     const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
@@ -191,13 +198,14 @@ const LoadingOverlay = ({
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
-      playbackState: 'completed'
+      transitionState: 'dissolving'
     }));
     
-    // Don't trigger completion immediately - wait for orchestration
-    // The parent component will handle the dissolve timing
-    onVideoComplete?.();
-  }, [onVideoComplete, useFizzEffect]);
+    // Trigger completion callback after a delay to allow for the dissolve effect
+    setTimeout(() => {
+      onVideoComplete?.();
+    }, 500); // 0.5 second delay before triggering completion
+  }, [onVideoComplete]);
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
@@ -224,7 +232,7 @@ const LoadingOverlay = ({
 
   // Auto-play video when component mounts
   useEffect(() => {
-    if (videoRef.current && isVisible && attemptAutoplay) {
+    if (videoRef.current && autoPlay) {
       const video = videoRef.current;
       
       // Attempt to play the video
@@ -247,11 +255,11 @@ const LoadingOverlay = ({
       };
 
       // Start playing when video can play
-      if (videoState.isLoaded && hasMinDisplayTimeElapsed.current && !videoState.autoplayAttempted) {
+      if (videoState.isLoaded && !videoState.autoplayAttempted) {
         playVideo();
       }
     }
-  }, [isVisible, videoState.isLoaded, hasMinDisplayTimeElapsed.current, videoState.autoplayAttempted, attemptAutoplay]);
+  }, [autoPlay, videoState.isLoaded, videoState.autoplayAttempted]);
 
   // Set up event listeners with cross-browser compatibility
   useEffect(() => {
@@ -294,49 +302,23 @@ const LoadingOverlay = ({
     };
   }, [handleVideoLoadStart, handleVideoProgress, handleVideoCanPlay, handleVideoCanPlayThrough, handleVideoErrorNative, handleVideoWaiting, handleVideoPlaying, handleVideoEnded, handleUserInteraction, videoState.browserInfo?.isMobile]);
 
-  // Cleanup minimum display timer
-  useEffect(() => {
-    return () => {
-      if (minDisplayTimeRef.current) {
-        clearTimeout(minDisplayTimeRef.current);
-      }
-    };
-  }, []);
-
-  // Handle transition state changes with orchestration support
-  useEffect(() => {
-    // Only start dissolving when orchestration allows it
-    if (orchestrationState?.sequencePhase === 'video-dissolving' && videoState.transitionState !== 'dissolving') {
-      setVideoState(prev => ({
-        ...prev,
-        transitionState: 'dissolving',
-        playbackState: 'dissolving'
-      }));
-    }
-  }, [orchestrationState?.sequencePhase, videoState.transitionState]);
-
+  // Handle transition state changes
   useEffect(() => {
     if (videoState.transitionState === 'dissolving') {
-      const duration = reducedMotion ? 0 : (useFizzEffect ? ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION : 1500);
       const timer = setTimeout(() => {
         setVideoState(prev => ({
           ...prev,
-          transitionState: 'complete',
-          playbackState: 'hidden'
+          transitionState: 'complete'
         }));
-        onTransitionComplete?.();
-      }, duration);
+      }, reducedMotion ? 0 : 4500); // 4.5 seconds for the extended dissolve transition
 
       return () => clearTimeout(timer);
     }
-  }, [videoState.transitionState, reducedMotion, onTransitionComplete, useFizzEffect]);
+  }, [videoState.transitionState, reducedMotion]);
 
-  // Animation variants as specified in architecture
+  // Animation variants
   const overlayVariants = {
-    hidden: {
-      opacity: 0,
-      transition: { duration: 0 }
-    },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
@@ -349,15 +331,15 @@ const LoadingOverlay = ({
       filter: "blur(2px) brightness(1.2) contrast(1.1)",
       scale: 1.02,
       transition: {
-        duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
+        duration: reducedMotion ? 0 : 4.5, // 4.5 seconds for extended dissolve
         ease: [0.25, 0.46, 0.45, 0.94], // Custom easing curve for fizz effect
-        delay: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY / 1000, // 0.5 second delay before starting dissolve
+        delay: reducedMotion ? 0 : 0.5, // 0.5 second delay before starting dissolve
         filter: {
-          duration: reducedMotion ? 0 : (ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION - 1000) / 1000,
+          duration: reducedMotion ? 0 : 3.5,
           ease: "easeInOut"
         },
         scale: {
-          duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
+          duration: reducedMotion ? 0 : 4.5,
           ease: "easeInOut"
         }
       }
@@ -371,38 +353,10 @@ const LoadingOverlay = ({
     }
   };
 
-  // Don't return null immediately when transition is complete to prevent white screen
-  // Instead, keep the component but make it fully transparent
-  if (!isVisible) return null;
+  if (videoState.transitionState === 'complete') return null;
 
   // Get safe z-index value
   const safeZIndex = getSafeZIndex();
-
-  // Generate responsive video source URLs
-  const getVideoSources = () => {
-    const sources = [];
-    
-    // Add WebM source if available
-    if (videoUrls.webm && supportsVideoFormat('webm')) {
-      sources.push(
-        <source key="webm" src={videoUrls.webm} type="video/webm" />
-      );
-    }
-    
-    // Add OGG source if available
-    if (videoUrls.ogg && supportsVideoFormat('ogg')) {
-      sources.push(
-        <source key="ogg" src={videoUrls.ogg} type="video/ogg" />
-      );
-    }
-    
-    // Always add MP4 as fallback
-    sources.push(
-      <source key="mp4" src={videoUrl} type="video/mp4" />
-    );
-    
-    return sources;
-  };
 
   // Get responsive styles based on viewport
   const getResponsiveStyles = useCallback(() => {
@@ -438,38 +392,39 @@ const LoadingOverlay = ({
       className={className}
       style={{
         ...getResponsiveStyles(),
-        // Add GPU acceleration for smooth transitions
-        ...getHardwareAccelerationStyles(),
-        // Add additional styles for the dissolve effect
-        ...(videoState.transitionState === 'dissolving' && useFizzEffect && !reducedMotion ? {
+        // Add additional styles for the fizz effect
+        ...(videoState.transitionState === 'dissolving' && !reducedMotion ? {
           background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)',
         } : {})
       }}
       variants={overlayVariants}
       initial="hidden"
-      animate={
-        videoState.transitionState === 'complete' ? 'exit' :
-        orchestrationState?.sequencePhase === 'video-dissolving' ? 'dissolving' :
-        videoState.transitionState === 'dissolving' ? 'dissolving' :
-        'visible'
-      }
+      animate={videoState.transitionState === 'dissolving' ? 'dissolving' : 'visible'}
       exit="exit"
       role="presentation"
       aria-label="Video introduction overlay"
     >
       {/* Video Background */}
-      <video
+      <motion.video
         ref={videoRef}
         style={{
           ...getResponsiveVideoStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded ? '1' : '0',
-            transition: 'opacity 0s ease-in-out' // Instant transition for video opacity
-          }),
-          // Add GPU acceleration for the video element
-          ...getHardwareAccelerationStyles()
+            transition: 'opacity 0s ease-in-out' // Instant transition
+          })
         }}
-        autoPlay={attemptAutoplay && !videoState.needsUserInteraction}
+        animate={videoState.transitionState === 'dissolving' ? {
+          opacity: 0,
+          filter: "blur(3px) brightness(1.3) saturate(1.2) contrast(1.2)",
+          scale: 1.05,
+        } : {}}
+        transition={{
+          duration: reducedMotion ? 0 : 4.5,
+          ease: [0.25, 0.46, 0.45, 0.94],
+          delay: reducedMotion ? 0 : 0.5,
+        }}
+        autoPlay={autoPlay && !videoState.needsUserInteraction}
         muted
         playsInline
         preload="auto"
@@ -481,9 +436,9 @@ const LoadingOverlay = ({
         onEnded={handleVideoEnded}
         {...getVideoAttributes()}
       >
-        {getVideoSources()}
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
-      </video>
+      </motion.video>
 
       {/* Fallback background while video loads or if video is disabled */}
       <div
@@ -492,13 +447,13 @@ const LoadingOverlay = ({
           ...getResponsiveContainerStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded && !videoState.hasError ? '0' : '1',
-            transition: useFizzEffect ? 'opacity 0s ease-in-out' : `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
+            transition: 'opacity 0s ease-in-out' // Instant transition
           })
         }}
       />
 
       {/* Loading spinner for video loading and buffering states */}
-      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
+      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering) && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -542,7 +497,7 @@ const LoadingOverlay = ({
       )}
 
       {/* Play button for browsers that block autoplay */}
-      {showPlayButton && videoState.needsUserInteraction && videoState.isLoaded && !videoState.isPlaying && (
+      {videoState.needsUserInteraction && videoState.isLoaded && !videoState.isPlaying && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -613,7 +568,7 @@ const LoadingOverlay = ({
             >
               Please check your connection
             </p>
-            {attemptAutoplay && videoState.needsUserInteraction && (
+            {autoPlay && videoState.needsUserInteraction && (
               <button
                 onClick={handleUserInteraction}
                 style={{
@@ -639,4 +594,5 @@ const LoadingOverlay = ({
   );
 };
 
-export { LoadingOverlay };
+export { VideoIntroOverlay };
+export type { VideoIntroOverlayProps };
