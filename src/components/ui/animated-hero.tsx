@@ -256,7 +256,7 @@ function Hero() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
       {/* Video Background */}
       {shouldShowVideo && (
         <video
@@ -306,11 +306,11 @@ function Hero() {
         </div>
       )}
       
-      <div className="relative z-20 container mx-auto py-20 lg:py-32 flex items-center justify-center flex-col gap-3 min-h-screen">
+      <div className="relative z-20 container mx-auto px-4 flex items-center justify-center flex-col gap-1 h-full">
         {/* Combined heading and summary with consistent spacing */}
-        <div className="text-center max-w-5xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-wider font-serif font-black mb-2">
-            <div className="flex justify-center mb-2">
+        <div className="text-center max-w-5xl mx-auto flex flex-col items-center justify-center flex-grow">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl tracking-wider font-serif font-black">
+            <div className="flex justify-center">
               <img
                 src="https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png"
                 alt="ARCHE FORGE"
@@ -322,7 +322,7 @@ function Hero() {
                 }}
               />
             </div>
-            <div className="relative flex w-full justify-center overflow-visible min-h-[4rem] md:min-h-[5rem] lg:min-h-[6rem] mb-2">
+            <div className="relative flex w-full justify-center overflow-visible h-16 md:h-20 lg:h-24">
               {titles.map((title, index) => (
                 <motion.span
                   key={index}
@@ -362,9 +362,9 @@ function Hero() {
             </div>
           </h1>
           
-          {/* Summary paragraph with consistent spacing */}
-          <div className="max-w-3xl mx-auto mt-0 pt-0">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] mb-1 pb-1 px-2" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
+          {/* Summary paragraph with added margin-bottom to move it down */}
+          <div className="max-w-3xl mx-auto mb-6">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
               Today's AI interactions lack soul.<br className="hidden sm:block" />
               Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
               your identity, making AI feel less like a tool and more like you.
@@ -373,8 +373,8 @@ function Hero() {
         </div>
         
         
-        {/* Social Media Icons */}
-        <div className="mt-2 mb-4">
+        {/* Social Media Icons with negative margin-top to move them up */}
+        <div className="-mt-4">
           <SocialMediaIcons />
         </div>
       </div>

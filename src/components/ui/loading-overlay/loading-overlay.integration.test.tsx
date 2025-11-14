@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LoadingOverlay } from "./loading-overlay";
-import { Button } from "../button";
-import { Hero } from "../animated-hero";
+import { Button } from "../button.tsx";
+import { Hero } from "../animated-hero.tsx";
 
 /**
  * Integration Test Component for Loading Overlay
@@ -123,7 +123,7 @@ const LoadingOverlayIntegrationTest = () => {
             <label className="text-sm font-medium text-gray-700">Test Scenario:</label>
             <select 
               value={testScenario} 
-              onChange={(e) => setTestScenario(e.target.value as any)}
+              onChange={(e) => setTestScenario(e.target.value as 'normal' | 'error' | 'slow' | 'mobile')}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm"
             >
               <option value="normal">Normal Flow</option>

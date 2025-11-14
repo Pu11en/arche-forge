@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { LoadingOverlayIntegrationTest } from "./loading-overlay.integration.test";
 import { ResponsiveAccessibilityTest } from "./responsive-accessibility.test";
 import { ErrorPerformanceTest } from "./error-performance.test";
 import { UserFlowTest } from "./user-flow.test";
-import { Button } from "../button";
+import { Button } from "../button.tsx";
 
 /**
  * Comprehensive Test Runner for Loading Overlay
@@ -335,13 +335,13 @@ const TestDocumentation = () => {
                 <li>• Integration with Hero component works seamlessly</li>
               </ul>
             </div>
-            
+             
             <div>
               <h4 className="font-semibold text-gray-800 mb-2">Performance Requirements</h4>
               <ul className="text-sm text-gray-600 space-y-1">
-                <li>• Initial load time < 3 seconds</li>
+                <li>• Initial load time {'<'} 3 seconds{'>'}</li>
                 <li>• Transition duration exactly 1.5 seconds</li>
-                <li>• Memory usage increase < 50MB</li>
+                <li>• Memory usage increase {'<'} 50MB{'>'}</li>
                 <li>• Hardware acceleration enabled</li>
                 <li>• No memory leaks on component unmount</li>
               </ul>

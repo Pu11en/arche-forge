@@ -9,7 +9,7 @@ interface TestResult {
   testName: string;
   passed: boolean;
   duration: number;
-  details?: any;
+  details?: unknown;
   error?: string;
 }
 
@@ -122,7 +122,7 @@ class LoadingOverlayTestExecutor {
         await new Promise(resolve => setTimeout(resolve, 100));
         
         // Check if overlay adapts
-        const overlay = document.querySelector('.motion-div') as HTMLElement;
+        const overlay = document.querySelector('.motion-div') as HTMLElement | null;
         if (!overlay) return false;
         
         const rect = overlay.getBoundingClientRect();
@@ -203,7 +203,7 @@ class LoadingOverlayTestExecutor {
     
     await this.runTest('performance', 'Hardware Acceleration', async () => {
       // Test hardware acceleration
-      const video = document.querySelector('video') as HTMLElement;
+      const video = document.querySelector('video') as HTMLElement | null;
       if (!video) return false;
       
       const styles = window.getComputedStyle(video);
@@ -213,7 +213,7 @@ class LoadingOverlayTestExecutor {
     await this.runTest('performance', 'Memory Usage', async () => {
       // Test memory usage
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
         const memoryMB = memory.usedJSHeapSize / 1024 / 1024;
         return memoryMB < 100; // Less than 100MB is acceptable
       }
@@ -225,7 +225,7 @@ class LoadingOverlayTestExecutor {
       const startTime = performance.now();
       
       // Force re-render
-      const overlay = document.querySelector('.motion-div');
+      const overlay = document.querySelector('.motion-div') as HTMLElement | null;
       if (overlay) {
         overlay.style.display = 'none';
         overlay.style.display = 'block';

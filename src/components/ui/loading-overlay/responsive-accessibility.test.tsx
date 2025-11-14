@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LoadingOverlay } from "./loading-overlay";
-import { Button } from "../button";
+import { Button } from "../button.tsx";
 
 /**
  * Responsive Design and Accessibility Test Component

@@ -9,17 +9,17 @@ import { detectBrowser, supportsVideoFormat, getOptimalVideoFormat } from '../..
 jest.mock('../../../hooks/useReducedMotion');
 jest.mock('../../../lib/browser-detection');
 jest.mock('../../../lib/cross-browser-styles', () => ({
-  getPrefixedStyles: (styles: any) => styles,
-  getHardwareAccelerationStyles: () => ({}),
-  getResponsiveVideoStyles: () => ({}),
-  getResponsiveContainerStyles: () => ({}),
-  getLoadingSpinnerStyles: () => ({}),
-  getTouchButtonStyles: () => ({}),
-  getConsistentTextStyles: () => ({}),
-  getOverlayStyles: () => ({}),
-  getVideoAttributes: () => ({}),
-  getFlexboxStyles: () => ({}),
-  mediaQueries: {}
+  getPrefixedStyles: (styles: Record<string, string | number>) => styles,
+  getHardwareAccelerationStyles: () => ({} as Record<string, string | number>),
+  getResponsiveVideoStyles: () => ({} as Record<string, string | number>),
+  getResponsiveContainerStyles: () => ({} as Record<string, string | number>),
+  getLoadingSpinnerStyles: () => ({} as Record<string, string | number>),
+  getTouchButtonStyles: () => ({} as Record<string, string | number>),
+  getConsistentTextStyles: () => ({} as Record<string, string | number>),
+  getOverlayStyles: () => ({} as Record<string, string | number>),
+  getVideoAttributes: () => ({} as Record<string, string | number>),
+  getFlexboxStyles: () => ({} as Record<string, string | number>),
+  mediaQueries: {} as Record<string, string>
 }));
 
 // Mock HTMLVideoElement methods

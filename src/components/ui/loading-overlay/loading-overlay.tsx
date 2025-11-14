@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Loader2, Play } from "lucide-react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
 import { LoadingOverlayProps, VideoState } from "./loading-types";
+import { ANIMATION_TIMING } from "../../../lib/animation-timing";
 import {
   detectBrowser,
   getOptimalVideoFormat,
@@ -32,10 +33,15 @@ const LoadingOverlay = ({
   onVideoLoaded,
   onVideoError,
   onTransitionComplete,
+  onVideoComplete,
   className = "",
   attemptAutoplay = true,
   showPlayButton = true,
+  showLoadingIndicator = true,
+  loadingText = "Loading...",
   playButtonText = "Play to Continue",
+  useFizzEffect = true,
+  orchestrationState,
 }: LoadingOverlayProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,6 +59,7 @@ const LoadingOverlay = ({
       loadingProgress: 0,
       loadingState: 'idle',
       transitionState: 'visible',
+      playbackState: 'idle',
       needsUserInteraction,
       autoplayAttempted: false,
       supportedFormat,
@@ -184,9 +191,13 @@ const LoadingOverlay = ({
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
-      transitionState: 'dissolving'
+      playbackState: 'completed'
     }));
-  }, []);
+    
+    // Don't trigger completion immediately - wait for orchestration
+    // The parent component will handle the dissolve timing
+    onVideoComplete?.();
+  }, [onVideoComplete, useFizzEffect]);
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
@@ -292,24 +303,40 @@ const LoadingOverlay = ({
     };
   }, []);
 
-  // Handle transition state changes
+  // Handle transition state changes with orchestration support
+  useEffect(() => {
+    // Only start dissolving when orchestration allows it
+    if (orchestrationState?.sequencePhase === 'video-dissolving' && videoState.transitionState !== 'dissolving') {
+      setVideoState(prev => ({
+        ...prev,
+        transitionState: 'dissolving',
+        playbackState: 'dissolving'
+      }));
+    }
+  }, [orchestrationState?.sequencePhase, videoState.transitionState]);
+
   useEffect(() => {
     if (videoState.transitionState === 'dissolving') {
+      const duration = reducedMotion ? 0 : (useFizzEffect ? ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION : 1500);
       const timer = setTimeout(() => {
         setVideoState(prev => ({
           ...prev,
-          transitionState: 'complete'
+          transitionState: 'complete',
+          playbackState: 'hidden'
         }));
         onTransitionComplete?.();
-      }, reducedMotion ? 0 : 1500); // 1.5 seconds for the transition
+      }, duration);
 
       return () => clearTimeout(timer);
     }
-  }, [videoState.transitionState, reducedMotion, onTransitionComplete]);
+  }, [videoState.transitionState, reducedMotion, onTransitionComplete, useFizzEffect]);
 
-  // Animation variants
+  // Animation variants as specified in architecture
   const overlayVariants = {
-    hidden: { opacity: 0 },
+    hidden: {
+      opacity: 0,
+      transition: { duration: 0 }
+    },
     visible: {
       opacity: 1,
       transition: {
@@ -319,9 +346,20 @@ const LoadingOverlay = ({
     },
     dissolving: {
       opacity: 0,
+      filter: "blur(2px) brightness(1.2) contrast(1.1)",
+      scale: 1.02,
       transition: {
-        duration: reducedMotion ? 0 : 1.5, // 1.5 seconds for dissolve
-        ease: "easeInOut"
+        duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
+        ease: [0.25, 0.46, 0.45, 0.94], // Custom easing curve for fizz effect
+        delay: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY / 1000, // 0.5 second delay before starting dissolve
+        filter: {
+          duration: reducedMotion ? 0 : (ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION - 1000) / 1000,
+          ease: "easeInOut"
+        },
+        scale: {
+          duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
+          ease: "easeInOut"
+        }
       }
     },
     exit: {
@@ -396,11 +434,25 @@ const LoadingOverlay = ({
     <motion.div
       ref={containerRef}
       className={className}
-      style={getResponsiveStyles()}
+      style={{
+        ...getResponsiveStyles(),
+        // Add GPU acceleration for smooth transitions
+        ...getHardwareAccelerationStyles(),
+        // Add additional styles for the dissolve effect
+        ...(videoState.transitionState === 'dissolving' && useFizzEffect && !reducedMotion ? {
+          background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)',
+        } : {})
+      }}
       variants={overlayVariants}
       initial="hidden"
-      animate={videoState.transitionState === 'dissolving' ? 'dissolving' : 'visible'}
+      animate={
+        orchestrationState?.sequencePhase === 'video-dissolving' ? 'dissolving' :
+        videoState.transitionState === 'dissolving' ? 'dissolving' :
+        'visible'
+      }
       exit="exit"
+      role="presentation"
+      aria-label="Video introduction overlay"
     >
       {/* Video Background */}
       <video
@@ -409,8 +461,10 @@ const LoadingOverlay = ({
           ...getResponsiveVideoStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded ? '1' : '0',
-            transition: `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
-          })
+            transition: 'opacity 0s ease-in-out' // Instant transition for video opacity
+          }),
+          // Add GPU acceleration for the video element
+          ...getHardwareAccelerationStyles()
         }}
         autoPlay={attemptAutoplay && !videoState.needsUserInteraction}
         muted
@@ -435,13 +489,13 @@ const LoadingOverlay = ({
           ...getResponsiveContainerStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded && !videoState.hasError ? '0' : '1',
-            transition: `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
+            transition: useFizzEffect ? 'opacity 0s ease-in-out' : `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
           })
         }}
       />
 
       {/* Loading spinner for video loading and buffering states */}
-      {(videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
+      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -477,7 +531,7 @@ const LoadingOverlay = ({
                   fontSize: videoState.browserInfo?.isMobile ? '0.875rem' : '0.875rem'
                 }}
               >
-                Loading... {Math.round(videoState.loadingProgress)}%
+                {loadingText} {Math.round(videoState.loadingProgress)}%
               </p>
             )}
           </div>
@@ -506,6 +560,7 @@ const LoadingOverlay = ({
                 transition: 'background-color 0.2s ease'
               })
             }}
+            aria-label={playButtonText}
           >
             <Play
               strokeWidth={2}
@@ -569,6 +624,7 @@ const LoadingOverlay = ({
                     transition: 'background-color 0.2s ease'
                   })
                 }}
+                aria-label="Try playing video again"
               >
                 Try Again
               </button>

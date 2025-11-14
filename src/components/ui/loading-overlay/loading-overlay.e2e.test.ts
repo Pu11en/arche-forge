@@ -10,7 +10,7 @@ interface TestResult {
   passed: boolean;
   error?: string;
   duration: number;
-  details?: any;
+  details?: unknown;
 }
 
 class LoadingOverlayE2ETest {
@@ -105,14 +105,14 @@ class LoadingOverlayE2ETest {
     if (!this.page) throw new Error('Page not initialized');
     
     // Check if loading overlay is present
-    const overlay = await this.page.$('video');
+    const overlay = await this.page.$('video') as Element | null;
     if (!overlay) {
       throw new Error('Loading overlay video element not found');
     }
     
     // Check if overlay is visible
     const isVisible = await this.page.evaluate(() => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return false;
       const style = window.getComputedStyle(video);
       return style.display !== 'none' && style.opacity !== '0';
@@ -134,7 +134,7 @@ class LoadingOverlayE2ETest {
     
     // Check video properties
     const videoState = await this.page.evaluate(() => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return null;
       
       return {
@@ -161,7 +161,7 @@ class LoadingOverlayE2ETest {
     
     // Check for loading spinner
     const spinnerExists = await this.page.evaluate(() => {
-      const spinners = document.querySelectorAll('[class*="spinner"], [class*="loading"]');
+      const spinners = document.querySelectorAll('[class*="spinner"], [class*="loading"]') as NodeListOf<Element>;
       return spinners.length > 0;
     });
     
@@ -175,7 +175,7 @@ class LoadingOverlayE2ETest {
     
     // Start video playback
     const playbackStarted = await this.page.evaluate(async () => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return false;
       
       try {
@@ -184,7 +184,7 @@ class LoadingOverlayE2ETest {
       } catch (error) {
         console.log('Autoplay blocked, checking for play button');
         // Check if play button is shown
-        const playButton = document.querySelector('button');
+        const playButton = document.querySelector('button') as HTMLButtonElement | null;
         return playButton !== null;
       }
     });
@@ -213,10 +213,10 @@ class LoadingOverlayE2ETest {
     
     // Check if overlay is hidden
     const overlayHidden = await this.page.evaluate(() => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return true; // Consider hidden if not found
       
-      const container = video.closest('div');
+      const container = video.closest('div') as HTMLElement | null;
       if (!container) return true;
       
       const style = window.getComputedStyle(container);
@@ -241,9 +241,9 @@ class LoadingOverlayE2ETest {
     
     // Check for error message
     const errorMessage = await this.page.evaluate(() => {
-      const errorElements = document.querySelectorAll('*');
+      const errorElements = document.querySelectorAll('*') as NodeListOf<Element>;
       for (const el of errorElements) {
-        if (el.textContent?.includes('Unable to load video') || 
+        if (el.textContent?.includes('Unable to load video') ||
             el.textContent?.includes('Please check your connection')) {
           return true;
         }
@@ -264,10 +264,10 @@ class LoadingOverlayE2ETest {
     
     // Check if overlay adapts to mobile
     const mobileAdapted = await this.page.evaluate(() => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return false;
       
-      const container = video.closest('div');
+      const container = video.closest('div') as HTMLElement | null;
       if (!container) return false;
       
       const style = window.getComputedStyle(container);
@@ -296,7 +296,7 @@ class LoadingOverlayE2ETest {
     
     // Check for proper ARIA labels
     const ariaLabelsPresent = await this.page.evaluate(() => {
-      const buttons = document.querySelectorAll('button');
+      const buttons = document.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
       for (const button of buttons) {
         if (!button.getAttribute('aria-label') && !button.textContent?.trim()) {
           return false;
@@ -315,7 +315,7 @@ class LoadingOverlayE2ETest {
     
     // Check for hardware acceleration
     const hardwareAcceleration = await this.page.evaluate(() => {
-      const video = document.querySelector('video');
+      const video = document.querySelector('video') as HTMLVideoElement | null;
       if (!video) return false;
       
       const style = window.getComputedStyle(video);
@@ -342,7 +342,7 @@ class LoadingOverlayE2ETest {
     
     // Test video format support
     const formatSupport = await this.page.evaluate(() => {
-      const video = document.createElement('video');
+      const video = document.createElement('video') as HTMLVideoElement;
       return {
         mp4: video.canPlayType('video/mp4') !== '',
         webm: video.canPlayType('video/webm') !== '',

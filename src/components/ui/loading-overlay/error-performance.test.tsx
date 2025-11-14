@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LoadingOverlay } from "./loading-overlay";
-import { Button } from "../button";
+import { Button } from "../button.tsx";
 
 /**
  * Error Handling and Performance Test Component
@@ -9,14 +9,22 @@ import { Button } from "../button";
 const ErrorPerformanceTest = () => {
   const [testScenario, setTestScenario] = useState<'normal' | 'error' | 'slow' | 'offline' | 'memory'>('normal');
   const [testResults, setTestResults] = useState<string[]>([]);
-  const [performanceMetrics, setPerformanceMetrics] = useState<any>({});
+  const [performanceMetrics, setPerformanceMetrics] = useState<{
+    memoryBefore?: PerformanceMemory;
+    memoryAfter?: PerformanceMemory;
+    currentMemory?: PerformanceMemory;
+  }>({});
   const [isTestRunning, setIsTestRunning] = useState(false);
 
   const addTestResult = (result: string) => {
     setTestResults(prev => [...prev, `${new Date().toLocaleTimeString()}: ${result}`]);
   };
 
-  const updatePerformanceMetrics = (metrics: any) => {
+  const updatePerformanceMetrics = (metrics: {
+    memoryBefore?: PerformanceMemory;
+    memoryAfter?: PerformanceMemory;
+    currentMemory?: PerformanceMemory;
+  }) => {
     setPerformanceMetrics(prev => ({ ...prev, ...metrics }));
   };
 
@@ -97,11 +105,11 @@ const ErrorPerformanceTest = () => {
   };
 
   const checkErrorHandling = async (): Promise<string> => {
-    const errorElements = document.querySelectorAll('*');
+    const errorElements = document.querySelectorAll('*') as NodeListOf<Element>;
     
     for (const element of errorElements) {
       const text = element.textContent;
-      if (text?.includes('Unable to load video') || 
+      if (text?.includes('Unable to load video') ||
           text?.includes('Please check your connection')) {
         return '✅ Error message displayed correctly';
       }
@@ -111,7 +119,7 @@ const ErrorPerformanceTest = () => {
   };
 
   const checkTimeoutHandling = async (): Promise<string> => {
-    const loadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"]');
+    const loadingElements = document.querySelectorAll('[class*="loading"], [class*="spinner"]') as NodeListOf<Element>;
     
     if (loadingElements.length > 0) {
       return '✅ Loading state maintained during timeout';
@@ -121,7 +129,7 @@ const ErrorPerformanceTest = () => {
   };
 
   const checkOfflineHandling = async (): Promise<string> => {
-    const errorElements = document.querySelectorAll('*');
+    const errorElements = document.querySelectorAll('*') as NodeListOf<Element>;
     
     for (const element of errorElements) {
       const text = element.textContent;
@@ -133,7 +141,7 @@ const ErrorPerformanceTest = () => {
     return '❌ Offline error not handled';
   };
 
-  const checkMemoryUsage = async (before: any, after: any): Promise<string> => {
+  const checkMemoryUsage = async (before: PerformanceMemory | undefined, after: PerformanceMemory | undefined): Promise<string> => {
     if (!before || !after) {
       return '⚠️ Memory monitoring not available';
     }
@@ -166,7 +174,7 @@ const ErrorPerformanceTest = () => {
   };
 
   const checkHardwareAcceleration = async (): Promise<string> => {
-    const video = document.querySelector('video') as HTMLElement;
+    const video = document.querySelector('video') as HTMLVideoElement;
     if (!video) {
       return '❌ Video element not found';
     }
@@ -206,9 +214,9 @@ const ErrorPerformanceTest = () => {
     }
   };
 
-  const getMemoryUsage = async (): Promise<any> => {
+  const getMemoryUsage = async (): Promise<PerformanceMemory> => {
     if ('memory' in performance) {
-      return (performance as any).memory;
+      return (performance as Performance & { memory: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
     }
     
     // Fallback: estimate memory usage
@@ -216,7 +224,7 @@ const ErrorPerformanceTest = () => {
       usedJSHeapSize: 0,
       totalJSHeapSize: 0,
       jsHeapSizeLimit: 0
-    };
+    } as { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number };
   };
 
   const getVideoConfig = () => {
@@ -262,7 +270,7 @@ const ErrorPerformanceTest = () => {
     if (testScenario === 'offline') {
       // Simulate offline by intercepting requests
       const originalFetch = window.fetch;
-      window.fetch = () => Promise.reject(new Error('Offline'));
+      window.fetch = () => Promise.reject(new Error('Offline')) as Promise<Response>;
       
       return () => {
         window.fetch = originalFetch;
@@ -272,7 +280,7 @@ const ErrorPerformanceTest = () => {
     if (testScenario === 'slow') {
       // Simulate slow network
       const originalFetch = window.fetch;
-      window.fetch = (url, options) => {
+      window.fetch = (url: RequestInfo | URL, options?: RequestInit) => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             originalFetch(url, options).then(resolve).catch(reject);
@@ -332,7 +340,7 @@ const ErrorPerformanceTest = () => {
             <label className="text-sm font-medium text-gray-700">Test Scenario:</label>
             <select 
               value={testScenario} 
-              onChange={(e) => setTestScenario(e.target.value as any)}
+              onChange={(e) => setTestScenario(e.target.value as 'normal' | 'error' | 'slow' | 'offline' | 'memory')}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm text-sm"
             >
               <option value="normal">Normal Operation</option>

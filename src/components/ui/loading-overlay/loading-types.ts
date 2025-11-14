@@ -1,3 +1,5 @@
+import { AnimationOrchestrationState } from "../../../lib/animation-timing";
+
 /**
  * Type definitions for the Loading Overlay component
  */
@@ -45,6 +47,11 @@ export interface LoadingOverlayProps {
   onTransitionComplete?: () => void;
   
   /**
+   * Optional callback when video completes playing
+   */
+  onVideoComplete?: () => void;
+  
+  /**
    * Additional CSS class names
    */
   className?: string;
@@ -62,10 +69,33 @@ export interface LoadingOverlayProps {
   showPlayButton?: boolean;
   
   /**
+   * Whether to show loading indicator
+   * @default true
+   */
+  showLoadingIndicator?: boolean;
+  
+  /**
+   * Custom loading text
+   * @default "Loading..."
+   */
+  loadingText?: string;
+  
+  /**
    * Custom play button text
    * @default "Play to Continue"
    */
   playButtonText?: string;
+  
+  /**
+   * Whether to use the enhanced fizz effect transition
+   * @default true
+   */
+  useFizzEffect?: boolean;
+  
+  /**
+   * Optional orchestration state for sequential animation control
+   */
+  orchestrationState?: AnimationOrchestrationState;
 }
 
 /**
@@ -82,6 +112,7 @@ export interface VideoState {
   loadingProgress: number;
   loadingState: 'idle' | 'loading' | 'buffering' | 'ready' | 'error';
   transitionState: TransitionState;
+  playbackState: 'idle' | 'playing' | 'completed' | 'dissolving' | 'hidden';
   needsUserInteraction: boolean;
   autoplayAttempted: boolean;
   supportedFormat: 'mp4' | 'webm' | 'ogg';

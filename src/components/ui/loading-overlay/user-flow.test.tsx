@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { LoadingOverlay } from "./loading-overlay";
-import { Hero } from "../animated-hero";
-import { Button } from "../button";
+import { Hero } from "../animated-hero.tsx";
+import { Button } from "../button.tsx";
 
 /**
  * Complete User Flow Test Component
@@ -122,7 +122,7 @@ const UserFlowTest = () => {
   };
 
   const validateInitialLoad = async (): Promise<string> => {
-    const overlay = document.querySelector('.motion-div') as HTMLElement;
+    const overlay = document.querySelector('.motion-div') as HTMLElement | null;
     if (!overlay) {
       return '❌ Loading overlay not found';
     }
@@ -132,7 +132,7 @@ const UserFlowTest = () => {
       return '❌ Loading overlay not visible';
     }
 
-    const video = document.querySelector('video') as HTMLVideoElement;
+    const video = document.querySelector('video') as HTMLVideoElement | null;
     if (!video) {
       return '❌ Video element not found';
     }
@@ -141,7 +141,7 @@ const UserFlowTest = () => {
   };
 
   const validateVideoLoading = async (): Promise<string> => {
-    const spinner = document.querySelector('[class*="spinner"], [class*="loading"]') as HTMLElement;
+    const spinner = document.querySelector('[class*="spinner"], [class*="loading"]') as HTMLElement | null;
     if (!spinner) {
       return '❌ Loading spinner not found';
     }
@@ -151,7 +151,7 @@ const UserFlowTest = () => {
       return '❌ Loading spinner not visible';
     }
 
-    const video = document.querySelector('video') as HTMLVideoElement;
+    const video = document.querySelector('video') as HTMLVideoElement | null;
     if (!video) {
       return '❌ Video element not found';
     }
@@ -166,7 +166,7 @@ const UserFlowTest = () => {
   };
 
   const validateVideoPlayback = async (): Promise<string> => {
-    const video = document.querySelector('video') as HTMLVideoElement;
+    const video = document.querySelector('video') as HTMLVideoElement | null;
     if (!video) {
       return '❌ Video element not found';
     }
@@ -195,7 +195,7 @@ const UserFlowTest = () => {
   };
 
   const validateVideoCompletion = async (): Promise<string> => {
-    const video = document.querySelector('video') as HTMLVideoElement;
+    const video = document.querySelector('video') as HTMLVideoElement | null;
     if (!video) {
       return '❌ Video element not found';
     }
@@ -218,13 +218,13 @@ const UserFlowTest = () => {
   };
 
   const validateTransitionStart = async (): Promise<string> => {
-    const overlay = document.querySelector('.motion-div') as HTMLElement;
+    const overlay = document.querySelector('.motion-div') as HTMLElement | null;
     if (!overlay) {
       return '❌ Loading overlay not found';
     }
 
     // Trigger transition by ending video
-    const video = document.querySelector('video') as HTMLVideoElement;
+    const video = document.querySelector('video') as HTMLVideoElement | null;
     if (video) {
       video.dispatchEvent(new Event('ended'));
     }
@@ -244,7 +244,7 @@ const UserFlowTest = () => {
   };
 
   const validateTransitionComplete = async (): Promise<string> => {
-    const overlay = document.querySelector('.motion-div') as HTMLElement;
+    const overlay = document.querySelector('.motion-div') as HTMLElement | null;
     if (!overlay) {
       updateFlowState({ transitionComplete: true });
       return '✅ Overlay removed from DOM';
@@ -262,7 +262,7 @@ const UserFlowTest = () => {
   };
 
   const validateHeroReveal = async (): Promise<string> => {
-    const hero = document.querySelector('.relative.z-20') as HTMLElement;
+    const hero = document.querySelector('.relative.z-20') as HTMLElement | null;
     if (!hero) {
       return '❌ Hero component not found';
     }
@@ -355,7 +355,7 @@ const UserFlowTest = () => {
           updateFlowState({ videoLoaded: true });
           addTestResult('✅ Video loaded event fired');
         }}
-        onVideoError={(error) => addTestResult(`❌ Video error: ${error?.message}`)}
+        onVideoError={(error) => addTestResult(`❌ Video error: ${error?.message || 'Unknown error'}`)}
         onTransitionComplete={() => {
           updateFlowState({ transitionComplete: true });
           addTestResult('✅ Transition complete event fired');
