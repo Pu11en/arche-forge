@@ -55,20 +55,20 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   // Handle video completion - starts the sequential animation flow
   const handleVideoComplete = useCallback(() => {
-    setVideoState(prev => ({
+    setVideoState((prev: any) => ({
       ...prev,
       isCompleted: true,
       isPlaying: false
     }));
 
-    setOrchestrationState(prev => ({
+    setOrchestrationState((prev: AnimationOrchestrationState) => ({
       ...prev,
       sequencePhase: 'video-completed'
     }));
     
     // Start dissolve sequence after 0.5s delay
     const dissolveDelayTimer = setTimeout(() => {
-      setOrchestrationState(prev => ({
+      setOrchestrationState((prev: AnimationOrchestrationState) => ({
         ...prev,
         sequencePhase: 'video-dissolving',
         canStartDissolve: true
@@ -77,12 +77,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
       setShowHero(true);
     }, reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY);
     
-    setTransitionTimers(prev => ({ ...prev, dissolveDelayTimer }));
+    setTransitionTimers((prev: TransitionTimers) => ({ ...prev, dissolveDelay: dissolveDelayTimer as NodeJS.Timeout }));
   }, [reducedMotion]);
 
   // Handle dissolve completion - transitions to pause phase
   const handleDissolveComplete = useCallback(() => {
-    setOrchestrationState(prev => ({
+    setOrchestrationState((prev: AnimationOrchestrationState) => ({
       ...prev,
       sequencePhase: 'transition-pause'
     }));
@@ -91,20 +91,20 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setShowHero(true);
     
     const pauseTimer = setTimeout(() => {
-      setOrchestrationState(prev => ({
+      setOrchestrationState((prev: AnimationOrchestrationState) => ({
         ...prev,
         sequencePhase: 'hero-revealing',
         canStartHero: true
       }));
     }, reducedMotion ? 0 : ANIMATION_TIMING.TRANSITION_PAUSE);
     
-    setTransitionTimers(prev => ({ ...prev, pauseTimer }));
+    setTransitionTimers((prev: TransitionTimers) => ({ ...prev, pauseDuration: pauseTimer as NodeJS.Timeout }));
   }, [reducedMotion]);
 
   // Handle video error - maintain sequential flow even on error
   const handleVideoError = useCallback((error: Error) => {
     console.error("Video loading error:", error);
-    setVideoState(prev => ({
+    setVideoState((prev: any) => ({
       ...prev,
       hasError: true,
       isPlaying: false
@@ -115,7 +115,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     
     // Maintain sequential flow - wait for dissolve timeout, then show hero
     setTimeout(() => {
-      setOrchestrationState(prev => ({
+      setOrchestrationState((prev: AnimationOrchestrationState) => ({
         ...prev,
         sequencePhase: 'hero-revealing',
         canStartHero: true
@@ -125,7 +125,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   // Handle video ready state
   const handleVideoReady = useCallback(() => {
-    setVideoState(prev => ({
+    setVideoState((prev: any) => ({
       ...prev,
       isReady: true
     }));
