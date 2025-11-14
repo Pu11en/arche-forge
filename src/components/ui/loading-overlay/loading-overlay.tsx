@@ -181,12 +181,29 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoEnded = useCallback(() => {
+    // Video has ended, transition is already started from timeupdate
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
       transitionState: 'dissolving'
     }));
   }, []);
+
+  // Handle video time update to start dissolve before end
+  const handleVideoTimeUpdate = useCallback(() => {
+    if (videoRef.current) {
+      const video = videoRef.current;
+      const timeRemaining = video.duration - video.currentTime;
+      
+      // Start dissolving 2 seconds before the video ends for smooth transition
+      if (timeRemaining <= 2 && timeRemaining > 0 && videoState.transitionState === 'visible') {
+        setVideoState(prev => ({
+          ...prev,
+          transitionState: 'dissolving'
+        }));
+      }
+    }
+  }, [videoState.transitionState]);
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
@@ -258,6 +275,7 @@ const LoadingOverlay = ({
     video.addEventListener('waiting', handleVideoWaiting, listenerOptions);
     video.addEventListener('playing', handleVideoPlaying, listenerOptions);
     video.addEventListener('ended', handleVideoEnded, listenerOptions);
+    video.addEventListener('timeupdate', handleVideoTimeUpdate, listenerOptions);
 
     // Add touch event listeners for mobile compatibility
     if (videoState.browserInfo?.isMobile) {
@@ -275,13 +293,14 @@ const LoadingOverlay = ({
       video.removeEventListener('waiting', handleVideoWaiting, listenerOptions);
       video.removeEventListener('playing', handleVideoPlaying, listenerOptions);
       video.removeEventListener('ended', handleVideoEnded, listenerOptions);
+      video.removeEventListener('timeupdate', handleVideoTimeUpdate, listenerOptions);
       
       if (videoState.browserInfo?.isMobile) {
         video.removeEventListener('touchstart', handleUserInteraction, listenerOptions);
         video.removeEventListener('touchend', handleUserInteraction, listenerOptions);
       }
     };
-  }, [handleVideoLoadStart, handleVideoProgress, handleVideoCanPlay, handleVideoCanPlayThrough, handleVideoErrorNative, handleVideoWaiting, handleVideoPlaying, handleVideoEnded, handleUserInteraction, videoState.browserInfo?.isMobile]);
+  }, [handleVideoLoadStart, handleVideoProgress, handleVideoCanPlay, handleVideoCanPlayThrough, handleVideoErrorNative, handleVideoWaiting, handleVideoPlaying, handleVideoEnded, handleVideoTimeUpdate, handleUserInteraction, videoState.browserInfo?.isMobile]);
 
   // Cleanup minimum display timer
   useEffect(() => {

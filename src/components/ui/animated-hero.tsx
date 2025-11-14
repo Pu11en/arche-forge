@@ -256,7 +256,15 @@ function Hero() {
   }, [titleNumber, titles]);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <motion.div
+      className="relative w-full min-h-screen overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: reducedMotion ? 0 : 1.5,
+        ease: "easeOut"
+      }}
+    >
       {/* Video Background */}
       {shouldShowVideo && (
         <video
@@ -378,7 +386,7 @@ function Hero() {
           <SocialMediaIcons />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

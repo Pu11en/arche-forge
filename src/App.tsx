@@ -4,10 +4,15 @@ import { LoadingOverlay } from "./components/ui/loading-overlay";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showHero, setShowHero] = useState(false);
 
   // Handle the completion of the loading overlay transition
   const handleTransitionComplete = () => {
     setIsLoading(false);
+    // Delay hero appearance slightly for a smoother transition
+    setTimeout(() => {
+      setShowHero(true);
+    }, 300);
   };
 
   return (
@@ -22,8 +27,8 @@ function App() {
         playButtonText="Enter ArcheForge"
       />
       
-      {/* Main Content - displayed underneath */}
-      <Hero />
+      {/* Main Content - only show after intro completes */}
+      {showHero && <Hero />}
     </div>
   );
 }
