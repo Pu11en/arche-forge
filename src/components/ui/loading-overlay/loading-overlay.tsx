@@ -74,7 +74,7 @@ const LoadingOverlay = ({
   });
   
   const minDisplayTimeRef = useRef<NodeJS.Timeout | null>(null);
-  const hasMinDisplayTimeElapsed = useRef(false);
+  const hasMinDisplayTimeElapsed = useRef(true); // Start as true to prevent unnecessary delays
   
   const reducedMotion = useReducedMotion();
 
@@ -113,12 +113,7 @@ const LoadingOverlay = ({
       loadingState: 'ready'
     }));
     
-    // Set minimum display time if not already set
-    if (!hasMinDisplayTimeElapsed.current) {
-      minDisplayTimeRef.current = setTimeout(() => {
-        hasMinDisplayTimeElapsed.current = true;
-      }, 1500); // Minimum 1.5 seconds display time
-    }
+    // Minimum display time is already elapsed, no need to set timer
     
     onVideoLoaded?.();
   }, [onVideoLoaded]);
@@ -246,8 +241,8 @@ const LoadingOverlay = ({
         }
       };
 
-      // Start playing when video can play
-      if (videoState.isLoaded && hasMinDisplayTimeElapsed.current && !videoState.autoplayAttempted) {
+      // Start playing when video can play (no minimum display time requirement)
+      if (videoState.isLoaded && !videoState.autoplayAttempted) {
         playVideo();
       }
     }
@@ -498,7 +493,7 @@ const LoadingOverlay = ({
       />
 
       {/* Loading spinner for video loading and buffering states */}
-      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
+      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering) && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),

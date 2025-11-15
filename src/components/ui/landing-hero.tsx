@@ -53,10 +53,10 @@ const LandingHero: React.FC<LandingHeroProps> = ({
   return (
     <motion.div
       className={`relative w-full h-screen overflow-hidden flex items-center justify-center ${className}`}
-      initial={reducedMotion ? { opacity: 1 } : (initialVisibility ? "hidden" : "visible")}
-      animate={reducedMotion ? { opacity: 1 } : "visible"}
+      initial={reducedMotion ? { opacity: 1 } : "hidden"} // Start hidden to prevent flash
+      animate={reducedMotion ? { opacity: 1 } : (initialVisibility ? "visible" : "hidden")}
       variants={reducedMotion ? undefined : containerVariants}
-      transition={reducedMotion ? { duration: 0 } : undefined}
+      transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
       style={style}
     >
       {/* Background gradient */}

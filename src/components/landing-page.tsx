@@ -34,6 +34,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
   });
 
   const [showHero, setShowHero] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [orchestrationState, setOrchestrationState] = useState<AnimationOrchestrationState>({
     sequencePhase: 'video-playing',
     canStartDissolve: false,
@@ -73,8 +74,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
         sequencePhase: 'video-dissolving',
         canStartDissolve: true
       }));
-      // Pre-emptively set showHero to true to ensure no white screen
-      setShowHero(true);
+      // Only show hero after dissolve starts to prevent flash
+      // setShowHero will be set in handleDissolveComplete
     }, reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY);
     
     setTransitionTimers((prev: TransitionTimers) => ({ ...prev, dissolveDelay: dissolveDelayTimer as NodeJS.Timeout }));
@@ -87,16 +88,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
       sequencePhase: 'transition-pause'
     }));
     
-    // Brief pause before hero - ensure hero is visible
+    // Show hero immediately when dissolve completes to prevent flash
     setShowHero(true);
     
+    // Shorter pause to ensure smooth transition
     const pauseTimer = setTimeout(() => {
       setOrchestrationState((prev: AnimationOrchestrationState) => ({
         ...prev,
         sequencePhase: 'hero-revealing',
         canStartHero: true
       }));
-    }, reducedMotion ? 0 : ANIMATION_TIMING.TRANSITION_PAUSE);
+    }, reducedMotion ? 0 : 200); // Reduced from 500ms to 200ms for smoother transition
     
     setTransitionTimers((prev: TransitionTimers) => ({ ...prev, pauseDuration: pauseTimer as NodeJS.Timeout }));
   }, [reducedMotion]);
@@ -113,14 +115,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
     // Immediately show hero on error to prevent white screen
     setShowHero(true);
     
-    // Maintain sequential flow - wait for dissolve timeout, then show hero
-    setTimeout(() => {
-      setOrchestrationState((prev: AnimationOrchestrationState) => ({
-        ...prev,
-        sequencePhase: 'hero-revealing',
-        canStartHero: true
-      }));
-    }, reducedMotion ? 0 : (ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY + ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION));
+    // Skip the dissolve sequence on error for faster recovery
+    setOrchestrationState((prev: AnimationOrchestrationState) => ({
+      ...prev,
+      sequencePhase: 'hero-revealing',
+      canStartHero: true
+    }));
   }, [reducedMotion]);
 
   // Handle video ready state
@@ -133,6 +133,11 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   // Preload hero content to ensure it's ready before video ends
   useEffect(() => {
+    // Mark initial load as complete after a short delay to prevent flash
+    const initialLoadTimer = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 100);
+    
     // Preload the hero image to prevent flickering
     const img = new Image();
     img.src = "https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png";
@@ -143,6 +148,10 @@ const LandingPage: React.FC<LandingPageProps> = ({
     img.onerror = () => {
       // Even if image fails, we should still show the hero
       handleVideoReady();
+    };
+    
+    return () => {
+      clearTimeout(initialLoadTimer);
     };
   }, [handleVideoReady]);
 
@@ -172,23 +181,15 @@ const LandingPage: React.FC<LandingPageProps> = ({
         />
       )}
 
-      {/* Landing Hero Section - Always rendered but visibility controlled by opacity */}
-      <LandingHero
-        initialVisibility={!autoPlay || videoState.hasError || orchestrationState.canStartHero}
-        onCTAClick={onCTAClick}
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          showHero || !autoPlay || videoState.hasError || orchestrationState.canStartHero ? "opacity-100" : "opacity-0"
-        }`}
-        style={{ zIndex: 10 }} // Ensure hero is above fallback but below video overlay
-      />
-
-      {/* Fallback for when video is loading but hero should be ready */}
-      {autoPlay && !videoState.hasError && orchestrationState.sequencePhase === 'video-playing' && (
-        <div
-          className={`absolute inset-0 bg-black transition-opacity duration-500 ${
-            videoState.isReady ? "opacity-0" : "opacity-100"
+      {/* Landing Hero Section - Only render when ready to prevent flash */}
+      {!isInitialLoad && (
+        <LandingHero
+          initialVisibility={showHero || !autoPlay || videoState.hasError}
+          onCTAClick={onCTAClick}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            showHero || !autoPlay || videoState.hasError || orchestrationState.canStartHero ? "opacity-100" : "opacity-0"
           }`}
-          style={{ zIndex: 5 }} // Reduced z-index to prevent bleed through
+          style={{ zIndex: 10 }} // Ensure hero is above fallback but below video overlay
         />
       )}
     </div>

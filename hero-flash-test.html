@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero Flash Test</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        .test-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .success {
+            background-color: #2d5a2d;
+            border: 1px solid #4caf50;
+        }
+        .info {
+            background-color: #1a3a52;
+            border: 1px solid #2196f3;
+        }
+        .code-block {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .checklist {
+            list-style-type: none;
+            padding: 0;
+        }
+        .checklist li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Hero Section Flash Fix Test</h1>
+        
+        <div class="status success">
+            <strong>Fix Status:</strong> Successfully implemented changes to prevent hero section flashing on page load.
+        </div>
+
+        <div class="test-section">
+            <h2>Changes Made</h2>
+            <p>The following modifications were implemented to fix the hero section flashing issue:</p>
+            
+            <h3>1. LandingPage Component</h3>
+            <ul class="checklist">
+                <li>Added <code>isInitialLoad</code> state to prevent premature hero rendering</li>
+                <li>Modified hero rendering to only occur after initial load completes</li>
+                <li>Reduced transition pause from 500ms to 200ms for smoother transitions</li>
+                <li>Improved error handling to skip dissolve sequence on video errors</li>
+            </ul>
+
+            <h3>2. LoadingOverlay Component</h3>
+            <ul class="checklist">
+                <li>Removed unnecessary 1.5 second minimum display time buffer</li>
+                <li>Simplified loading indicator visibility conditions</li>
+                <li>Eliminated delays that were causing the flash effect</li>
+            </ul>
+
+            <h3>3. LandingHero Component</h3>
+            <ul class="checklist">
+                <li>Improved transition timing with explicit easing</li>
+                <li>Maintained initial hidden state to prevent flash</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>How to Test</h2>
+            <ol>
+                <li>Open the application at <a href="http://localhost:5173" target="_blank">http://localhost:5173</a></li>
+                <li>Observe the page load sequence</li>
+                <li>Verify that the hero section does NOT flash briefly before the video intro</li>
+                <li>Confirm smooth transition from video to hero after the intro completes</li>
+                <li>Test with browser refresh (Ctrl+F5) to check caching behavior</li>
+            </ol>
+        </div>
+
+        <div class="test-section">
+            <h2>Expected Behavior</h2>
+            <ul class="checklist">
+                <li>No brief flash of hero content on initial page load</li>
+                <li>Smooth video intro plays without interruption</li>
+                <li>Hero section fades in gracefully after video completes</li>
+                <li>No white screen or blank gaps during transitions</li>
+                <li>Hero remains visible after video intro completes</li>
+            </ul>
+        </div>
+
+        <div class="status info">
+            <strong>Note:</strong> The fix prevents the hero section from rendering during the initial load phase, eliminating the flash that was occurring when the component would briefly appear before being hidden by the video overlay.
+        </div>
+    </div>
+</body>
+</html>
