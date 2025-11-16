@@ -10,16 +10,16 @@ console.log('1. VIDEO_DISSOLVE_DELAY:', ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY);
 console.log('   Expected: 0, Actual:', ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY);
 console.log(ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY === 0 ? '   ✓ PASS' : '   ✗ FAIL');
 
-// Check 2: Verify VIDEO_DISSOLVE_DURATION is 0
+// Check 2: Verify VIDEO_DISSOLVE_DURATION is 300 (to prevent white flash)
 console.log('\n2. VIDEO_DISSOLVE_DURATION:', ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION);
-console.log('   Expected: 0, Actual:', ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION);
-console.log(ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION === 0 ? '   ✓ PASS' : '   ✗ FAIL');
+console.log('   Expected: 300, Actual:', ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION);
+console.log(ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION === 300 ? '   ✓ PASS' : '   ✗ FAIL');
 
-// Check 3: Verify getAnimationConfig returns 0 for videoDissolveDuration (reduced motion = false)
+// Check 3: Verify getAnimationConfig returns 300 for videoDissolveDuration (reduced motion = false)
 const configNormal = getAnimationConfig(false);
 console.log('\n3. getAnimationConfig(false).videoDissolveDuration:', configNormal.videoDissolveDuration);
-console.log('   Expected: 0, Actual:', configNormal.videoDissolveDuration);
-console.log(configNormal.videoDissolveDuration === 0 ? '   ✓ PASS' : '   ✗ FAIL');
+console.log('   Expected: 300, Actual:', configNormal.videoDissolveDuration);
+console.log(configNormal.videoDissolveDuration === 300 ? '   ✓ PASS' : '   ✗ FAIL');
 
 // Check 4: Verify getAnimationConfig returns 0 for videoDissolveDuration (reduced motion = true)
 const configReduced = getAnimationConfig(true);
@@ -37,9 +37,9 @@ console.log('\n6. getAnimationConfig(true).delays.dissolveDelay:', configReduced
 console.log('   Expected: 0, Actual:', configReduced.delays.dissolveDelay);
 console.log(configReduced.delays.dissolveDelay === 0 ? '   ✓ PASS' : '   ✗ FAIL');
 
-// Check 7: Verify CSS duration conversion
-console.log('\n7. toCSSDuration(0):', toCSSDuration(0));
-console.log('   Expected: "0s", Actual:', toCSSDuration(0));
-console.log(toCSSDuration(0) === '0s' ? '   ✓ PASS' : '   ✗ FAIL');
+// Check 7: Verify CSS duration conversion for 300ms
+console.log('\n7. toCSSDuration(300):', toCSSDuration(300));
+console.log('   Expected: "0.3s", Actual:', toCSSDuration(300));
+console.log(toCSSDuration(300) === '0.3s' ? '   ✓ PASS' : '   ✗ FAIL');
 
 console.log('\n=== Verification Complete ===');

@@ -342,7 +342,7 @@ const LoadingOverlay = ({
     dissolving: {
       opacity: 0,
       transition: {
-        duration: 0,
+        duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
         delay: 0
       }
     },
@@ -473,7 +473,9 @@ const LoadingOverlay = ({
           ...getResponsiveContainerStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded && !videoState.hasError ? '0' : '1',
-            transition: useFizzEffect ? 'opacity 0s ease-in-out' : `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
+            transition: useFizzEffect ? 'opacity 0s ease-in-out' : `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`,
+            // Ensure black background stays during transition to prevent white flash
+            backgroundColor: '#000000'
           })
         }}
       />

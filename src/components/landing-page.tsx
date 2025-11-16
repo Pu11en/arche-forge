@@ -179,10 +179,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
         <LandingHero
           initialVisibility={showHero || !autoPlay || videoState.hasError}
           onCTAClick={onCTAClick}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
+          className={`absolute inset-0 transition-opacity duration-300 ${
             showHero || !autoPlay || videoState.hasError || orchestrationState.canStartHero ? "opacity-100" : "opacity-0"
           }`}
-          style={{ zIndex: 10 }} // Ensure hero is above fallback but below video overlay
+          style={{
+            zIndex: 10, // Ensure hero is above fallback but below video overlay
+            backgroundColor: '#000000' // Black background to prevent white flash
+          }}
         />
       )}
 

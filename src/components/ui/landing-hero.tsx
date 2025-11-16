@@ -84,7 +84,10 @@ const LandingHero: React.FC<LandingHeroProps> = ({
       animate={reducedMotion ? { opacity: 1 } : (initialVisibility ? "visible" : "hidden")}
       variants={reducedMotion ? undefined : containerVariants}
       transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
-      style={style}
+      style={{
+        ...style,
+        backgroundColor: '#000000' // Ensure black background to prevent white flash
+      }}
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black z-0"></div>
