@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Play } from "lucide-react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
+import { TMLoop } from "./tm-loop";
 import {
   detectBrowser,
   getOptimalVideoFormat,
@@ -404,6 +405,61 @@ const VideoIntroOverlay = ({
       role="presentation"
       aria-label="Video introduction overlay"
     >
+      {/* TM Loop - always visible during video */}
+      <TMLoop isVisible={true} />
+
+      {/* Logo Overlay - appears at start */}
+      {videoState.transitionState === 'visible' && (
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{
+            duration: reducedMotion ? 0 : 1.2, // 1.2 seconds overlay duration
+            ease: "easeOut"
+          }}
+          onAnimationComplete={() => {
+            // Flash effect after overlay appears
+            setTimeout(() => {
+              // Play anvil sound
+              const audio = new Audio('/hammer.mp3');
+              audio.volume = 0.3;
+              audio.play().catch(e => console.warn('Audio play failed:', e));
+
+              // Logo flash
+              setTimeout(() => {
+                // Flash animation would happen here
+              }, 300); // 0.3s flash
+
+              // Fade out after total 1.2s + 0.7s = 1.9s
+              setTimeout(() => {
+                // Fade out handled by exit animation
+              }, 700); // 0.7s fade-out
+            }, 1200); // After 1.2s overlay
+          }}
+        >
+          <motion.img
+            src="https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png"
+            alt="ARCHE FORGE"
+            className="max-w-full h-auto drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+            style={{
+              width: 'clamp(240px, 50vw, 400px)',
+              height: 'auto',
+              objectFit: 'contain'
+            }}
+            animate={{
+              scale: [1, 1.1, 1], // Flash effect
+              filter: ['brightness(1)', 'brightness(1.5)', 'brightness(1)']
+            }}
+            transition={{
+              duration: reducedMotion ? 0 : 0.3, // 0.3s flash
+              delay: reducedMotion ? 0 : 1.2, // After 1.2s overlay
+              ease: "easeInOut"
+            }}
+          />
+        </motion.div>
+      )}
       {/* Video Background */}
       <motion.video
         ref={videoRef}
@@ -452,8 +508,8 @@ const VideoIntroOverlay = ({
         }}
       />
 
-      {/* Loading spinner for video loading and buffering states */}
-      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering) && (
+      {/* Loading spinner */}
+      {showLoadingIndicator && videoState.isLoading && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -470,17 +526,6 @@ const VideoIntroOverlay = ({
                 height: videoState.browserInfo?.isMobile ? '3rem' : '3rem'
               }}
             />
-            {videoState.loadingState === 'buffering' && (
-              <p
-                className="text-white mt-2"
-                style={{
-                  ...getConsistentTextStyles(),
-                  fontSize: videoState.browserInfo?.isMobile ? '0.875rem' : '0.875rem'
-                }}
-              >
-                Buffering...
-              </p>
-            )}
             {videoState.loadingState === 'loading' && (
               <p
                 className="text-white mt-2"

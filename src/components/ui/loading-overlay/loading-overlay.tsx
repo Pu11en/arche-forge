@@ -341,20 +341,9 @@ const LoadingOverlay = ({
     },
     dissolving: {
       opacity: 0,
-      filter: "blur(2px) brightness(1.2) contrast(1.1)",
-      scale: 1.02,
       transition: {
-        duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
-        ease: [0.25, 0.46, 0.45, 0.94], // Custom easing curve for fizz effect
-        delay: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY / 1000, // 0.5 second delay before starting dissolve
-        filter: {
-          duration: reducedMotion ? 0 : (ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION - 1000) / 1000,
-          ease: "easeInOut"
-        },
-        scale: {
-          duration: reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION / 1000,
-          ease: "easeInOut"
-        }
+        duration: 0,
+        delay: 0
       }
     },
     exit: {
@@ -435,10 +424,7 @@ const LoadingOverlay = ({
         ...getResponsiveStyles(),
         // Add GPU acceleration for smooth transitions
         ...getHardwareAccelerationStyles(),
-        // Add additional styles for the dissolve effect
-        ...(videoState.transitionState === 'dissolving' && useFizzEffect && !reducedMotion ? {
-          background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)',
-        } : {})
+        // Dissolve effect removed for direct cut
       }}
       variants={overlayVariants}
       initial="hidden"
@@ -492,8 +478,8 @@ const LoadingOverlay = ({
         }}
       />
 
-      {/* Loading spinner for video loading and buffering states */}
-      {showLoadingIndicator && (videoState.isLoading || videoState.isBuffering) && (
+      {/* Loading spinner */}
+      {showLoadingIndicator && videoState.isLoading && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -510,17 +496,6 @@ const LoadingOverlay = ({
                 height: videoState.browserInfo?.isMobile ? '3rem' : '3rem'
               }}
             />
-            {videoState.loadingState === 'buffering' && (
-              <p
-                className="text-white mt-2"
-                style={{
-                  ...getConsistentTextStyles(),
-                  fontSize: videoState.browserInfo?.isMobile ? '0.875rem' : '0.875rem'
-                }}
-              >
-                Buffering...
-              </p>
-            )}
             {videoState.loadingState === 'loading' && (
               <p
                 className="text-white mt-2"

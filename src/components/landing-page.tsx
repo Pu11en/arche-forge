@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { LoadingOverlay } from "./ui/loading-overlay";
 import { LandingHero } from "./ui/landing-hero";
+import { SocialFooter } from "./ui/social-footer";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { ANIMATION_TIMING, AnimationOrchestrationState, TransitionTimers } from "../lib/animation-timing";
+import { AnimationOrchestrationState, TransitionTimers } from "../lib/animation-timing";
 
 export interface LandingPageProps {
   /** Optional className for additional styling */
@@ -67,18 +68,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
       sequencePhase: 'video-completed'
     }));
     
-    // Start dissolve sequence after 0.5s delay
-    const dissolveDelayTimer = setTimeout(() => {
-      setOrchestrationState((prev: AnimationOrchestrationState) => ({
-        ...prev,
-        sequencePhase: 'video-dissolving',
-        canStartDissolve: true
-      }));
-      // Only show hero after dissolve starts to prevent flash
-      // setShowHero will be set in handleDissolveComplete
-    }, reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DELAY);
-    
-    setTransitionTimers((prev: TransitionTimers) => ({ ...prev, dissolveDelay: dissolveDelayTimer as NodeJS.Timeout }));
+    // Start dissolve sequence immediately (no delay)
+    setOrchestrationState((prev: AnimationOrchestrationState) => ({
+      ...prev,
+      sequencePhase: 'video-dissolving',
+      canStartDissolve: true
+    }));
+    // Only show hero after dissolve starts to prevent flash
+    // setShowHero will be set in handleDissolveComplete
   }, [reducedMotion]);
 
   // Handle dissolve completion - transitions to pause phase
@@ -91,16 +88,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
     // Show hero immediately when dissolve completes to prevent flash
     setShowHero(true);
     
-    // Shorter pause to ensure smooth transition
-    const pauseTimer = setTimeout(() => {
-      setOrchestrationState((prev: AnimationOrchestrationState) => ({
-        ...prev,
-        sequencePhase: 'hero-revealing',
-        canStartHero: true
-      }));
-    }, reducedMotion ? 0 : 200); // Reduced from 500ms to 200ms for smoother transition
-    
-    setTransitionTimers((prev: TransitionTimers) => ({ ...prev, pauseDuration: pauseTimer as NodeJS.Timeout }));
+    // No pause - immediate transition to hero revealing
+    setOrchestrationState((prev: AnimationOrchestrationState) => ({
+      ...prev,
+      sequencePhase: 'hero-revealing',
+      canStartHero: true
+    }));
   }, [reducedMotion]);
 
   // Handle video error - maintain sequential flow even on error
@@ -192,6 +185,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
           style={{ zIndex: 10 }} // Ensure hero is above fallback but below video overlay
         />
       )}
+
+      {/* Social Footer */}
+      <SocialFooter />
     </div>
   );
 };

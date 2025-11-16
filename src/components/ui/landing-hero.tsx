@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./button";
+import { TMLoop } from "./tm-loop";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export interface LandingHeroProps {
@@ -21,6 +22,32 @@ const LandingHero: React.FC<LandingHeroProps> = ({
   style
 }) => {
   const reducedMotion = useReducedMotion();
+
+  // Time tracking script
+  useEffect(() => {
+    const startTime = performance.now();
+
+    const button = document.getElementById("enterForgeBtn");
+    if (button) {
+      const handleClick = () => {
+        const timeSpentMs = performance.now() - startTime;
+        console.log("Time spent on landing:", timeSpentMs / 1000, "seconds");
+
+        // Optional: send to analytics
+        if ((window as any).gtag) {
+          (window as any).gtag("event", "time_to_enter_forge", {
+            value: Math.round(timeSpentMs / 1000)
+          });
+        }
+      };
+
+      button.addEventListener("click", handleClick);
+
+      return () => {
+        button.removeEventListener("click", handleClick);
+      };
+    }
+  }, []);
 
   // Animation variants for the hero section
   const containerVariants = {
@@ -65,6 +92,9 @@ const LandingHero: React.FC<LandingHeroProps> = ({
       {/* Overlay for improved text readability */}
       <div className="absolute inset-0 bg-black/40 z-10"></div>
       
+      {/* TM Loop - Subtle background phrases */}
+      <TMLoop isVisible={initialVisibility} className="z-5" />
+      
       {/* Content container */}
       <div className="relative z-20 container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center h-full text-center">
         {/* Logo */}
@@ -96,12 +126,13 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight tracking-tight"
           style={{
             fontFamily: 'Orbitron, sans-serif',
-            textShadow: '0 2px 8px rgba(0,0,0,0.8)'
+            textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+            filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.02))' // Extremely subtle glow (2%)
           }}
         >
-          Forge Your Legacy
+          Today's AI answers. We remember.
         </motion.h1>
-        
+
         {/* Subheading */}
         <motion.p
           variants={reducedMotion ? undefined : itemVariants}
@@ -112,11 +143,11 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           style={{
             fontFamily: 'Orbitron, sans-serif',
             fontWeight: '500',
-            textShadow: '0 2px 4px rgba(0,0,0,0.8)'
+            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+            filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.02))' // Extremely subtle glow (2%)
           }}
         >
-          Today's AI interactions lack soul. Ditch the robotic scripts that break the connection. 
-          Our goal is to mirror your identity, making AI feel less like a tool and more like you.
+          SoulPrint makes AI feel less like a tool and more like you.
         </motion.p>
         
         {/* CTA Button */}
@@ -128,13 +159,32 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           className="mt-4"
         >
           <Button
+            id="enterForgeBtn"
             size="xl"
             variant="linkedin"
             onClick={onCTAClick}
-            className="min-h-[44px] min-w-[44px] text-lg sm:text-xl px-8 sm:px-12 py-3 sm:py-4"
-            aria-label="Get started with ZTA"
+            className="min-h-[44px] min-w-[44px] text-lg sm:text-xl px-8 sm:px-12 py-3 sm:py-4 hover:animate-pulse transition-all duration-300 group"
+            style={{
+              backgroundColor: '#ffffff',
+              color: '#000000',
+              border: 'none',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+            }}
+            onMouseEnter={(e) => {
+              const arrow = e.currentTarget.querySelector('.arrow') as HTMLElement;
+              if (arrow) {
+                arrow.style.transform = 'translateX(4px)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              const arrow = e.currentTarget.querySelector('.arrow') as HTMLElement;
+              if (arrow) {
+                arrow.style.transform = 'translateX(0px)';
+              }
+            }}
+            aria-label="Enter the Forge"
           >
-            ZTA
+            <span className="arrow inline-block transition-transform duration-300">ENTER THE FORGE →</span>
           </Button>
         </motion.div>
       </div>
