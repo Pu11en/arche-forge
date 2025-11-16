@@ -27,7 +27,7 @@ import {
 
 const LoadingOverlay = ({
   isVisible = true,
-  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763122736/kling_20251114_Image_to_Video_an_animate_5015_2_d1ayqf.mp4",
+  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   videoUrls = {},
   fallbackBgColor = "bg-black",
   onVideoLoaded,
@@ -312,7 +312,7 @@ const LoadingOverlay = ({
 
   useEffect(() => {
     if (videoState.transitionState === 'dissolving') {
-      const duration = reducedMotion ? 0 : (useFizzEffect ? ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION : 1500);
+      const duration = reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION;
       const timer = setTimeout(() => {
         setVideoState(prev => ({
           ...prev,
@@ -324,7 +324,7 @@ const LoadingOverlay = ({
 
       return () => clearTimeout(timer);
     }
-  }, [videoState.transitionState, reducedMotion, onTransitionComplete, useFizzEffect]);
+  }, [videoState.transitionState, reducedMotion, onTransitionComplete]);
 
   // Animation variants as specified in architecture
   const overlayVariants = {

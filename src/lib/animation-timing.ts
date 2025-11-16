@@ -5,8 +5,8 @@
 
 // Animation timing constants as specified in the architecture
 export const ANIMATION_TIMING = {
-  VIDEO_DISSOLVE_DELAY: 0,    // 0s delay before dissolve starts
-  VIDEO_DISSOLVE_DURATION: 0, // 0s dissolve animation
+  VIDEO_DISSOLVE_DELAY: 0,      // 0ms delay before dissolve starts
+  VIDEO_DISSOLVE_DURATION: 0,   // 0s dissolve animation
   TRANSITION_PAUSE: 500,        // 0.5s gap before hero
   HERO_FADE_DURATION: 3000,     // 3s hero fade-in
   HERO_STAGGER_DELAY: 200,      // 0.2s stagger between elements

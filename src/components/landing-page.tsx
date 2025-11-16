@@ -19,7 +19,7 @@ export interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({
   className = "",
   onCTAClick,
-  videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   autoPlay = true
 }) => {
   const [videoState, setVideoState] = useState<{
