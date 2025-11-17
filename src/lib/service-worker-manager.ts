@@ -85,7 +85,7 @@ class ServiceWorkerManager {
     // Update found
     this.registration.addEventListener('updatefound', () => {
       console.log('Service Worker: Update found');
-      const newWorker = this.registration.installing;
+      const newWorker = this.registration?.installing;
       
       if (newWorker) {
         newWorker.addEventListener('statechange', () => {
@@ -206,7 +206,8 @@ class ServiceWorkerManager {
   }
 
   private async sendMessage(type: string, data?: any): Promise<any> {
-    if (!navigator.serviceWorker.controller) {
+    const controller = navigator.serviceWorker.controller;
+    if (!controller) {
       return null;
     }
 
@@ -217,7 +218,7 @@ class ServiceWorkerManager {
         resolve(event.data.data);
       };
       
-      navigator.serviceWorker.controller.postMessage(
+      controller.postMessage(
         { type, data },
         [channel.port2]
       );
@@ -258,4 +259,3 @@ class ServiceWorkerManager {
 }
 
 export { ServiceWorkerManager };
-export type { ServiceWorkerConfig, CacheInfo, ServiceWorkerStatus };

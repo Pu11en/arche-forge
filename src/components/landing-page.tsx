@@ -10,9 +10,6 @@ import { PerformanceOptimizer } from "../lib/performance-optimizer";
 import { useResourceCleanup } from "../hooks/useResourceCleanup";
 import { useServiceWorker } from "../hooks/useServiceWorker";
 import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
-import { useReducedMotion } from "../hooks/useReducedMotion";
-import { AnimationOrchestrationState } from "../lib/animation-timing";
-
 export interface LandingPageProps {
   className?: string;
   onCTAClick?: () => void;
@@ -129,8 +126,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
   });
 
   const [showHero, setShowHero] = useState(false);
-
-  const reducedMotion = useReducedMotion();
 
   // Enhanced video completion handler
   const handleVideoComplete = useCallback(() => {

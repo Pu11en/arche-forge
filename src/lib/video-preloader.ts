@@ -195,4 +195,3 @@ class VideoPreloader {
 }
 
 export { VideoPreloader };
-export type { VideoSource, VideoPreloaderConfig };

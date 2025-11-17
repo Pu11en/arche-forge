@@ -170,7 +170,6 @@ class VideoErrorHandler {
   }
 
   private async tryAlternativeSource(context: VideoErrorContext): Promise<boolean> {
-    const currentType = this.getVideoType(context.sourceUrl);
     const alternativeSources = this.getAlternativeSources(context.sourceUrl);
 
     for (const source of alternativeSources) {
@@ -254,16 +253,6 @@ class VideoErrorHandler {
     return true;
   }
 
-  private getVideoType(url: string): string {
-    const extension = url.split('.').pop()?.toLowerCase();
-    switch (extension) {
-      case 'mp4': return 'video/mp4';
-      case 'webm': return 'video/webm';
-      case 'ogg': return 'video/ogg';
-      default: return 'video/mp4';
-    }
-  }
-
   private getAlternativeSources(currentUrl: string): Array<{ url: string; type: string }> {
     const baseUrl = currentUrl.replace(/\.(mp4|webm|ogg)$/, '');
     return [
@@ -281,14 +270,14 @@ class VideoErrorHandler {
   }
 
   private logError(context: VideoErrorContext): void {
-    this.errorLog.push({
+    this.errorLog.push(context);
+
+    console.error('Video Error:', {
       ...context,
       timestamp: Date.now(),
       userAgent: navigator.userAgent,
       networkSpeed: (navigator as any).connection?.downlink || 'unknown'
     });
-
-    console.error('Video Error:', context);
   }
 
   private delay(ms: number): Promise<void> {
@@ -306,4 +295,3 @@ class VideoErrorHandler {
 }
 
 export { VideoErrorHandler };
-export type { VideoErrorContext, VideoErrorHandlerConfig };
