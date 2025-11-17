@@ -26,7 +26,7 @@ import {
 
 const LoadingOverlay = ({
   isVisible = true,
-  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
+  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
   videoUrls = {},
   fallbackBgColor = "bg-black",
   onVideoLoaded,

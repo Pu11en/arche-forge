@@ -1,18 +1,41 @@
+import { useState } from "react";
 import { VideoSequence } from "./components/ui/video-sequence";
+import { LoadingOverlay } from "./components/ui/loading-overlay/loading-overlay";
 import { SocialMediaIcons } from "./components/ui/social-media-icons";
 
 function App() {
+  // State to control the visibility of components
+  const [showLoadingOverlay, setShowLoadingOverlay] = useState(true);
+  
   // Video URLs
-  const introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4";
-  const loopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1762222741/1103_1_zdmn3a.mp4";
+  const introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4";
+  const loopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4";
+
+  // Handle the completion of the loading overlay transition
+  const handleTransitionComplete = () => {
+    console.log('[App] Loading overlay transition completed, showing VideoSequence');
+    setShowLoadingOverlay(false);
+  };
 
   return (
     <div className="App relative">
-      {/* Video Sequence - plays intro once, then loops the bull video */}
-      <VideoSequence
-        introVideoUrl={introVideoUrl}
-        loopVideoUrl={loopVideoUrl}
+      {/* Loading Overlay - shows first with intro video */}
+      <LoadingOverlay
+        isVisible={showLoadingOverlay}
+        videoUrl={introVideoUrl}
+        onTransitionComplete={handleTransitionComplete}
+        attemptAutoplay={true}
+        showPlayButton={true}
+        playButtonText="Play to Continue"
       />
+
+      {/* Video Sequence - shows after loading overlay completes */}
+      <div className={`transition-opacity duration-1000 ${showLoadingOverlay ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <VideoSequence
+          introVideoUrl={introVideoUrl}
+          loopVideoUrl={loopVideoUrl}
+        />
+      </div>
       
       {/* Content Overlay */}
       <div className="relative z-20 container mx-auto py-20 lg:py-32 flex items-center justify-center flex-col gap-3 min-h-screen">
