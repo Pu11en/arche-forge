@@ -10,36 +10,24 @@ import { PerformanceOptimizer } from "../lib/performance-optimizer";
 import { useResourceCleanup } from "../hooks/useResourceCleanup";
 import { useServiceWorker } from "../hooks/useServiceWorker";
 import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
-import { detectBrowser } from "../lib/browser-detection";
 
 export interface LandingPageProps {
   className?: string;
   onCTAClick?: () => void;
-  videoUrl?: string;
-  desktopVideoUrl?: string;
-  mobileVideoUrl?: string;
+  introVideoUrl?: string;
+  desktopBackgroundVideoUrl?: string;
+  mobileBackgroundVideoUrl?: string;
   autoPlay?: boolean;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({
   className = "",
   onCTAClick,
-  videoUrl,
-  desktopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
-  mobileVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
+  introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
+  desktopBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
+  mobileBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4",
   autoPlay = true
 }) => {
-  // Determine the appropriate video URL based on device
-  const selectedVideoUrl = useState<string>(() => {
-    // If videoUrl is provided, use it for backward compatibility
-    if (videoUrl) {
-      return videoUrl;
-    }
-    
-    // Otherwise, use device-specific URLs
-    const browser = detectBrowser();
-    return browser.isMobile ? mobileVideoUrl : desktopVideoUrl;
-  })[0];
   // Initialize core systems
   const [analytics] = useState(() => new ForgeAnalytics({
     enableGoogleAnalytics: true,
@@ -55,16 +43,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
     networkThresholds: { slow: 1.5, fast: 5.0 },
     deviceProfiles: {
       mobile: [
-        { src: selectedVideoUrl.replace('.mp4', '-mobile.mp4'), type: 'video/mp4', quality: 'low' },
-        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' }
+        { src: introVideoUrl.replace('.mp4', '-mobile.mp4'), type: 'video/mp4', quality: 'low' },
+        { src: introVideoUrl, type: 'video/mp4', quality: 'medium' }
       ],
       tablet: [
-        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' },
-        { src: selectedVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' }
+        { src: introVideoUrl, type: 'video/mp4', quality: 'medium' },
+        { src: introVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' }
       ],
       desktop: [
-        { src: selectedVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' },
-        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' }
+        { src: introVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' },
+        { src: introVideoUrl, type: 'video/mp4', quality: 'medium' }
       ]
     }
   }));
@@ -79,8 +67,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
       desktop: 'https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.jpg'
     },
     fallbackVideoSources: {
-      low: 'https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4',
-      medium: selectedVideoUrl
+      low: mobileBackgroundVideoUrl,
+      medium: introVideoUrl
     }
   }));
 
@@ -162,7 +150,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       const recovered = await videoErrorHandler.handleVideoError({
         videoElement,
         error,
-        sourceUrl: selectedVideoUrl,
+        sourceUrl: introVideoUrl,
         attempt: 1,
         maxAttempts: 3,
         fallbackStrategy: 'image-fallback'
@@ -173,7 +161,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
         analytics.trackEvent('videoErrorFatal', { error: error.message });
       }
     }
-  }, [analytics, videoErrorHandler, videoUrl]);
+  }, [analytics, videoErrorHandler, introVideoUrl]);
 
   // Enhanced CTA click handler
   const handleCTAClick = useCallback(() => {
@@ -188,7 +176,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     
     // Preload video if service worker is ready
     if (swStatus.activated && autoPlay) {
-      preloadVideo(selectedVideoUrl);
+      preloadVideo(introVideoUrl);
     }
   }, [videoPreloader, swStatus.activated, autoPlay, preloadVideo]);
 
@@ -220,7 +208,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       {!videoState.hasError && (
         <LoadingOverlay
           isVisible={true}
-          videoUrl={selectedVideoUrl}
+          videoUrl={introVideoUrl}
           onVideoComplete={handleVideoComplete}
           onVideoError={(error) => handleVideoError(error || new Error('Unknown video error'))}
           attemptAutoplay={autoPlay}
@@ -232,6 +220,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
       <LandingHero
         initialVisibility={showHero || !autoPlay || videoState.hasError}
         onCTAClick={handleCTAClick}
+        desktopVideoUrl={desktopBackgroundVideoUrl}
+        mobileVideoUrl={mobileBackgroundVideoUrl}
         className={`absolute inset-0 transition-opacity duration-300 ${
           showHero || !autoPlay || videoState.hasError ? "opacity-100" : "opacity-0"
         }`}
