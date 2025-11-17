@@ -92,14 +92,14 @@ const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
       const overlayTimer = setTimeout(() => {
         logger.warn('VideoIntro: Autoplay fallback triggered - showing continue overlay');
         setShowContinueOverlay(true);
-      }, 2000); // Show after 2 seconds
+      }, 1000); // Show after 1 second - faster user control
 
       // Show skip button immediately if video takes too long to load
       const loadingTimeout = setTimeout(() => {
         if (isLoading) {
           setShowContinueOverlay(true);
         }
-      }, 1500); // Show skip option after 1.5 seconds of loading
+      }, 500); // Show skip option after 0.5 seconds - immediate feedback
 
       video.addEventListener('ended', handleVideoEnd);
       video.addEventListener('error', handleVideoError);
@@ -148,10 +148,20 @@ const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden bg-black">
+    <div
+      className="fixed inset-0 w-full h-full overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f0f 100%)'
+      }}
+    >
       {/* Loading spinner and progress */}
       {isLoading && !videoError && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-black">
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center z-30"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f0f 100%)'
+          }}
+        >
           <div className="relative">
             {/* Spinning loader */}
             <div className="w-16 h-16 border-4 border-gray-700 border-t-white rounded-full animate-spin"></div>
@@ -180,7 +190,12 @@ const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
 
       {/* Error message */}
       {videoError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black z-20">
+        <div
+          className="absolute inset-0 flex items-center justify-center z-20"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f0f 100%)'
+          }}
+        >
           <div className="text-center px-4">
             <p className="text-white text-xl mb-4">Unable to load video</p>
             <p className="text-gray-400 text-sm mb-6">Click below to continue to the site</p>
@@ -191,7 +206,10 @@ const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
       {/* Click to continue overlay */}
       {showContinueOverlay && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer z-20"
+          className="absolute inset-0 flex items-center justify-center cursor-pointer z-20"
+          style={{
+            background: 'rgba(0, 0, 0, 0.7)' // Semi-transparent overlay for better button visibility
+          }}
           onClick={handleContinueClick}
         >
           <div className="text-center px-4">

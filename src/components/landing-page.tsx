@@ -96,13 +96,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setShowVideoIntro(false);
   };
 
-  // Add timeout fallback for video intro (5 seconds)
+  // Add timeout fallback for video intro (2 seconds)
   useEffect(() => {
     const timer = setTimeout(() => {
       if (showVideoIntro) {
         setShowVideoIntro(false);
       }
-    }, 5000); // 5 seconds timeout
+    }, 2000); // 2 seconds timeout - faster content access
 
     return () => clearTimeout(timer);
   }, [showVideoIntro]);
@@ -132,7 +132,12 @@ const LandingPage: React.FC<LandingPageProps> = ({
   }, []);
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden ${className}`}>
+    <div
+      className={`relative w-full h-screen overflow-hidden ${className}`}
+      style={{
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f0f 100%)'
+      }}
+    >
       {/* Video Intro - shows first, then transitions to main content */}
       {showVideoIntro && (
         <VideoIntro onVideoEnd={handleVideoEnd} />
