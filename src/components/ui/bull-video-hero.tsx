@@ -27,17 +27,26 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
 
   // Handle video events
   const handleVideoCanPlay = useCallback(() => {
+    console.log('BullVideoHero: Video can play');
     setVideoLoaded(true);
   }, []);
 
   const handleVideoError = useCallback(() => {
+    console.error('BullVideoHero: Video failed to load');
     setVideoError(true);
-    console.error('Bull video failed to load');
   }, []);
+
+  // Debug logging for BullVideoHero state
+  console.log('BullVideoHero render state:', {
+    videoLoaded,
+    videoError,
+    videoUrl,
+    className
+  });
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden ${className}`}
+      className={`absolute inset-0 w-full h-full overflow-hidden ${className}`}
       style={{
         backgroundColor: '#000000' // Black background to prevent white flash
       }}
@@ -55,7 +64,9 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           onCanPlay={handleVideoCanPlay}
           onError={handleVideoError}
           style={{
-            objectFit: 'cover'
+            objectFit: 'cover',
+            width: '100vw',
+            height: '100vh'
           }}
         >
           <source src={videoUrl} type="video/mp4" />

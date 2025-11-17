@@ -362,12 +362,24 @@ function Hero() {
             </div>
           </h1>
           
-          {/* Summary paragraph with added margin-bottom to move it down */}
+          {/* Hero Message - Two lines of text with glow effect */}
           <div className="max-w-3xl mx-auto mb-6">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
-              Today's AI interactions lack soul.<br className="hidden sm:block" />
-              Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
-              your identity, making AI feel less like a tool and more like you.
+            <p className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight tracking-tight"
+               style={{
+                 fontFamily: 'Orbitron, sans-serif',
+                 textShadow: '0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.3)',
+                 filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.4))'
+               }}>
+              Today's AI answers. We remember.
+            </p>
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white leading-relaxed"
+               style={{
+                 fontFamily: 'Orbitron, sans-serif',
+                 fontWeight: '500',
+                 textShadow: '0 2px 4px rgba(0,0,0,0.8), 0 0 15px rgba(255,255,255,0.25)',
+                 filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.3))'
+               }}>
+              SoulPrint makes AI feel less like a tool and more like you.
             </p>
           </div>
         </div>

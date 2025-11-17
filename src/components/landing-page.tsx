@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { BullVideoHero } from "./ui/bull-video-hero";
+import { HeroText } from "./ui/hero-text";
+import { TMLoop } from "./ui/tm-loop";
 import { LoadingOverlay } from "./ui/loading-overlay";
+import { SocialFooter } from "./ui/social-footer";
 import { ForgeAnalytics } from "../lib/analytics-framework";
 import { VideoPreloader } from "../lib/video-preloader";
 import { VideoErrorHandler } from "../lib/video-error-handler";
@@ -128,14 +131,21 @@ const LandingPage: React.FC<LandingPageProps> = ({
   });
 
   const [showHero, setShowHero] = useState(false);
+  const [showHeroText, setShowHeroText] = useState(false);
 
   // Enhanced video completion handler
   const handleVideoComplete = useCallback(() => {
+    console.log('LandingPage: Video completed, showing hero');
     analytics.trackVideoCompletion(30);
     setVideoState(prev => ({ ...prev, isCompleted: true, isPlaying: false }));
     
-    // Trigger hero reveal
-    setTimeout(() => setShowHero(true), 300);
+    // Show hero section immediately after intro video completes
+    setShowHero(true);
+    
+    // Show hero text after 1-2 seconds delay as specified
+    setTimeout(() => {
+      setShowHeroText(true);
+    }, 1500);
   }, [analytics]);
 
   // Enhanced video error handler
@@ -169,7 +179,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
     if (swStatus.activated && autoPlay) {
       preloadVideo(introVideoUrl);
     }
-  }, [videoPreloader, swStatus.activated, autoPlay, preloadVideo]);
+    
+    // Add fallback to show hero after 5 seconds if video doesn't complete
+    const fallbackTimer = setTimeout(() => {
+      if (!showHero && !videoState.isCompleted) {
+        console.log('LandingPage: Fallback timer triggered, showing hero');
+        setShowHero(true);
+        setVideoState(prev => ({ ...prev, isCompleted: true }));
+      }
+    }, 5000);
+    
+    return () => clearTimeout(fallbackTimer);
+  }, [videoPreloader, swStatus.activated, autoPlay, preloadVideo, showHero, videoState.isCompleted]);
 
   // Performance monitoring
   useEffect(() => {
@@ -193,10 +214,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
     };
   }, [analytics, memoryManager, performanceOptimizer]);
 
+  // Debug logging to identify the issue
+  console.log('LandingPage render state:', {
+    showHero,
+    autoPlay,
+    videoState,
+    isOnline,
+    swStatus
+  });
+
   return (
     <div className={`relative w-full h-screen overflow-hidden ${className}`}>
-      {/* Video Intro Overlay */}
-      {/* Intro Video Overlay - plays once */}
+      {/* Video Intro Overlay - plays once and covers everything */}
       {!videoState.hasError && !videoState.isCompleted && (
         <LoadingOverlay
           isVisible={true}
@@ -208,14 +237,28 @@ const LandingPage: React.FC<LandingPageProps> = ({
         />
       )}
 
-      {/* Bull Video Hero - loops continuously after intro */}
-      <BullVideoHero
-        desktopVideoUrl={desktopBackgroundVideoUrl}
-        mobileVideoUrl={mobileBackgroundVideoUrl}
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          showHero || !autoPlay || videoState.hasError ? "opacity-100" : "opacity-0"
-        }`}
+      {/* Bull Video Hero - loops continuously in background, visible after intro video */}
+      {showHero && (
+        <BullVideoHero
+          desktopVideoUrl={desktopBackgroundVideoUrl}
+          mobileVideoUrl={mobileBackgroundVideoUrl}
+          className="absolute inset-0"
+        />
+      )}
+
+      {/* TM Loop - visible with hero section, cycling at low opacity */}
+      {showHero && (
+        <TMLoop isVisible={true} className="absolute inset-0" />
+      )}
+
+      {/* Hero Text - appears after 1-2 seconds delay when hero is visible */}
+      <HeroText
+        isVisible={showHeroText || !autoPlay || videoState.hasError}
+        className="absolute inset-0"
       />
+
+      {/* Social Footer - always visible */}
+      <SocialFooter />
 
       {/* Offline Indicator */}
       {!isOnline && (

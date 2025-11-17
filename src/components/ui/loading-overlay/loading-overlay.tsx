@@ -149,6 +149,7 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoCanPlay = useCallback(() => {
+    console.log('LoadingOverlay: Video can play');
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
@@ -175,6 +176,7 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoError = useCallback((event: React.SyntheticEvent<HTMLVideoElement>) => {
+    console.error('LoadingOverlay: Video error:', event);
     setVideoState(prev => ({
       ...prev,
       hasError: true,
@@ -228,16 +230,28 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoEnded = useCallback(() => {
+    console.log('LoadingOverlay: Video ended');
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
-      playbackState: 'completed'
+      playbackState: 'completed',
+      transitionState: 'dissolving' // Start dissolving immediately when video ends
     }));
     
-    // Don't trigger completion immediately - wait for orchestration
-    // The parent component will handle the dissolve timing
+    // Trigger completion immediately when video ends
+    // The parent will handle showing the main content
     onVideoComplete?.();
-  }, [onVideoComplete, useFizzEffect]);
+    
+    // Auto-transition to complete state after dissolve duration
+    const dissolveDuration = reducedMotion ? 0 : ANIMATION_TIMING.VIDEO_DISSOLVE_DURATION;
+    setTimeout(() => {
+      setVideoState(prev => ({
+        ...prev,
+        transitionState: 'complete',
+        playbackState: 'hidden'
+      }));
+    }, dissolveDuration);
+  }, [onVideoComplete, reducedMotion]);
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
@@ -271,6 +285,7 @@ const LoadingOverlay = ({
       const playVideo = async () => {
         try {
           await video.play();
+          console.log('LoadingOverlay: Video autoplay started');
           setVideoState(prev => ({
             ...prev,
             isPlaying: true,
@@ -292,6 +307,18 @@ const LoadingOverlay = ({
       }
     }
   }, [isVisible, videoState.isLoaded, hasMinDisplayTimeElapsed.current, videoState.autoplayAttempted, attemptAutoplay]);
+
+  // Add fallback to complete video if it doesn't play after 3 seconds
+  useEffect(() => {
+    if (isVisible && attemptAutoplay && !videoState.isPlaying && !videoState.hasError) {
+      const fallbackTimer = setTimeout(() => {
+        console.log('LoadingOverlay: Fallback timer triggered, completing video');
+        onVideoComplete?.();
+      }, 3000);
+      
+      return () => clearTimeout(fallbackTimer);
+    }
+  }, [isVisible, attemptAutoplay, videoState.isPlaying, videoState.hasError, onVideoComplete]);
 
   // Set up event listeners with cross-browser compatibility
   useEffect(() => {
@@ -402,7 +429,10 @@ const LoadingOverlay = ({
 
   // Don't return null immediately when transition is complete to prevent white screen
   // Instead, keep the component but make it fully transparent
-  if (!isVisible) return null;
+  if (!isVisible) {
+    console.log('LoadingOverlay: Not visible, returning null');
+    return null;
+  }
 
   // Get safe z-index value
   const safeZIndex = getSafeZIndex();
@@ -492,15 +522,32 @@ const LoadingOverlay = ({
     paddingLeft: 'env(safe-area-inset-left, 0)'
   });
 
+  // Debug logging for overlay state
+  console.log('LoadingOverlay render state:', {
+    isVisible,
+    videoState,
+    orchestrationState,
+    animateState: videoState.transitionState === 'complete' ? 'exit' :
+      orchestrationState?.sequencePhase === 'video-dissolving' ? 'dissolving' :
+      videoState.transitionState === 'dissolving' ? 'dissolving' :
+      'visible'
+  });
+
   return (
     <motion.div
       ref={containerRef}
       className={className}
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: 9999,
+        backgroundColor: '#000',
         ...getResponsiveStyles(),
         // Add GPU acceleration for smooth transitions
         ...getHardwareAccelerationStyles(),
-        // Dissolve effect removed for direct cut
       }}
       variants={overlayVariants}
       initial="hidden"
@@ -518,6 +565,12 @@ const LoadingOverlay = ({
       <video
         ref={videoRef}
         style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          objectFit: 'cover',
           ...getResponsiveVideoStyles(),
           ...getPrefixedStyles({
             opacity: videoState.isLoaded ? '1' : '0',
@@ -529,7 +582,7 @@ const LoadingOverlay = ({
         autoPlay={attemptAutoplay && !videoState.needsUserInteraction}
         muted
         playsInline
-        preload={videoState.browserInfo?.isMobile ? "metadata" : "auto"} // Optimize preload for mobile
+        preload="auto" // Ensure full preload for immediate playback
         loop={false}
         // Add device-specific performance attributes
         x-webkit-airplay="allow"

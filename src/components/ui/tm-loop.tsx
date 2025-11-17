@@ -8,62 +8,72 @@ interface TMPhrase {
 }
 
 const TM_PHRASES: TMPhrase[] = [
-  { id: 1, text: "Forge Your Digital Legacy" },
-  { id: 2, text: "Where AI Meets Humanity" },
-  { id: 3, text: "Crafting Tomorrow's Intelligence" },
-  { id: 4, text: "SoulPrint: Your AI Echo" },
-  { id: 5, text: "Remember the Human Touch" },
-  { id: 6, text: "AI That's Truly You" },
-  { id: 7, text: "Beyond Code, Beyond Algorithms" },
-  { id: 8, text: "Personalized AI Evolution" },
-  { id: 9, text: "The Forge of Consciousness" },
-  { id: 10, text: "Echoes of Your Digital Self" },
-  { id: 11, text: "AI That Remembers" },
-  { id: 12, text: "Crafting Intelligence with Soul" },
-  { id: 13, text: "Your AI, Your Reflection" },
-  { id: 14, text: "The Human-AI Convergence" },
-  { id: 15, text: "Soulful Artificial Minds" },
-  { id: 16, text: "Digital Identity Forged" },
-  { id: 17, text: "AI Beyond Imitation" },
-  { id: 18, text: "Personal Evolution Engine" },
-  { id: 19, text: "The Conscious AI Forge" },
-  { id: 20, text: "Your Digital Soul Companion" },
-  { id: 21, text: "AI That Understands Humanity" },
-  { id: 22, text: "Forging Digital Consciousness" },
-  { id: 23, text: "SoulPrint Revolution" },
-  { id: 24, text: "Human-Centric AI Design" },
-  { id: 25, text: "The Memory of Machines" },
-  { id: 26, text: "AI That Feels Human" },
-  { id: 27, text: "Digital Soul Crafting" },
-  { id: 28, text: "Consciousness in Code" },
-  { id: 29, text: "Your AI Reflection" },
-  { id: 30, text: "The Forge of Digital Souls" },
-  { id: 31, text: "AI Personalization Mastery" },
-  { id: 32, text: "Human-AI Symbiosis" },
-  { id: 33, text: "Digital Identity Evolution" },
-  { id: 34, text: "Soulful Technology" },
-  { id: 35, text: "AI That Remembers You" },
-  { id: 36, text: "The Conscious Forge" },
-  { id: 37, text: "Digital Soul Engineering" },
-  { id: 38, text: "AI Humanity Bridge" },
-  { id: 39, text: "Your Personal AI Forge" },
-  { id: 40, text: "Conscious Digital Crafting" },
-  { id: 41, text: "SoulPrint Innovation" },
-  { id: 42, text: "Human-AI Integration" },
-  { id: 43, text: "Digital Soul Preservation" },
-  { id: 44, text: "AI Personal Evolution" },
-  { id: 45, text: "The Soulful Algorithm" },
-  { id: 46, text: "Conscious AI Creation" },
-  { id: 47, text: "Your Digital Legacy Builder" },
-  { id: 48, text: "AI Soul Crafting" },
-  { id: 49, text: "Human Memory in AI" },
-  { id: 50, text: "The Forge of Digital Humanity" }
+  { id: 1, text: "Bye-Bye Bitches™" },
+  { id: 2, text: "YFKI™" },
+  { id: 3, text: "Let the Tags Testify™" },
+  { id: 4, text: "Tag Your Truth™" },
+  { id: 5, text: "Tag Your Trauma™" },
+  { id: 6, text: "Tag Your Triumph™" },
+  { id: 7, text: "Tag Your Temptation™" },
+  { id: 8, text: "Tag Your Taboo™" },
+  { id: 9, text: "Tag Your Transcendence™" },
+  { id: 10, text: "Tag Your Transformation™" },
+  { id: 11, text: "Tag Your Technology™" },
+  { id: 12, text: "Tag Your Tomorrow™" },
+  { id: 13, text: "Tag Your Tenacity™" },
+  { id: 14, text: "Tag Your Talent™" },
+  { id: 15, text: "Tag Your Target™" },
+  { id: 16, text: "Tag Your Territory™" },
+  { id: 17, text: "Tag Your Temerity™" },
+  { id: 18, text: "Tag Your Testimony™" },
+  { id: 19, text: "Tag Your Thesis™" },
+  { id: 20, text: "Tag Your Theory™" },
+  { id: 21, text: "Tag Your Therapy™" },
+  { id: 22, text: "Tag Your Thirst™" },
+  { id: 23, text: "Tag Your Thought™" },
+  { id: 24, text: "Tag Your Thrill™" },
+  { id: 25, text: "Tag Your Threat™" },
+  { id: 26, text: "Tag Your Threshold™" },
+  { id: 27, text: "Tag Your Throe™" },
+  { id: 28, text: "Tag Your Time™" },
+  { id: 29, text: "Tag Your Title™" },
+  { id: 30, text: "Tag Your Token™" },
+  { id: 31, text: "Tag Your Torment™" },
+  { id: 32, text: "Tag Your Torsion™" },
+  { id: 33, text: "Tag Your Totem™" },
+  { id: 34, text: "Tag Your Touch™" },
+  { id: 35, text: "Tag Your Traction™" },
+  { id: 36, text: "Tag Your Trade™" },
+  { id: 37, text: "Tag Your Tradition™" },
+  { id: 38, text: "Tag Your Tragedy™" },
+  { id: 39, text: "Tag Your Trail™" },
+  { id: 40, text: "Tag Your Trait™" },
+  { id: 41, text: "Tag Your Transaction™" },
+  { id: 42, text: "Tag Your Transgression™" },
+  { id: 43, text: "Tag Your Transit™" },
+  { id: 44, text: "Tag Your Transition™" },
+  { id: 45, text: "Tag Your Translation™" },
+  { id: 46, text: "Tag Your Transmission™" },
+  { id: 47, text: "Tag Your Transport™" },
+  { id: 48, text: "Tag Your Trauma™" },
+  { id: 49, text: "Tag Your Travel™" },
+  { id: 50, text: "Tag Your Tread™" },
+  { id: 51, text: "Tag Your Treatment™" },
+  { id: 52, text: "Tag Your Tremor™" },
+  { id: 53, text: "Tag Your Trend™" },
+  { id: 54, text: "Tag Your Trial™" },
+  { id: 55, text: "Tag Your Tribe™" },
+  { id: 56, text: "Tag Your Truce™" },
+  { id: 57, text: "Tag Your Trust™" },
+  { id: 58, text: "Tag Your Truth™" },
+  { id: 59, text: "Tag Your Tweak™" },
+  { id: 60, text: "Tag Your Tyranny™" }
 ];
 
 // Timing constants for the TM loop
-const TRANSITION_DURATION = 1.75; // seconds (average of 1.5-2s range)
-const DISPLAY_DURATION = 1.75; // seconds
-const TOTAL_CYCLE = TRANSITION_DURATION + DISPLAY_DURATION;
+const TRANSITION_DURATION = 1.0; // seconds (fade in/out)
+const DISPLAY_DURATION = 1.0; // seconds (display time)
+const TOTAL_CYCLE = TRANSITION_DURATION + DISPLAY_DURATION; // 2 seconds total
 
 export interface TMLoopProps {
   /** Whether the TM loop should be visible */
@@ -96,30 +106,31 @@ const TMLoop: React.FC<TMLoopProps> = ({
 
   return (
     <div
-      className={`absolute inset-0 pointer-events-none z-5 ${className}`}
+      className={`absolute top-0 left-0 right-0 pointer-events-none z-10 ${className}`}
       style={{
-        opacity: 0.15, // Low opacity as top layer
+        paddingTop: '2rem', // Position at top of screen
+        opacity: 0.15, // Low opacity as specified
       }}
     >
-      <div className="flex items-center justify-center h-full">
+      <div className="flex justify-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentPhrase.id}
-            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.95 }}
-            animate={reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 1.05 }}
+            initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={reducedMotion ? { opacity: 1 } : { opacity: 1 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0 }}
             transition={{
               duration: reducedMotion ? 0 : TRANSITION_DURATION,
-              ease: [0.25, 0.46, 0.45, 0.94] // Custom easing
+              ease: "easeInOut"
             }}
             className="text-center"
           >
             <p
-              className="text-white font-medium text-lg sm:text-xl md:text-2xl tracking-wide"
+              className="text-white font-medium text-sm sm:text-base tracking-wide"
               style={{
                 fontFamily: 'Orbitron, sans-serif',
                 textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-                maxWidth: '600px',
+                maxWidth: '90vw',
                 lineHeight: '1.4'
               }}
             >
