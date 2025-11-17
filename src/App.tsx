@@ -1,73 +1,38 @@
-import { useState } from "react";
-import { VideoSequence } from "./components/ui/video-sequence";
-import { LoadingOverlay } from "./components/ui/loading-overlay/loading-overlay";
-import { SocialMediaIcons } from "./components/ui/social-media-icons";
+import { useState, useEffect } from "react";
+import { Hero } from "./components/ui/animated-hero";
+import { LoadingOverlay } from "./components/ui/loading-overlay";
 
 function App() {
-  // State to control the visibility of components
   const [showLoadingOverlay, setShowLoadingOverlay] = useState(true);
-  
-  // Video URLs
-  const introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4";
-  const loopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4";
 
-  // Handle the completion of the loading overlay transition
   const handleTransitionComplete = () => {
-    console.log('[App] Loading overlay transition completed, showing VideoSequence');
     setShowLoadingOverlay(false);
+  };
+
+  const handleVideoError = (error?: Error) => {
+    console.error("Video loading failed:", error);
+    // Still hide the overlay after a delay even if video fails
+    setTimeout(() => {
+      setShowLoadingOverlay(false);
+    }, 3000);
   };
 
   return (
     <div className="App relative">
-      {/* Loading Overlay - shows first with intro video */}
+      {/* Loading Overlay with Intro Video */}
       <LoadingOverlay
         isVisible={showLoadingOverlay}
-        videoUrl={introVideoUrl}
+        videoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4"
         onTransitionComplete={handleTransitionComplete}
+        onVideoError={handleVideoError}
         attemptAutoplay={true}
         showPlayButton={true}
-        playButtonText="Play to Continue"
+        playButtonText="Play to Enter"
       />
-
-      {/* Video Sequence - shows after loading overlay completes */}
-      <div className={`transition-opacity duration-1000 ${showLoadingOverlay ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        <VideoSequence
-          introVideoUrl={introVideoUrl}
-          loopVideoUrl={loopVideoUrl}
-        />
-      </div>
       
-      {/* Content Overlay */}
-      <div className="relative z-20 container mx-auto py-20 lg:py-32 flex items-center justify-center flex-col gap-3 min-h-screen">
-        {/* Logo */}
-        <div className="text-center max-w-5xl mx-auto px-4">
-          <div className="flex justify-center mb-4">
-            <img
-              src="https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png"
-              alt="ARCHE FORGE"
-              className="max-w-full h-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
-              style={{
-                width: 'clamp(200px, 50vw, 400px)',
-                height: 'auto',
-                objectFit: 'contain'
-              }}
-            />
-          </div>
-          
-          {/* Description */}
-          <div className="max-w-3xl mx-auto mt-4">
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-black drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
-              Today's AI interactions lack soul.<br className="hidden sm:block" />
-              Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
-              your identity, making AI feel less like a tool and more like you.
-            </p>
-          </div>
-        </div>
-        
-        {/* Social Media Icons */}
-        <div className="mt-4 mb-4">
-          <SocialMediaIcons />
-        </div>
+      {/* Main Content */}
+      <div className={`transition-opacity duration-1000 ${showLoadingOverlay ? 'opacity-0' : 'opacity-100'}`}>
+        <Hero />
       </div>
     </div>
   );
