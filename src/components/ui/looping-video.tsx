@@ -32,7 +32,6 @@ export const LoopingVideo = ({
   onVideoError,
   onVideoCanPlay,
   onVideoLoadedData,
-  preload = true,
   className = "",
   fallbackBgColor = "bg-black",
   videoElement

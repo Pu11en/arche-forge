@@ -19,7 +19,6 @@ interface VideoTimingState {
  * 1 second before intro ends for seamless transition
  */
 export const useVideoTimingSync = ({
-  introVideoUrl,
   onTriggerPoint,
   fallbackDuration = 8000 // 8 seconds fallback
 }: UseVideoTimingSyncProps) => {

@@ -45,12 +45,10 @@ export const VideoSequence = ({
   const loopingVideoRef = useRef<HTMLVideoElement | null>(null);
   
   // Use our custom hooks
-  const { startCrossFade, cancelTransition } = useTransitionTiming();
+  const { cancelTransition } = useTransitionTiming();
   const {
     preloadAllVideos,
-    getVideoElement,
-    syncState,
-    areAllVideosReady
+    getVideoElement
   } = useVideoSynchronization([introVideoUrl, bullVideoUrl, loopingVideoUrl]);
   
 
@@ -81,10 +79,7 @@ export const VideoSequence = ({
 
   // Video timing sync for bull overlay
   const {
-    timingState,
-    startMonitoring,
-    handleSeeking,
-    handleBuffering
+    startMonitoring
   } = useVideoTimingSync({
     introVideoUrl,
     onTriggerPoint: handleBullTriggerPoint
