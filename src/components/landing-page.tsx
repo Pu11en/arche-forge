@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { LandingHero } from "./ui/landing-hero";
 import { SocialFooter } from "./ui/social-footer";
 import { LoadingOverlay } from "./ui/loading-overlay";
+import { BackgroundVideo } from "./ui/background-video";
 import { ForgeAnalytics } from "../lib/analytics-framework";
 import { VideoPreloader } from "../lib/video-preloader";
 import { VideoErrorHandler } from "../lib/video-error-handler";
@@ -198,7 +199,13 @@ const LandingPage: React.FC<LandingPageProps> = ({
   }, [analytics, memoryManager, performanceOptimizer]);
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden ${className}`}>
+    <div className={`relative w-full h-screen overflow-hidden ${className}`} style={{ background: '#000' }}>
+      {/* Background Video (Bull Loop) - Shows after intro */}
+      <BackgroundVideo
+        isVisible={showHero}
+        className="background-video"
+      />
+
       {/* Video Intro Overlay */}
       {!videoState.hasError && (
         <LoadingOverlay
@@ -215,7 +222,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       <LandingHero
         initialVisibility={showHero || !autoPlay || videoState.hasError}
         onCTAClick={handleCTAClick}
-        className={`absolute inset-0 transition-opacity duration-300 ${
+        className={`absolute inset-0 transition-opacity duration-1000 ${
           showHero || !autoPlay || videoState.hasError ? "opacity-100" : "opacity-0"
         }`}
       />

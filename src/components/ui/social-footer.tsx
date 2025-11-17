@@ -38,48 +38,50 @@ const SocialFooter: React.FC<SocialFooterProps> = ({
 
   return (
     <footer
-      className={`fixed bottom-0 left-0 right-0 z-30 ${className}`}
+      className={`fixed bottom-0 left-0 right-0 ${className}`}
       style={{
+        width: '100%',
         height: '70px',
-        background: 'linear-gradient(135deg, rgba(128,128,128,0.1) 0%, rgba(192,192,192,0.1) 100%)', // Brushed steel texture at 10% opacity
-        backdropFilter: 'blur(1px)',
-        borderTop: '1px solid rgba(255,255,255,0.1)'
+        background: 'rgba(50, 50, 50, 0.1)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '20px',
+        zIndex: 1
       }}
       role="contentinfo"
       aria-label="Social media links"
     >
-      <div className="flex items-center justify-center h-full px-4">
-        <div className="flex items-center space-x-8">
-          {socialLinks.map((social) => {
-            const IconComponent = social.icon;
-            return (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black transition-all duration-300 hover:text-gray-700 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                style={{
-                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(0 2px 8px rgba(255,255,255,0.4)) drop-shadow(0 0 4px rgba(255,255,255,0.2))';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))';
-                }}
-                aria-label={social.ariaLabel}
-              >
-                <IconComponent
-                  size={24}
-                  className="transition-transform duration-300"
-                  strokeWidth={1.5}
-                />
-              </a>
-            );
-          })}
-        </div>
-      </div>
+      {socialLinks.map((social) => {
+        const IconComponent = social.icon;
+        return (
+          <a
+            key={social.name}
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              opacity: 0.7,
+              transition: 'opacity 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '1';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '0.7';
+            }}
+            aria-label={social.ariaLabel}
+          >
+            <IconComponent
+              size={24}
+              style={{
+                filter: 'brightness(0) invert(1)'
+              }}
+              strokeWidth={1.5}
+            />
+          </a>
+        );
+      })}
     </footer>
   );
 };

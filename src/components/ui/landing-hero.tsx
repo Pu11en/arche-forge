@@ -80,22 +80,19 @@ const LandingHero: React.FC<LandingHeroProps> = ({
   return (
     <motion.div
       className={`relative w-full h-screen overflow-hidden flex items-center justify-center ${className}`}
-      initial={reducedMotion ? { opacity: 1 } : "hidden"} // Start hidden to prevent flash
+      initial={reducedMotion ? { opacity: 1 } : "hidden"}
       animate={reducedMotion ? { opacity: 1 } : (initialVisibility ? "visible" : "hidden")}
       variants={reducedMotion ? undefined : containerVariants}
-      transition={reducedMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
+      transition={reducedMotion ? { duration: 0 } : { duration: 1.0, ease: "easeOut" }}
       style={{
         ...style,
         backgroundColor: '#000000' // Ensure black background to prevent white flash
       }}
     >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black z-0"></div>
+      {/* Background gradient - subtle */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-0"></div>
       
-      {/* Overlay for improved text readability */}
-      <div className="absolute inset-0 bg-black/40 z-10"></div>
-      
-      {/* TM Loop - Subtle background phrases */}
+      {/* TM Loop - Positioned at bottom with trademark styling */}
       <TMLoop isVisible={initialVisibility} className="z-5" />
       
       {/* Content container */}
@@ -126,11 +123,13 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           initial={reducedMotion ? { opacity: 1 } : undefined}
           animate={reducedMotion ? { opacity: 1 } : undefined}
           transition={reducedMotion ? { duration: 0 } : undefined}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight tracking-tight"
+          className="text-white mb-4 leading-tight"
           style={{
-            fontFamily: 'Orbitron, sans-serif',
-            textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-            filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.02))' // Extremely subtle glow (2%)
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+            fontWeight: 600,
+            textShadow: '0 0 8px rgba(255,255,255,0.02)',
+            maxWidth: '90%'
           }}
         >
           Today's AI answers. We remember.
@@ -142,12 +141,13 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           initial={reducedMotion ? { opacity: 1 } : undefined}
           animate={reducedMotion ? { opacity: 1 } : undefined}
           transition={reducedMotion ? { duration: 0 } : undefined}
-          className="text-base sm:text-lg md:text-xl lg:text-2xl text-white mb-8 sm:mb-10 max-w-3xl mx-auto leading-relaxed"
+          className="text-white mb-8 max-w-3xl mx-auto"
           style={{
-            fontFamily: 'Orbitron, sans-serif',
-            fontWeight: '500',
-            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
-            filter: 'drop-shadow(0 0 2px rgba(255,255,255,0.02))' // Extremely subtle glow (2%)
+            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif',
+            fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+            fontWeight: 400,
+            textShadow: '0 0 8px rgba(255,255,255,0.02)',
+            maxWidth: '90%'
           }}
         >
           SoulPrint makes AI feel less like a tool and more like you.
@@ -161,25 +161,36 @@ const LandingHero: React.FC<LandingHeroProps> = ({
           transition={reducedMotion ? { duration: 0 } : undefined}
           className="mt-4"
         >
-          <Button
+          <button
             id="enterForgeBtn"
-            size="xl"
-            variant="linkedin"
             onClick={onCTAClick}
-            className="min-h-[44px] min-w-[44px] text-lg sm:text-xl px-8 sm:px-12 py-3 sm:py-4 hover:animate-pulse transition-all duration-300 group"
+            className="min-h-[44px] min-w-[44px] transition-all duration-300 group"
             style={{
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              border: 'none',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+              position: 'relative',
+              padding: '18px 36px',
+              background: 'transparent',
+              border: '2px solid rgba(255, 255, 255, 0.9)',
+              color: '#fff',
+              fontSize: '1rem',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              zIndex: 3
             }}
             onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.3)';
               const arrow = e.currentTarget.querySelector('.arrow') as HTMLElement;
               if (arrow) {
                 arrow.style.transform = 'translateX(4px)';
               }
             }}
             onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.boxShadow = 'none';
               const arrow = e.currentTarget.querySelector('.arrow') as HTMLElement;
               if (arrow) {
                 arrow.style.transform = 'translateX(0px)';
@@ -187,8 +198,8 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             }}
             aria-label="Enter the Forge"
           >
-            <span className="arrow inline-block transition-transform duration-300">ENTER THE FORGE →</span>
-          </Button>
+            ENTER THE FORGE <span className="arrow inline-block transition-transform duration-300">→</span>
+          </button>
         </motion.div>
       </div>
     </motion.div>
