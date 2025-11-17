@@ -185,17 +185,29 @@ const LoadingOverlay = ({
 
   const handleVideoEnded = useCallback(() => {
     console.log('[LoadingOverlay] Video ended, starting transition');
+    console.log('[LoadingOverlay] Current video state:', videoState);
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
       transitionState: 'dissolving'
     }));
     
-    // Force the video to pause to ensure it doesn't continue playing
+    // Force the video to pause and hide to ensure it doesn't continue playing
     if (videoRef.current) {
-      videoRef.current.pause();
+      const video = videoRef.current;
+      console.log('[LoadingOverlay] Pausing video and resetting to beginning');
+      video.pause();
+      video.currentTime = 0; // Reset to beginning
+      // Also hide the video element completely
+      video.style.display = 'none';
     }
-  }, []);
+    
+    // Immediately trigger transition complete after a short delay
+    setTimeout(() => {
+      console.log('[LoadingOverlay] Triggering onTransitionComplete');
+      onTransitionComplete?.();
+    }, 100);
+  }, [onTransitionComplete, videoState]);
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
@@ -416,7 +428,8 @@ const LoadingOverlay = ({
       style={{
         ...getResponsiveStyles(),
         // Ensure the overlay stays on top during transition
-        zIndex: videoState.transitionState === 'dissolving' ? '9999999' : safeZIndex
+        zIndex: safeZIndex,
+        backgroundColor: '#000000' // Ensure black background
       }}
       variants={overlayVariants}
       initial="hidden"
@@ -461,8 +474,8 @@ const LoadingOverlay = ({
         }}
       />
 
-      {/* Loading spinner for video loading and buffering states */}
-      {(videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
+      {/* Loading spinner for video loading and buffering states - HIDDEN FOR PROFESSIONAL PRESENTATION */}
+      {false && (videoState.isLoading || videoState.isBuffering || (videoState.isLoaded && !videoState.isPlaying && !hasMinDisplayTimeElapsed.current)) && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -505,8 +518,8 @@ const LoadingOverlay = ({
         </div>
       )}
 
-      {/* Play button for browsers that block autoplay */}
-      {showPlayButton && videoState.needsUserInteraction && videoState.isLoaded && !videoState.isPlaying && (
+      {/* Play button for browsers that block autoplay - HIDDEN FOR PROFESSIONAL PRESENTATION */}
+      {false && showPlayButton && videoState.needsUserInteraction && videoState.isLoaded && !videoState.isPlaying && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),
@@ -549,8 +562,8 @@ const LoadingOverlay = ({
         </div>
       )}
 
-      {/* Error state */}
-      {videoState.hasError && (
+      {/* Error state - HIDDEN FOR PROFESSIONAL PRESENTATION */}
+      {false && videoState.hasError && (
         <div
           style={{
             ...getLoadingSpinnerStyles(),

@@ -1,39 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Hero } from "./components/ui/animated-hero";
-import { LoadingOverlay } from "./components/ui/loading-overlay";
+import { VideoSequence } from "./components/ui/video-sequence";
 
 function App() {
-  const [showLoadingOverlay, setShowLoadingOverlay] = useState(true);
+  const [showVideoSequence, setShowVideoSequence] = useState(true);
 
-  const handleTransitionComplete = () => {
-    setShowLoadingOverlay(false);
-  };
-
-  const handleVideoError = (error?: Error) => {
-    console.error("Video loading failed:", error);
-    // Still hide the overlay after a delay even if video fails
-    setTimeout(() => {
-      setShowLoadingOverlay(false);
-    }, 3000);
+  const handleVideoSequenceComplete = () => {
+    setShowVideoSequence(false);
   };
 
   return (
     <div className="App relative">
-      {/* Loading Overlay with Intro Video */}
-      <LoadingOverlay
-        isVisible={showLoadingOverlay}
-        videoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4"
-        onTransitionComplete={handleTransitionComplete}
-        onVideoError={handleVideoError}
-        attemptAutoplay={true}
-        showPlayButton={true}
-        playButtonText="Play to Enter"
-      />
-      
-      {/* Main Content */}
-      <div className={`transition-opacity duration-1000 ${showLoadingOverlay ? 'opacity-0' : 'opacity-100'}`}>
-        <Hero />
-      </div>
+      {/* Video Sequence with Intro → Looping Video */}
+      {showVideoSequence ? (
+        <VideoSequence
+          introVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4"
+          bullVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4"
+          loopingVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4"
+          onTransitionComplete={handleVideoSequenceComplete}
+        />
+      ) : (
+        /* Main Content */
+        <div className="transition-opacity duration-1000 opacity-100">
+          <Hero />
+        </div>
+      )}
     </div>
   );
 }
