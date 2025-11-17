@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { detectBrowser } from "../../lib/browser-detection";
 import { logger } from "../../lib/logger";
 
@@ -19,7 +19,7 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
-  
+
   // Determine video URL based on device
   const videoUrl = useState(() => {
     const browser = detectBrowser();
@@ -28,20 +28,33 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
 
   // Handle video events
   const handleVideoCanPlay = useCallback(() => {
-    logger.videoDebug('Video can play');
+    logger.videoDebug('BullVideoHero: Video can play');
     const video = videoRef.current;
-    
+
     if (video) {
-      logger.videoDebug('Video duration:', video.duration, 'readyState:', video.readyState);
-      
+      logger.videoDebug('BullVideoHero: Video details:', {
+        duration: video.duration,
+        readyState: video.readyState,
+        currentTime: video.currentTime,
+        paused: video.paused,
+        src: video.src,
+        videoWidth: video.videoWidth,
+        videoHeight: video.videoHeight
+      });
+
       // Attempt to ensure video is playing
       if (video.paused && video.readyState >= 2) {
         video.play().catch(error => {
-          logger.warn('BullVideoHero: Autoplay failed after canplay:', error);
+          logger.error('BullVideoHero: Autoplay failed after canplay:', {
+            error: error.message,
+            name: error.name,
+            videoSrc: video.src,
+            readyState: video.readyState
+          });
         });
       }
     }
-    
+
     setVideoLoaded(true);
   }, []);
 
@@ -49,21 +62,37 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
     const videoElement = event.currentTarget;
     const errorCode = videoElement.error?.code || 'Unknown';
     const errorMessage = videoElement.error?.message || 'No error message available';
-    
-    logger.error('BullVideoHero: Video failed to load:', { errorCode, errorMessage });
+
+    logger.error('BullVideoHero: Video failed to load:', {
+      errorCode,
+      errorMessage,
+      videoSrc: videoElement.src,
+      readyState: videoElement.readyState,
+      networkState: videoElement.networkState,
+      currentSrc: videoElement.currentSrc,
+      browserInfo: detectBrowser()
+    });
     setVideoError(true);
   }, []);
 
   const handleVideoPlay = useCallback(() => {
-    logger.videoDebug('Video started playing');
+    logger.videoDebug('BullVideoHero: Video started playing');
   }, []);
 
   const handleVideoWaiting = useCallback(() => {
-    logger.videoDebug('Video waiting (buffering)');
+    logger.videoDebug('BullVideoHero: Video waiting (buffering)');
   }, []);
 
   const handleVideoPlaying = useCallback(() => {
-    logger.videoDebug('Video playing');
+    logger.videoDebug('BullVideoHero: Video playing');
+  }, []);
+
+  const handleVideoLoadStart = useCallback(() => {
+    logger.videoDebug('BullVideoHero: Load started');
+  }, []);
+
+  const handleVideoStalled = useCallback(() => {
+    logger.warn('BullVideoHero: Video stalled');
   }, []);
 
   return (
@@ -87,7 +116,7 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
       <div
         className={`absolute inset-0 bg-black z-0 transition-opacity duration-1000 ${videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'}`}
       />
-      
+
       {/* Looping Bull Video */}
       {!videoError && (
         <video
@@ -103,6 +132,8 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           onPlay={handleVideoPlay}
           onWaiting={handleVideoWaiting}
           onPlaying={handleVideoPlaying}
+          onLoadStart={handleVideoLoadStart}
+          onStalled={handleVideoStalled}
           poster="/bull2.png"
           style={{
             objectFit: 'cover',
@@ -114,7 +145,7 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           Your browser does not support the video tag.
         </video>
       )}
-      
+
       {/* Poster image fallback when video fails */}
       {videoError && (
         <div
