@@ -10,19 +10,36 @@ import { PerformanceOptimizer } from "../lib/performance-optimizer";
 import { useResourceCleanup } from "../hooks/useResourceCleanup";
 import { useServiceWorker } from "../hooks/useServiceWorker";
 import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
+import { detectBrowser } from "../lib/browser-detection";
+
 export interface LandingPageProps {
   className?: string;
   onCTAClick?: () => void;
   videoUrl?: string;
+  desktopVideoUrl?: string;
+  mobileVideoUrl?: string;
   autoPlay?: boolean;
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({
   className = "",
   onCTAClick,
-  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
+  videoUrl,
+  desktopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
+  mobileVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   autoPlay = true
 }) => {
+  // Determine the appropriate video URL based on device
+  const selectedVideoUrl = useState<string>(() => {
+    // If videoUrl is provided, use it for backward compatibility
+    if (videoUrl) {
+      return videoUrl;
+    }
+    
+    // Otherwise, use device-specific URLs
+    const browser = detectBrowser();
+    return browser.isMobile ? mobileVideoUrl : desktopVideoUrl;
+  })[0];
   // Initialize core systems
   const [analytics] = useState(() => new ForgeAnalytics({
     enableGoogleAnalytics: true,
@@ -38,16 +55,16 @@ const LandingPage: React.FC<LandingPageProps> = ({
     networkThresholds: { slow: 1.5, fast: 5.0 },
     deviceProfiles: {
       mobile: [
-        { src: videoUrl.replace('.mp4', '-mobile.mp4'), type: 'video/mp4', quality: 'low' },
-        { src: videoUrl, type: 'video/mp4', quality: 'medium' }
+        { src: selectedVideoUrl.replace('.mp4', '-mobile.mp4'), type: 'video/mp4', quality: 'low' },
+        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' }
       ],
       tablet: [
-        { src: videoUrl, type: 'video/mp4', quality: 'medium' },
-        { src: videoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' }
+        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' },
+        { src: selectedVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' }
       ],
       desktop: [
-        { src: videoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' },
-        { src: videoUrl, type: 'video/mp4', quality: 'medium' }
+        { src: selectedVideoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' },
+        { src: selectedVideoUrl, type: 'video/mp4', quality: 'medium' }
       ]
     }
   }));
@@ -63,7 +80,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     },
     fallbackVideoSources: {
       low: 'https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4',
-      medium: videoUrl
+      medium: selectedVideoUrl
     }
   }));
 
@@ -145,7 +162,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       const recovered = await videoErrorHandler.handleVideoError({
         videoElement,
         error,
-        sourceUrl: videoUrl,
+        sourceUrl: selectedVideoUrl,
         attempt: 1,
         maxAttempts: 3,
         fallbackStrategy: 'image-fallback'
@@ -171,7 +188,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     
     // Preload video if service worker is ready
     if (swStatus.activated && autoPlay) {
-      preloadVideo(videoUrl);
+      preloadVideo(selectedVideoUrl);
     }
   }, [videoPreloader, swStatus.activated, autoPlay, preloadVideo]);
 
@@ -203,7 +220,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       {!videoState.hasError && (
         <LoadingOverlay
           isVisible={true}
-          videoUrl={videoUrl}
+          videoUrl={selectedVideoUrl}
           onVideoComplete={handleVideoComplete}
           onVideoError={(error) => handleVideoError(error || new Error('Unknown video error'))}
           attemptAutoplay={autoPlay}

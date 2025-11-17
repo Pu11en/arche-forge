@@ -18,11 +18,12 @@ export interface LoadingOverlayProps {
   videoUrl?: string;
   
   /**
-   * Alternative video URLs for different formats (WebM, OGG)
+   * Alternative video URLs for different formats (WebM, OGG, MP4)
    */
   videoUrls?: {
     webm?: string;
     ogg?: string;
+    mp4?: string;
   };
   
   /**

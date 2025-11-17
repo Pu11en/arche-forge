@@ -77,6 +77,51 @@ const LoadingOverlay = ({
   const hasMinDisplayTimeElapsed = useRef(true); // Start as true to prevent unnecessary delays
   
   const reducedMotion = useReducedMotion();
+  
+  // Determine optimal video source based on device and network conditions
+  const getOptimalVideoSource = useCallback(() => {
+    const browser = detectBrowser();
+    
+    // If videoUrls object is provided with multiple sources, use it
+    if (videoUrls && Object.keys(videoUrls).length > 0) {
+      // Ensure mp4 is included in formats
+      const enhancedFormats = {
+        ...videoUrls,
+        mp4: videoUrls.mp4 || videoUrl
+      };
+      
+      return {
+        primary: videoUrls.webm && supportsVideoFormat('webm') ? videoUrls.webm : videoUrl,
+        fallback: videoUrl,
+        formats: enhancedFormats
+      };
+    }
+    
+    // Generate alternative formats from the base videoUrl
+    const baseUrl = videoUrl;
+    const generatedUrls = {
+      mp4: baseUrl,
+      webm: baseUrl?.replace('.mp4', '.webm'),
+      ogg: baseUrl?.replace('.mp4', '.ogg')
+    };
+    
+    // Determine optimal format based on device
+    if (browser.isMobile) {
+      // Mobile: prioritize MP4 for better battery life and compatibility
+      return {
+        primary: generatedUrls.mp4,
+        fallback: generatedUrls.webm,
+        formats: generatedUrls
+      };
+    } else {
+      // Desktop: prioritize WebM for better compression
+      return {
+        primary: generatedUrls.webm && supportsVideoFormat('webm') ? generatedUrls.webm : generatedUrls.mp4,
+        fallback: generatedUrls.mp4,
+        formats: generatedUrls
+      };
+    }
+  }, [videoUrl, videoUrls]);
 
   // Handle video events
   const handleVideoLoadStart = useCallback(() => {
@@ -362,28 +407,59 @@ const LoadingOverlay = ({
   // Get safe z-index value
   const safeZIndex = getSafeZIndex();
 
-  // Generate responsive video source URLs
+  // Generate responsive video source URLs with device optimization
   const getVideoSources = () => {
     const sources = [];
+    const browser = detectBrowser();
+    const optimalSource = getOptimalVideoSource();
     
-    // Add WebM source if available
-    if (videoUrls.webm && supportsVideoFormat('webm')) {
+    // Prioritize video sources based on device capabilities and format support
+    // Mobile devices: prioritize MP4 for better compatibility and battery life
+    if (browser.isMobile) {
+      // Add MP4 first for mobile (most compatible and battery efficient)
+      if (optimalSource.formats.mp4) {
+        sources.push(
+          <source key="mp4-mobile" src={optimalSource.formats.mp4} type="video/mp4" />
+        );
+      }
+      
+      // Add WebM as secondary option if supported
+      if (optimalSource.formats.webm && supportsVideoFormat('webm')) {
+        sources.push(
+          <source key="webm-mobile" src={optimalSource.formats.webm} type="video/webm" />
+        );
+      }
+    }
+    // Desktop devices: prioritize WebM for better compression, then MP4
+    else {
+      // Add WebM first for desktop (better compression)
+      if (optimalSource.formats.webm && supportsVideoFormat('webm')) {
+        sources.push(
+          <source key="webm-desktop" src={optimalSource.formats.webm} type="video/webm" />
+        );
+      }
+      
+      // Add MP4 as fallback for desktop
+      if (optimalSource.formats.mp4) {
+        sources.push(
+          <source key="mp4-desktop" src={optimalSource.formats.mp4} type="video/mp4" />
+        );
+      }
+    }
+    
+    // Add OGG as universal fallback if supported
+    if (optimalSource.formats.ogg && supportsVideoFormat('ogg')) {
       sources.push(
-        <source key="webm" src={videoUrls.webm} type="video/webm" />
+        <source key="ogg-fallback" src={optimalSource.formats.ogg} type="video/ogg" />
       );
     }
     
-    // Add OGG source if available
-    if (videoUrls.ogg && supportsVideoFormat('ogg')) {
+    // If no sources were added, add the original videoUrl as final fallback
+    if (sources.length === 0 && optimalSource.primary) {
       sources.push(
-        <source key="ogg" src={videoUrls.ogg} type="video/ogg" />
+        <source key="primary-fallback" src={optimalSource.primary} type="video/mp4" />
       );
     }
-    
-    // Always add MP4 as fallback
-    sources.push(
-      <source key="mp4" src={videoUrl} type="video/mp4" />
-    );
     
     return sources;
   };
@@ -453,8 +529,18 @@ const LoadingOverlay = ({
         autoPlay={attemptAutoplay && !videoState.needsUserInteraction}
         muted
         playsInline
-        preload="auto"
+        preload={videoState.browserInfo?.isMobile ? "metadata" : "auto"} // Optimize preload for mobile
         loop={false}
+        // Add device-specific performance attributes
+        x-webkit-airplay="allow"
+        x-webkit-preserve-pitch="false"
+        // Add adaptive quality attributes for mobile devices
+        {...(videoState.browserInfo?.isMobile && {
+          // Reduce quality on mobile to save bandwidth
+          'data-optimized': 'mobile',
+          // Disable picture-in-picture on mobile to save resources
+          disablePictureInPicture: true
+        })}
         onCanPlay={handleVideoCanPlay}
         onError={handleVideoError}
         onPlay={handleVideoPlay}
