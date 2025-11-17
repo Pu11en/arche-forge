@@ -73,6 +73,16 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
         backgroundColor: '#000000' // Black background to prevent white flash
       }}
     >
+      {/* Loading indicator */}
+      {!videoLoaded && !videoError && (
+        <div className="absolute inset-0 flex items-center justify-center z-20 bg-black">
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-gray-700 border-t-white rounded-full animate-spin mx-auto"></div>
+            <p className="text-white mt-4 text-sm">Loading background...</p>
+          </div>
+        </div>
+      )}
+
       {/* Fallback background (visible while video loads or on error) */}
       <div
         className={`absolute inset-0 bg-black z-0 transition-opacity duration-1000 ${videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'}`}

@@ -7,6 +7,9 @@ export interface VideoIntroProps {
 const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [showContinueOverlay, setShowContinueOverlay] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [videoError, setVideoError] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -20,55 +23,134 @@ const VideoIntro: React.FC<VideoIntroProps> = ({ onVideoEnd }) => {
       // Set up error handling for video loading failures
       const handleVideoError = () => {
         console.error('Video intro failed to load');
-        // Show continue overlay as fallback
+        setVideoError(true);
+        setIsLoading(false);
+        // Show continue overlay immediately on error
         setShowContinueOverlay(true);
+      };
+
+      // Handle when video can play
+      const handleCanPlay = () => {
+        setIsLoading(false);
+        setLoadingProgress(100);
+      };
+
+      // Handle loading progress
+      const handleProgress = () => {
+        if (video.buffered.length > 0) {
+          const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+          const duration = video.duration;
+          if (duration > 0) {
+            setLoadingProgress((bufferedEnd / duration) * 100);
+          }
+        }
+      };
+
+      // Attempt to play video and handle autoplay blocking
+      const attemptPlay = async () => {
+        try {
+          await video.play();
+        } catch (error) {
+          console.warn('Autoplay blocked, showing continue overlay:', error);
+          setShowContinueOverlay(true);
+        }
       };
       
       // Show continue overlay after a delay as a fallback for autoplay blocking
       const overlayTimer = setTimeout(() => {
         setShowContinueOverlay(true);
-      }, 3000); // Show after 3 seconds
+      }, 2000); // Show after 2 seconds
+      
+      // Show skip button immediately if video takes too long to load
+      const loadingTimeout = setTimeout(() => {
+        if (isLoading) {
+          setShowContinueOverlay(true);
+        }
+      }, 1500); // Show skip option after 1.5 seconds of loading
       
       video.addEventListener('ended', handleVideoEnd);
       video.addEventListener('error', handleVideoError);
+      video.addEventListener('canplay', handleCanPlay);
+      video.addEventListener('progress', handleProgress);
+      video.addEventListener('loadeddata', handleCanPlay);
+      
+      // Try to play when metadata is loaded
+      video.addEventListener('loadedmetadata', attemptPlay);
       
       // Clean up the event listener when the component unmounts
       return () => {
         video.removeEventListener('ended', handleVideoEnd);
         video.removeEventListener('error', handleVideoError);
+        video.removeEventListener('canplay', handleCanPlay);
+        video.removeEventListener('progress', handleProgress);
+        video.removeEventListener('loadeddata', handleCanPlay);
+        video.removeEventListener('loadedmetadata', attemptPlay);
         clearTimeout(overlayTimer);
+        clearTimeout(loadingTimeout);
       };
     }
-  }, [onVideoEnd]);
+  }, [onVideoEnd, isLoading]);
 
   const handleContinueClick = () => {
     onVideoEnd();
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden">
+    <div className="fixed inset-0 w-full h-full overflow-hidden bg-black">
+      {/* Loading spinner and progress */}
+      {isLoading && !videoError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-black">
+          <div className="relative">
+            {/* Spinning loader */}
+            <div className="w-16 h-16 border-4 border-gray-700 border-t-white rounded-full animate-spin"></div>
+          </div>
+          <p className="text-white mt-4 text-lg">Loading...</p>
+          {/* Progress bar */}
+          <div className="w-64 h-2 bg-gray-700 rounded-full mt-4 overflow-hidden">
+            <div
+              className="h-full bg-white transition-all duration-300"
+              style={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Video element */}
       <video
         ref={videoRef}
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover transition-opacity duration-500 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
         autoPlay
         muted
         playsInline
+        preload="auto"
         src="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4"
       />
       
+      {/* Error message */}
+      {videoError && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black z-20">
+          <div className="text-center px-4">
+            <p className="text-white text-xl mb-4">Unable to load video</p>
+            <p className="text-gray-400 text-sm mb-6">Click below to continue to the site</p>
+          </div>
+        </div>
+      )}
+
       {/* Click to continue overlay */}
       {showContinueOverlay && (
         <div
           className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer z-20"
           onClick={handleContinueClick}
         >
-          <div className="text-center">
-            <p className="text-white text-xl mb-4">Click to continue</p>
+          <div className="text-center px-4">
+            <p className="text-white text-xl mb-4">
+              {videoError ? 'Continue to site' : 'Click to continue'}
+            </p>
             <button
-              className="px-6 py-2 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition-colors"
+              className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-200 transition-colors shadow-lg"
               onClick={handleContinueClick}
             >
-              Continue
+              {videoError ? 'Enter Site' : 'Skip Intro'}
             </button>
           </div>
         </div>
