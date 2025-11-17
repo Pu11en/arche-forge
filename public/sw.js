@@ -54,8 +54,6 @@ const CACHE_CONFIG = {
 // Critical assets that should always be cached
 const CRITICAL_ASSETS = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
   'https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4',
   'https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png'
 ];

@@ -38,7 +38,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
       enableCustomAnalytics: true,
       apiEndpoint: '/api/analytics',
       sampleRate: 0.1,
-      debugMode: process.env.NODE_ENV === 'development'
+      debugMode: import.meta.env.DEV
     });
 
     memoryManagerRef.current = new MemoryManager({

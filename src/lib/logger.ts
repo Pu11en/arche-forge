@@ -16,7 +16,7 @@ class Logger {
   private isDevelopment: boolean;
 
   constructor() {
-    this.isDevelopment = (import.meta as any).env?.DEV || process.env.NODE_ENV === 'development';
+    this.isDevelopment = import.meta.env.DEV || process.env.NODE_ENV === 'development';
     this.config = {
       level: 'info',
       enableProductionLogging: false
