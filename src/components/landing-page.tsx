@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { LandingHero } from "./ui/landing-hero";
-import { SocialFooter } from "./ui/social-footer";
+import { BullVideoHero } from "./ui/bull-video-hero";
 import { LoadingOverlay } from "./ui/loading-overlay";
 import { ForgeAnalytics } from "../lib/analytics-framework";
 import { VideoPreloader } from "../lib/video-preloader";
@@ -13,7 +12,6 @@ import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
 
 export interface LandingPageProps {
   className?: string;
-  onCTAClick?: () => void;
   introVideoUrl?: string;
   desktopBackgroundVideoUrl?: string;
   mobileBackgroundVideoUrl?: string;
@@ -22,7 +20,6 @@ export interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({
   className = "",
-  onCTAClick,
   introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   desktopBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
   mobileBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4",
@@ -163,12 +160,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
     }
   }, [analytics, videoErrorHandler, introVideoUrl]);
 
-  // Enhanced CTA click handler
-  const handleCTAClick = useCallback(() => {
-    analytics.trackCTAClick('ENTER THE FORGE', 'landing-page-hero');
-    onCTAClick?.();
-  }, [analytics]);
-
   // Initialize systems on mount
   useEffect(() => {
     // Preload critical assets
@@ -205,7 +196,8 @@ const LandingPage: React.FC<LandingPageProps> = ({
   return (
     <div className={`relative w-full h-screen overflow-hidden ${className}`}>
       {/* Video Intro Overlay */}
-      {!videoState.hasError && (
+      {/* Intro Video Overlay - plays once */}
+      {!videoState.hasError && !videoState.isCompleted && (
         <LoadingOverlay
           isVisible={true}
           videoUrl={introVideoUrl}
@@ -216,19 +208,14 @@ const LandingPage: React.FC<LandingPageProps> = ({
         />
       )}
 
-      {/* Landing Hero Section */}
-      <LandingHero
-        initialVisibility={showHero || !autoPlay || videoState.hasError}
-        onCTAClick={handleCTAClick}
+      {/* Bull Video Hero - loops continuously after intro */}
+      <BullVideoHero
         desktopVideoUrl={desktopBackgroundVideoUrl}
         mobileVideoUrl={mobileBackgroundVideoUrl}
-        className={`absolute inset-0 transition-opacity duration-300 ${
+        className={`absolute inset-0 transition-opacity duration-1000 ${
           showHero || !autoPlay || videoState.hasError ? "opacity-100" : "opacity-0"
         }`}
       />
-
-      {/* Social Footer */}
-      <SocialFooter />
 
       {/* Offline Indicator */}
       {!isOnline && (
