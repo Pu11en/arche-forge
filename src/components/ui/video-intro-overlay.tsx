@@ -5,8 +5,8 @@ import { useReducedMotion } from "../../hooks/useReducedMotion";
 import { TMLoop } from "./tm-loop";
 import {
   detectBrowser,
-  getOptimalVideoFormat,
-  requiresUserInteractionForAutoplay,
+  requiresUserInteractionForAutoplayEnhanced,
+  isSecureContext,
   getSafeZIndex,
   getEventListenerOptions
 } from "../../lib/browser-detection";
@@ -40,13 +40,11 @@ interface VideoState {
   hasError: boolean;
   isPlaying: boolean;
   isLoading: boolean;
-  isBuffering: boolean;
   loadingProgress: number;
-  loadingState: 'idle' | 'loading' | 'buffering' | 'ready' | 'error';
+  loadingState: 'idle' | 'loading' | 'ready' | 'error';
   transitionState: 'visible' | 'dissolving' | 'complete';
   needsUserInteraction: boolean;
   autoplayAttempted: boolean;
-  supportedFormat: 'webm' | 'mp4' | 'ogg';
   browserInfo: {
     isChrome: boolean;
     isFirefox: boolean;
@@ -71,21 +69,23 @@ const VideoIntroOverlay = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [videoState, setVideoState] = useState<VideoState>(() => {
     const browserInfo = detectBrowser();
-    const supportedFormat = getOptimalVideoFormat();
-    const needsUserInteraction = requiresUserInteractionForAutoplay();
+    const isSecure = isSecureContext();
+    const needsUserInteraction = requiresUserInteractionForAutoplayEnhanced();
+    
+    console.log('VideoIntroOverlay: Initializing with browser info:', browserInfo);
+    console.log('VideoIntroOverlay: Is secure context:', isSecure);
+    console.log('VideoIntroOverlay: Video URL:', videoUrl);
     
     return {
       isLoaded: false,
       hasError: false,
       isPlaying: false,
       isLoading: false,
-      isBuffering: false,
       loadingProgress: 0,
       loadingState: 'idle',
       transitionState: 'visible',
       needsUserInteraction,
       autoplayAttempted: false,
-      supportedFormat,
       browserInfo: {
         isChrome: browserInfo.isChrome,
         isFirefox: browserInfo.isFirefox,
@@ -100,6 +100,7 @@ const VideoIntroOverlay = ({
 
   // Handle video events
   const handleVideoLoadStart = useCallback(() => {
+    console.log('VideoIntroOverlay: Video load started');
     setVideoState(prev => ({
       ...prev,
       isLoading: true,
@@ -116,86 +117,100 @@ const VideoIntroOverlay = ({
         setVideoState(prev => ({
           ...prev,
           loadingProgress: Math.min(progress, 100),
-          isBuffering: true,
-          loadingState: 'buffering'
+          loadingState: 'loading'
         }));
       }
     }
   }, []);
 
   const handleVideoCanPlay = useCallback(() => {
+    console.log('VideoIntroOverlay: Video can play');
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
       isLoading: false,
-      isBuffering: false,
       loadingProgress: 100,
       loadingState: 'ready'
     }));
   }, []);
 
   const handleVideoCanPlayThrough = useCallback(() => {
+    console.log('VideoIntroOverlay: Video can play through');
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
       isLoading: false,
-      isBuffering: false,
       loadingProgress: 100,
       loadingState: 'ready'
     }));
   }, []);
 
   const handleVideoError = useCallback((event: React.SyntheticEvent<HTMLVideoElement>) => {
+    console.error('VideoIntroOverlay: Video error (React):', event);
+    const videoElement = event.currentTarget;
+    const errorCode = videoElement.error?.code || 'Unknown';
+    const errorMessage = videoElement.error?.message || 'No error message available';
+    
+    console.error('VideoIntroOverlay: Error details:', { errorCode, errorMessage });
+    
     setVideoState(prev => ({
       ...prev,
       hasError: true,
       isLoading: false,
-      isBuffering: false,
       loadingState: 'error'
     }));
     
-    const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
+    const errorObj = new Error(`Video loading error: ${errorCode} - ${errorMessage}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
 
   const handleVideoErrorNative = useCallback((event: Event) => {
+    console.error('VideoIntroOverlay: Video error (Native):', event);
+    const videoElement = event.target as HTMLVideoElement;
+    const errorCode = videoElement.error?.code || 'Unknown';
+    const errorMessage = videoElement.error?.message || 'No error message available';
+    
+    console.error('VideoIntroOverlay: Error details:', { errorCode, errorMessage });
+    
     setVideoState(prev => ({
       ...prev,
       hasError: true,
       isLoading: false,
-      isBuffering: false,
       loadingState: 'error'
     }));
     
-    const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
+    const errorObj = new Error(`Video loading error: ${errorCode} - ${errorMessage}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
 
   const handleVideoPlay = useCallback(() => {
+    console.log('VideoIntroOverlay: Video started playing');
     setVideoState(prev => ({ ...prev, isPlaying: true }));
   }, []);
 
   const handleVideoPause = useCallback(() => {
+    console.log('VideoIntroOverlay: Video paused');
     setVideoState(prev => ({ ...prev, isPlaying: false }));
   }, []);
 
   const handleVideoWaiting = useCallback(() => {
+    console.log('VideoIntroOverlay: Video waiting (buffering)');
     setVideoState(prev => ({
       ...prev,
-      isBuffering: true,
-      loadingState: 'buffering'
+      loadingState: 'loading'
     }));
   }, []);
 
   const handleVideoPlaying = useCallback(() => {
+    console.log('VideoIntroOverlay: Video playing');
     setVideoState(prev => ({
       ...prev,
-      isBuffering: false,
       loadingState: 'ready'
     }));
   }, []);
 
   const handleVideoEnded = useCallback(() => {
+    console.log('VideoIntroOverlay: Video ended');
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
@@ -210,18 +225,20 @@ const VideoIntroOverlay = ({
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
+    console.log('VideoIntroOverlay: User interaction detected, attempting to play video');
     if (videoRef.current) {
       const video = videoRef.current;
       
       try {
         await video.play();
+        console.log('VideoIntroOverlay: Video started playing after user interaction');
         setVideoState(prev => ({
           ...prev,
           isPlaying: true,
           needsUserInteraction: false
         }));
       } catch (error) {
-        console.warn("Video play failed even with user interaction:", error);
+        console.error("VideoIntroOverlay: Video play failed even with user interaction:", error);
         setVideoState(prev => ({
           ...prev,
           hasError: true,
@@ -233,20 +250,30 @@ const VideoIntroOverlay = ({
 
   // Auto-play video when component mounts
   useEffect(() => {
-    if (videoRef.current && autoPlay) {
+    if (videoRef.current && autoPlay && videoState.isLoaded && !videoState.autoplayAttempted) {
       const video = videoRef.current;
+      const isSecure = isSecureContext();
       
       // Attempt to play the video
       const playVideo = async () => {
         try {
+          console.log('VideoIntroOverlay: Attempting autoplay in secure context:', isSecure);
           await video.play();
+          console.log('VideoIntroOverlay: Autoplay successful');
           setVideoState(prev => ({
             ...prev,
             isPlaying: true,
             autoplayAttempted: true
           }));
         } catch (error) {
-          console.warn("Video autoplay failed:", error);
+          console.warn("VideoIntroOverlay: Autoplay failed, requiring user interaction:", error);
+          console.log("VideoIntroOverlay: Secure context:", isSecure);
+          
+          // If we're in a non-secure context, show the play button immediately
+          if (!isSecure) {
+            console.log("VideoIntroOverlay: Non-secure context detected, showing play button immediately");
+          }
+          
           setVideoState(prev => ({
             ...prev,
             autoplayAttempted: true,
@@ -255,10 +282,7 @@ const VideoIntroOverlay = ({
         }
       };
 
-      // Start playing when video can play
-      if (videoState.isLoaded && !videoState.autoplayAttempted) {
-        playVideo();
-      }
+      playVideo();
     }
   }, [autoPlay, videoState.isLoaded, videoState.autoplayAttempted]);
 
@@ -485,10 +509,21 @@ const VideoIntroOverlay = ({
         playsInline
         preload="auto"
         loop={false}
+        // Add development-specific attributes for localhost
+        {...(process.env.NODE_ENV === 'development' && {
+          crossOrigin: 'anonymous',
+          // Force muted autoplay in development
+          muted: true
+        })}
+        onLoadStart={handleVideoLoadStart}
+        onProgress={handleVideoProgress}
         onCanPlay={handleVideoCanPlay}
+        onCanPlayThrough={handleVideoCanPlayThrough}
         onError={handleVideoError}
         onPlay={handleVideoPlay}
         onPause={handleVideoPause}
+        onWaiting={handleVideoWaiting}
+        onPlaying={handleVideoPlaying}
         onEnded={handleVideoEnded}
         {...getVideoAttributes()}
       >

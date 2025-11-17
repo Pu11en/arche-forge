@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost Video Playback Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .test-results {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 8px;
+            border-left: 4px solid #007bff;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Localhost Video Playback Test</h1>
+    <p>This test verifies that the Cloudinary video plays correctly in both development (localhost) and production environments.</p>
+
+    <div class="test-container">
+        <h2>Environment Information</h2>
+        <div id="environment-info"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Secure Context Detection</h2>
+        <div id="secure-context-results"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Video Autoplay Test</h2>
+        <p>Testing video autoplay with the Cloudinary URL:</p>
+        <video id="test-video" muted playsInline preload="auto" loop>
+            <source src="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div>
+            <button onclick="testAutoplay()">Test Autoplay</button>
+            <button onclick="testUserInteraction()">Test User Interaction</button>
+            <button onclick="resetVideo()">Reset Video</button>
+        </div>
+        <div id="autoplay-results"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Manual Play Button Test</h2>
+        <p>This simulates the play button that appears when autoplay is blocked:</p>
+        <div id="manual-play-container" style="display: none;">
+            <button onclick="playVideoManually()" style="font-size: 1.2rem; padding: 1rem 2rem;">
+                ▶️ Tap to Play Video
+            </button>
+        </div>
+        <div id="manual-play-results"></div>
+    </div>
+
+    <div class="test-container">
+        <h2>Test Summary</h2>
+        <div id="test-summary"></div>
+    </div>
+
+    <script>
+        // Test results storage
+        const testResults = [];
+
+        // Helper function to add test results
+        function addTestResult(testName, passed, message) {
+            testResults.push({ testName, passed, message });
+            updateTestSummary();
+        }
+
+        // Update test summary
+        function updateTestSummary() {
+            const summaryDiv = document.getElementById('test-summary');
+            const passedTests = testResults.filter(r => r.passed).length;
+            const totalTests = testResults.length;
+            
+            summaryDiv.innerHTML = `
+                <div class="status ${passedTests === totalTests ? 'success' : 'info'}">
+                    <strong>Test Results:</strong> ${passedTests}/${totalTests} tests passed
+                </div>
+                ${testResults.map(result => `
+                    <div class="test-result">
+                        <strong>${result.testName}:</strong> 
+                        <span style="color: ${result.passed ? 'green' : 'red'}">
+                            ${result.passed ? '✓ PASSED' : '✗ FAILED'}
+                        </span>
+                        <br><small>${result.message}</small>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        // Display environment information
+        function displayEnvironmentInfo() {
+            const envInfo = document.getElementById('environment-info');
+            const protocol = window.location.protocol;
+            const hostname = window.location.hostname;
+            const isSecure = window.isSecureContext;
+            
+            envInfo.innerHTML = `
+                <div class="status info">
+                    <strong>Protocol:</strong> ${protocol}<br>
+                    <strong>Hostname:</strong> ${hostname}<br>
+                    <strong>Is Secure Context:</strong> ${isSecure}<br>
+                    <strong>User Agent:</strong> ${navigator.userAgent.substring(0, 100)}...
+                </div>
+            `;
+            
+            // Test secure context detection
+            testSecureContextDetection(protocol, hostname, isSecure);
+        }
+
+        // Test secure context detection
+        function testSecureContextDetection(protocol, hostname, isSecure) {
+            const resultsDiv = document.getElementById('secure-context-results');
+            
+            // Test 1: HTTPS should be secure
+            if (protocol === 'https:' && isSecure) {
+                resultsDiv.innerHTML += '<div class="status success">✓ HTTPS correctly detected as secure</div>';
+                addTestResult('HTTPS Security Detection', true, 'HTTPS correctly detected as secure');
+            } else if (protocol === 'https:' && !isSecure) {
+                resultsDiv.innerHTML += '<div class="status error">✗ HTTPS not detected as secure</div>';
+                addTestResult('HTTPS Security Detection', false, 'HTTPS not detected as secure');
+            }
+            
+            // Test 2: Localhost should be treated as secure
+            if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                if (isSecure) {
+                    resultsDiv.innerHTML += '<div class="status success">✓ Localhost correctly treated as secure</div>';
+                    addTestResult('Localhost Security Detection', true, 'Localhost correctly treated as secure');
+                } else {
+                    resultsDiv.innerHTML += '<div class="status error">✗ Localhost not treated as secure</div>';
+                    addTestResult('Localhost Security Detection', false, 'Localhost not treated as secure');
+                }
+            }
+            
+            // Test 3: Non-localhost HTTP should be non-secure
+            if (protocol === 'http:' && hostname !== 'localhost' && hostname !== '127.0.0.1') {
+                if (!isSecure) {
+                    resultsDiv.innerHTML += '<div class="status success">✓ Non-localhost HTTP correctly detected as non-secure</div>';
+                    addTestResult('HTTP Security Detection', true, 'Non-localhost HTTP correctly detected as non-secure');
+                } else {
+                    resultsDiv.innerHTML += '<div class="status error">✗ Non-localhost HTTP incorrectly detected as secure</div>';
+                    addTestResult('HTTP Security Detection', false, 'Non-localhost HTTP incorrectly detected as secure');
+                }
+            }
+        }
+
+        // Test video autoplay
+        async function testAutoplay() {
+            const video = document.getElementById('test-video');
+            const resultsDiv = document.getElementById('autoplay-results');
+            
+            try {
+                resultsDiv.innerHTML = '<div class="status info">Attempting autoplay...</div>';
+                
+                // Attempt to play the video
+                await video.play();
+                
+                resultsDiv.innerHTML = '<div class="status success">✓ Autoplay successful!</div>';
+                addTestResult('Video Autoplay', true, 'Video played without user interaction');
+                
+                // Stop the video after 2 seconds
+                setTimeout(() => {
+                    video.pause();
+                    video.currentTime = 0;
+                }, 2000);
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">✗ Autoplay failed: ${error.message}</div>`;
+                addTestResult('Video Autoplay', false, `Autoplay failed: ${error.message}`);
+                
+                // Show manual play button
+                document.getElementById('manual-play-container').style.display = 'block';
+            }
+        }
+
+        // Test user interaction
+        async function testUserInteraction() {
+            const video = document.getElementById('test-video');
+            const resultsDiv = document.getElementById('autoplay-results');
+            
+            try {
+                resultsDiv.innerHTML = '<div class="status info">Testing user interaction playback...</div>';
+                
+                // First pause the video
+                video.pause();
+                video.currentTime = 0;
+                
+                // Wait a bit then try to play (simulating user interaction)
+                setTimeout(async () => {
+                    await video.play();
+                    resultsDiv.innerHTML = '<div class="status success">✓ User interaction playback successful!</div>';
+                    addTestResult('User Interaction Playback', true, 'Video played after user interaction');
+                    
+                    // Stop the video after 2 seconds
+                    setTimeout(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                    }, 2000);
+                }, 100);
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">✗ User interaction playback failed: ${error.message}</div>`;
+                addTestResult('User Interaction Playback', false, `User interaction playback failed: ${error.message}`);
+            }
+        }
+
+        // Manual play function
+        async function playVideoManually() {
+            const video = document.getElementById('test-video');
+            const resultsDiv = document.getElementById('manual-play-results');
+            
+            try {
+                await video.play();
+                resultsDiv.innerHTML = '<div class="status success">✓ Manual play successful!</div>';
+                addTestResult('Manual Play Button', true, 'Video played after clicking manual play button');
+                
+                // Hide the manual play button
+                document.getElementById('manual-play-container').style.display = 'none';
+                
+                // Stop the video after 5 seconds
+                setTimeout(() => {
+                    video.pause();
+                    video.currentTime = 0;
+                }, 5000);
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">✗ Manual play failed: ${error.message}</div>`;
+                addTestResult('Manual Play Button', false, `Manual play failed: ${error.message}`);
+            }
+        }
+
+        // Reset video
+        function resetVideo() {
+            const video = document.getElementById('test-video');
+            video.pause();
+            video.currentTime = 0;
+            document.getElementById('autoplay-results').innerHTML = '';
+            document.getElementById('manual-play-results').innerHTML = '';
+            document.getElementById('manual-play-container').style.display = 'none';
+        }
+
+        // Initialize the test when the page loads
+        window.addEventListener('load', () => {
+            displayEnvironmentInfo();
+            
+            // Auto-run the autoplay test after 1 second
+            setTimeout(() => {
+                testAutoplay();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

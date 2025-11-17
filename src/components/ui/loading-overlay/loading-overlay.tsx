@@ -6,11 +6,10 @@ import { LoadingOverlayProps, VideoState } from "./loading-types";
 import { ANIMATION_TIMING } from "../../../lib/animation-timing";
 import {
   detectBrowser,
-  getOptimalVideoFormat,
-  requiresUserInteractionForAutoplay,
+  requiresUserInteractionForAutoplayEnhanced,
+  isSecureContext,
   getSafeZIndex,
-  getEventListenerOptions,
-  supportsVideoFormat
+  getEventListenerOptions
 } from "../../../lib/browser-detection";
 import {
   getPrefixedStyles,
@@ -28,7 +27,6 @@ import {
 const LoadingOverlay = ({
   isVisible = true,
   videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
-  videoUrls = {},
   fallbackBgColor = "bg-black",
   onVideoLoaded,
   onVideoError,
@@ -47,8 +45,12 @@ const LoadingOverlay = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [videoState, setVideoState] = useState<VideoState>(() => {
     const browserInfo = detectBrowser();
-    const supportedFormat = getOptimalVideoFormat();
-    const needsUserInteraction = requiresUserInteractionForAutoplay();
+    const isSecure = isSecureContext();
+    const needsUserInteraction = requiresUserInteractionForAutoplayEnhanced();
+    
+    console.log('LoadingOverlay: Initializing with browser info:', browserInfo);
+    console.log('LoadingOverlay: Is secure context:', isSecure);
+    console.log('LoadingOverlay: Video URL:', videoUrl);
     
     return {
       isLoaded: false,
@@ -62,7 +64,7 @@ const LoadingOverlay = ({
       playbackState: 'idle',
       needsUserInteraction,
       autoplayAttempted: false,
-      supportedFormat,
+      supportedFormat: 'mp4', // Always use MP4 for Cloudinary videos
       browserInfo: {
         isChrome: browserInfo.isChrome,
         isFirefox: browserInfo.isFirefox,
@@ -74,57 +76,24 @@ const LoadingOverlay = ({
   });
   
   const minDisplayTimeRef = useRef<NodeJS.Timeout | null>(null);
-  const hasMinDisplayTimeElapsed = useRef(true); // Start as true to prevent unnecessary delays
   
   const reducedMotion = useReducedMotion();
   
-  // Determine optimal video source based on device and network conditions
+  // Simplified video source - always use the provided MP4 URL from Cloudinary
   const getOptimalVideoSource = useCallback(() => {
-    const browser = detectBrowser();
-    
-    // If videoUrls object is provided with multiple sources, use it
-    if (videoUrls && Object.keys(videoUrls).length > 0) {
-      // Ensure mp4 is included in formats
-      const enhancedFormats = {
-        ...videoUrls,
-        mp4: videoUrls.mp4 || videoUrl
-      };
-      
-      return {
-        primary: videoUrls.webm && supportsVideoFormat('webm') ? videoUrls.webm : videoUrl,
-        fallback: videoUrl,
-        formats: enhancedFormats
-      };
-    }
-    
-    // Generate alternative formats from the base videoUrl
-    const baseUrl = videoUrl;
-    const generatedUrls = {
-      mp4: baseUrl,
-      webm: baseUrl?.replace('.mp4', '.webm'),
-      ogg: baseUrl?.replace('.mp4', '.ogg')
+    console.log('LoadingOverlay: Using Cloudinary MP4 video URL:', videoUrl);
+    return {
+      primary: videoUrl,
+      fallback: videoUrl,
+      formats: {
+        mp4: videoUrl
+      }
     };
-    
-    // Determine optimal format based on device
-    if (browser.isMobile) {
-      // Mobile: prioritize MP4 for better battery life and compatibility
-      return {
-        primary: generatedUrls.mp4,
-        fallback: generatedUrls.webm,
-        formats: generatedUrls
-      };
-    } else {
-      // Desktop: prioritize WebM for better compression
-      return {
-        primary: generatedUrls.webm && supportsVideoFormat('webm') ? generatedUrls.webm : generatedUrls.mp4,
-        fallback: generatedUrls.mp4,
-        formats: generatedUrls
-      };
-    }
-  }, [videoUrl, videoUrls]);
+  }, [videoUrl]);
 
   // Handle video events
   const handleVideoLoadStart = useCallback(() => {
+    console.log('LoadingOverlay: Video load started');
     setVideoState(prev => ({
       ...prev,
       isLoading: true,
@@ -141,8 +110,7 @@ const LoadingOverlay = ({
         setVideoState(prev => ({
           ...prev,
           loadingProgress: Math.min(progress, 100),
-          isBuffering: true,
-          loadingState: 'buffering'
+          loadingState: 'loading'
         }));
       }
     }
@@ -154,77 +122,85 @@ const LoadingOverlay = ({
       ...prev,
       isLoaded: true,
       isLoading: false,
-      isBuffering: false,
       loadingProgress: 100,
       loadingState: 'ready'
     }));
-    
-    // Minimum display time is already elapsed, no need to set timer
     
     onVideoLoaded?.();
   }, [onVideoLoaded]);
 
   const handleVideoCanPlayThrough = useCallback(() => {
+    console.log('LoadingOverlay: Video can play through');
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
       isLoading: false,
-      isBuffering: false,
       loadingProgress: 100,
       loadingState: 'ready'
     }));
   }, []);
 
   const handleVideoError = useCallback((event: React.SyntheticEvent<HTMLVideoElement>) => {
-    console.error('LoadingOverlay: Video error:', event);
+    console.error('LoadingOverlay: Video error (React):', event);
+    const videoElement = event.currentTarget;
+    const errorCode = videoElement.error?.code || 'Unknown';
+    const errorMessage = videoElement.error?.message || 'No error message available';
+    
+    console.error('LoadingOverlay: Error details:', { errorCode, errorMessage });
+    
     setVideoState(prev => ({
       ...prev,
       hasError: true,
       isLoading: false,
-      isBuffering: false,
       loadingState: 'error'
     }));
     
-    // Convert error to Error object for callback
-    const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
+    const errorObj = new Error(`Video loading error: ${errorCode} - ${errorMessage}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
 
   // Native DOM event handlers for addEventListener
   const handleVideoErrorNative = useCallback((event: Event) => {
+    console.error('LoadingOverlay: Video error (Native):', event);
+    const videoElement = event.target as HTMLVideoElement;
+    const errorCode = videoElement.error?.code || 'Unknown';
+    const errorMessage = videoElement.error?.message || 'No error message available';
+    
+    console.error('LoadingOverlay: Error details:', { errorCode, errorMessage });
+    
     setVideoState(prev => ({
       ...prev,
       hasError: true,
       isLoading: false,
-      isBuffering: false,
       loadingState: 'error'
     }));
     
-    // Convert error to Error object for callback
-    const errorObj = new Error(`Video loading error: ${event.type || 'Unknown error'}`);
+    const errorObj = new Error(`Video loading error: ${errorCode} - ${errorMessage}`);
     onVideoError?.(errorObj);
   }, [onVideoError]);
 
   const handleVideoPlay = useCallback(() => {
+    console.log('LoadingOverlay: Video started playing');
     setVideoState(prev => ({ ...prev, isPlaying: true }));
   }, []);
 
   const handleVideoPause = useCallback(() => {
+    console.log('LoadingOverlay: Video paused');
     setVideoState(prev => ({ ...prev, isPlaying: false }));
   }, []);
 
   const handleVideoWaiting = useCallback(() => {
+    console.log('LoadingOverlay: Video waiting (buffering)');
     setVideoState(prev => ({
       ...prev,
-      isBuffering: true,
-      loadingState: 'buffering'
+      loadingState: 'loading'
     }));
   }, []);
 
   const handleVideoPlaying = useCallback(() => {
+    console.log('LoadingOverlay: Video playing');
     setVideoState(prev => ({
       ...prev,
-      isBuffering: false,
       loadingState: 'ready'
     }));
   }, []);
@@ -255,18 +231,20 @@ const LoadingOverlay = ({
 
   // Handle user interaction to play video
   const handleUserInteraction = useCallback(async () => {
+    console.log('LoadingOverlay: User interaction detected, attempting to play video');
     if (videoRef.current) {
       const video = videoRef.current;
       
       try {
         await video.play();
+        console.log('LoadingOverlay: Video started playing after user interaction');
         setVideoState(prev => ({
           ...prev,
           isPlaying: true,
           needsUserInteraction: false
         }));
       } catch (error) {
-        console.warn("Video play failed even with user interaction:", error);
+        console.error("LoadingOverlay: Video play failed even with user interaction:", error);
         setVideoState(prev => ({
           ...prev,
           hasError: true,
@@ -278,21 +256,30 @@ const LoadingOverlay = ({
 
   // Auto-play video when component mounts
   useEffect(() => {
-    if (videoRef.current && isVisible && attemptAutoplay) {
+    if (videoRef.current && isVisible && attemptAutoplay && videoState.isLoaded && !videoState.autoplayAttempted) {
       const video = videoRef.current;
+      const isSecure = isSecureContext();
       
       // Attempt to play the video
       const playVideo = async () => {
         try {
+          console.log('LoadingOverlay: Attempting autoplay in secure context:', isSecure);
           await video.play();
-          console.log('LoadingOverlay: Video autoplay started');
+          console.log('LoadingOverlay: Autoplay successful');
           setVideoState(prev => ({
             ...prev,
             isPlaying: true,
             autoplayAttempted: true
           }));
         } catch (error) {
-          console.warn("Video autoplay failed:", error);
+          console.warn("LoadingOverlay: Autoplay failed, requiring user interaction:", error);
+          console.log("LoadingOverlay: Secure context:", isSecure);
+          
+          // If we're in a non-secure context, show the play button immediately
+          if (!isSecure) {
+            console.log("LoadingOverlay: Non-secure context detected, showing play button immediately");
+          }
+          
           setVideoState(prev => ({
             ...prev,
             autoplayAttempted: true,
@@ -301,12 +288,9 @@ const LoadingOverlay = ({
         }
       };
 
-      // Start playing when video can play (no minimum display time requirement)
-      if (videoState.isLoaded && !videoState.autoplayAttempted) {
-        playVideo();
-      }
+      playVideo();
     }
-  }, [isVisible, videoState.isLoaded, hasMinDisplayTimeElapsed.current, videoState.autoplayAttempted, attemptAutoplay]);
+  }, [isVisible, videoState.isLoaded, videoState.autoplayAttempted, attemptAutoplay]);
 
   // Add fallback to complete video if it doesn't play after 3 seconds
   useEffect(() => {
@@ -437,61 +421,14 @@ const LoadingOverlay = ({
   // Get safe z-index value
   const safeZIndex = getSafeZIndex();
 
-  // Generate responsive video source URLs with device optimization
+  // Simplified video source - always use the MP4 URL from Cloudinary
   const getVideoSources = () => {
-    const sources = [];
-    const browser = detectBrowser();
     const optimalSource = getOptimalVideoSource();
+    console.log('LoadingOverlay: Using video source:', optimalSource);
     
-    // Prioritize video sources based on device capabilities and format support
-    // Mobile devices: prioritize MP4 for better compatibility and battery life
-    if (browser.isMobile) {
-      // Add MP4 first for mobile (most compatible and battery efficient)
-      if (optimalSource.formats.mp4) {
-        sources.push(
-          <source key="mp4-mobile" src={optimalSource.formats.mp4} type="video/mp4" />
-        );
-      }
-      
-      // Add WebM as secondary option if supported
-      if (optimalSource.formats.webm && supportsVideoFormat('webm')) {
-        sources.push(
-          <source key="webm-mobile" src={optimalSource.formats.webm} type="video/webm" />
-        );
-      }
-    }
-    // Desktop devices: prioritize WebM for better compression, then MP4
-    else {
-      // Add WebM first for desktop (better compression)
-      if (optimalSource.formats.webm && supportsVideoFormat('webm')) {
-        sources.push(
-          <source key="webm-desktop" src={optimalSource.formats.webm} type="video/webm" />
-        );
-      }
-      
-      // Add MP4 as fallback for desktop
-      if (optimalSource.formats.mp4) {
-        sources.push(
-          <source key="mp4-desktop" src={optimalSource.formats.mp4} type="video/mp4" />
-        );
-      }
-    }
-    
-    // Add OGG as universal fallback if supported
-    if (optimalSource.formats.ogg && supportsVideoFormat('ogg')) {
-      sources.push(
-        <source key="ogg-fallback" src={optimalSource.formats.ogg} type="video/ogg" />
-      );
-    }
-    
-    // If no sources were added, add the original videoUrl as final fallback
-    if (sources.length === 0 && optimalSource.primary) {
-      sources.push(
-        <source key="primary-fallback" src={optimalSource.primary} type="video/mp4" />
-      );
-    }
-    
-    return sources;
+    return [
+      <source key="cloudinary-mp4" src={optimalSource.primary} type="video/mp4" />
+    ];
   };
 
   // Get responsive styles based on viewport
@@ -584,6 +521,12 @@ const LoadingOverlay = ({
         playsInline
         preload="auto" // Ensure full preload for immediate playback
         loop={false}
+        // Add development-specific attributes for localhost
+        {...(process.env.NODE_ENV === 'development' && {
+          crossOrigin: 'anonymous',
+          // Force muted autoplay in development
+          muted: true
+        })}
         // Add device-specific performance attributes
         x-webkit-airplay="allow"
         x-webkit-preserve-pitch="false"
@@ -594,10 +537,15 @@ const LoadingOverlay = ({
           // Disable picture-in-picture on mobile to save resources
           disablePictureInPicture: true
         })}
+        onLoadStart={handleVideoLoadStart}
+        onProgress={handleVideoProgress}
         onCanPlay={handleVideoCanPlay}
+        onCanPlayThrough={handleVideoCanPlayThrough}
         onError={handleVideoError}
         onPlay={handleVideoPlay}
         onPause={handleVideoPause}
+        onWaiting={handleVideoWaiting}
+        onPlaying={handleVideoPlaying}
         onEnded={handleVideoEnded}
         {...getVideoAttributes()}
       >

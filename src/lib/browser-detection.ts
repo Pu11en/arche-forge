@@ -94,24 +94,12 @@ export function supportsVideoFormat(format: 'webm' | 'mp4' | 'ogg'): boolean {
 
 /**
  * Gets the optimal video format for the current browser
+ * For Cloudinary videos, always return 'mp4' for maximum compatibility
  */
 export function getOptimalVideoFormat(): 'webm' | 'mp4' | 'ogg' {
-  // Check for WebM support first (smaller file size)
-  if (supportsVideoFormat('webm')) {
-    return 'webm';
-  }
-  
-  // Fallback to MP4 (most widely supported)
-  if (supportsVideoFormat('mp4')) {
-    return 'mp4';
-  }
-  
-  // Last resort
-  if (supportsVideoFormat('ogg')) {
-    return 'ogg';
-  }
-  
-  // Default to MP4 if nothing else works
+  console.log('BrowserDetection: Using MP4 format for Cloudinary videos');
+  // Always use MP4 for Cloudinary videos to ensure maximum compatibility
+  // MP4 is universally supported and works well with external hosting
   return 'mp4';
 }
 
@@ -121,16 +109,21 @@ export function getOptimalVideoFormat(): 'webm' | 'mp4' | 'ogg' {
 export function requiresUserInteractionForAutoplay(): boolean {
   const browser = detectBrowser();
   
+  console.log('BrowserDetection: Checking autoplay requirements for:', browser);
+  
   // Safari and mobile browsers typically require user interaction
   if (browser.isSafari || browser.isMobile) {
+    console.log('BrowserDetection: User interaction required for Safari/Mobile');
     return true;
   }
   
   // Older versions of Chrome might also have restrictions
   if (browser.isChrome && browser.version && parseInt(browser.version) < 66) {
+    console.log('BrowserDetection: User interaction required for older Chrome');
     return true;
   }
   
+  console.log('BrowserDetection: Autoplay should work without user interaction');
   return false;
 }
 
@@ -240,4 +233,73 @@ export function getSafeZIndex(): string {
   
   // Modern browsers can handle higher values
   return '999999';
+}
+
+/**
+ * Checks if the current context is secure (HTTPS or localhost)
+ * Localhost is considered secure for development purposes
+ */
+export function isSecureContext(): boolean {
+  // Check if window.isSecureContext is available (modern browsers)
+  if (typeof window !== 'undefined' && 'isSecureContext' in window) {
+    const isSecure = (window as any).isSecureContext;
+    console.log('BrowserDetection: isSecureContext (native):', isSecure);
+    return isSecure;
+  }
+  
+  // Fallback for older browsers
+  if (typeof window !== 'undefined' && (window as any).location) {
+    const protocol = (window as any).location.protocol;
+    const hostname = (window as any).location.hostname;
+    
+    // HTTPS is always secure
+    if (protocol === 'https:') {
+      console.log('BrowserDetection: HTTPS protocol detected, context is secure');
+      return true;
+    }
+    
+    // HTTP on localhost is considered secure for development
+    if (protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.'))) {
+      console.log('BrowserDetection: Localhost detected, treating as secure context');
+      return true;
+    }
+    
+    console.log('BrowserDetection: Non-secure context detected:', protocol, hostname);
+    return false;
+  }
+  
+  // Default to false for SSR or unknown environments
+  console.log('BrowserDetection: Unable to determine context security, defaulting to false');
+  return false;
+}
+
+/**
+ * Enhanced autoplay requirement check that considers secure context
+ */
+export function requiresUserInteractionForAutoplayEnhanced(): boolean {
+  const browser = detectBrowser();
+  const isSecure = isSecureContext();
+  
+  console.log('BrowserDetection: Enhanced autoplay check:', { browser, isSecure });
+  
+  // In non-secure contexts, autoplay is almost always blocked
+  if (!isSecure) {
+    console.log('BrowserDetection: Non-secure context, user interaction required');
+    return true;
+  }
+  
+  // Safari and mobile browsers typically require user interaction even in secure contexts
+  if (browser.isSafari || browser.isMobile) {
+    console.log('BrowserDetection: User interaction required for Safari/Mobile even in secure context');
+    return true;
+  }
+  
+  // Older versions of Chrome might also have restrictions
+  if (browser.isChrome && browser.version && parseInt(browser.version) < 66) {
+    console.log('BrowserDetection: User interaction required for older Chrome');
+    return true;
+  }
+  
+  console.log('BrowserDetection: Autoplay should work without user interaction in secure context');
+  return false;
 }

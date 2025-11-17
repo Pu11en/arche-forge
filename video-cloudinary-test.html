@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudinary Video Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .test-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #555;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 5px;
+            max-width: 80%;
+            text-align: center;
+        }
+        
+        .error {
+            color: #ff6b6b;
+        }
+        
+        .success {
+            color: #51cf66;
+        }
+        
+        .info {
+            color: #74c0fc;
+        }
+        
+        .loading {
+            color: #ffd43b;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Cloudinary Video Test</h1>
+        <p>Testing video playback with: https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4</p>
+        
+        <div class="video-container">
+            <video id="testVideo" controls muted playsInline preload="auto">
+                <source src="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <div class="controls">
+            <button id="playBtn">Play Video</button>
+            <button id="muteBtn">Toggle Mute</button>
+            <button id="autoplayBtn">Test Autoplay</button>
+        </div>
+        
+        <div class="status" id="status">
+            <div class="info">Initializing video test...</div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const playBtn = document.getElementById('playBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const autoplayBtn = document.getElementById('autoplayBtn');
+        const status = document.getElementById('status');
+        
+        let autoplayAttempts = 0;
+        const maxAutoplayAttempts = 3;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            status.appendChild(logEntry);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+            
+            // Keep only the last 10 log entries
+            while (status.children.length > 10) {
+                status.removeChild(status.firstChild);
+            }
+        }
+        
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            const vendor = navigator.vendor || '';
+            
+            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(vendor);
+            const isFirefox = /Firefox/.test(userAgent);
+            const isSafari = /Safari/.test(userAgent) && /Apple Computer/.test(vendor) && !isChrome;
+            const isEdge = /Edg/.test(userAgent);
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+            
+            return {
+                isChrome,
+                isFirefox,
+                isSafari,
+                isEdge,
+                isMobile,
+                userAgent: navigator.userAgent
+            };
+        }
+        
+        function supportsVideoFormat(format) {
+            const video = document.createElement('video');
+            
+            switch (format) {
+                case 'webm':
+                    return video.canPlayType('video/webm; codecs="vp8, vorbis"') !== '';
+                case 'mp4':
+                    return video.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"') !== '';
+                case 'ogg':
+                    return video.canPlayType('video/ogg; codecs="theora, vorbis"') !== '';
+                default:
+                    return false;
+            }
+        }
+        
+        // Browser detection
+        const browserInfo = detectBrowser();
+        log(`Browser: ${browserInfo.isChrome ? 'Chrome' : browserInfo.isFirefox ? 'Firefox' : browserInfo.isSafari ? 'Safari' : browserInfo.isEdge ? 'Edge' : 'Unknown'} (${browserInfo.isMobile ? 'Mobile' : 'Desktop'})`);
+        log(`MP4 Support: ${supportsVideoFormat('mp4') ? 'Yes' : 'No'}`);
+        log(`WebM Support: ${supportsVideoFormat('webm') ? 'Yes' : 'No'}`);
+        
+        // Video event listeners
+        video.addEventListener('loadstart', () => {
+            log('Video loading started...', 'loading');
+        });
+        
+        video.addEventListener('progress', () => {
+            if (video.buffered.length > 0) {
+                const progress = (video.buffered.end(0) / video.duration) * 100;
+                log(`Loading progress: ${Math.round(progress)}%`, 'loading');
+            }
+        });
+        
+        video.addEventListener('canplay', () => {
+            log('Video can play', 'success');
+        });
+        
+        video.addEventListener('canplaythrough', () => {
+            log('Video can play through (fully loaded)', 'success');
+        });
+        
+        video.addEventListener('play', () => {
+            log('Video started playing', 'success');
+        });
+        
+        video.addEventListener('pause', () => {
+            log('Video paused', 'info');
+        });
+        
+        video.addEventListener('waiting', () => {
+            log('Video waiting (buffering)...', 'loading');
+        });
+        
+        video.addEventListener('playing', () => {
+            log('Video playing', 'success');
+        });
+        
+        video.addEventListener('ended', () => {
+            log('Video ended', 'info');
+        });
+        
+        video.addEventListener('error', (e) => {
+            const errorCode = video.error?.code || 'Unknown';
+            const errorMessage = video.error?.message || 'No error message available';
+            log(`Video error: ${errorCode} - ${errorMessage}`, 'error');
+            log(`Error type: ${e.type}`, 'error');
+        });
+        
+        // Button event listeners
+        playBtn.addEventListener('click', async () => {
+            try {
+                await video.play();
+                log('Manual play successful', 'success');
+            } catch (error) {
+                log(`Manual play failed: ${error.message}`, 'error');
+            }
+        });
+        
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            log(`Video ${video.muted ? 'muted' : 'unmuted'}`, 'info');
+        });
+        
+        autoplayBtn.addEventListener('click', async () => {
+            if (autoplayAttempts >= maxAutoplayAttempts) {
+                log(`Maximum autoplay attempts (${maxAutoplayAttempts}) reached`, 'error');
+                return;
+            }
+            
+            autoplayAttempts++;
+            log(`Autoplay attempt ${autoplayAttempts}/${maxAutoplayAttempts}`, 'info');
+            
+            // Reset video to beginning
+            video.currentTime = 0;
+            
+            try {
+                // Try to play with muted attribute (most permissive)
+                video.muted = true;
+                await video.play();
+                log('Autoplay successful with muted video', 'success');
+            } catch (error) {
+                log(`Autoplay failed: ${error.message}`, 'error');
+                
+                // Try with user interaction simulation
+                if (autoplayAttempts < maxAutoplayAttempts) {
+                    log('Trying with user interaction simulation...', 'info');
+                    setTimeout(() => {
+                        playBtn.click();
+                    }, 1000);
+                }
+            }
+        });
+        
+        // Initial test
+        log('Testing video loading...', 'info');
+        
+        // Check if video can be loaded
+        video.load();
+    </script>
+</body>
+</html>

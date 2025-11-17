@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Debug Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            background: #000;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+        }
+        .log {
+            margin: 20px 0;
+            padding: 10px;
+            background: #222;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Debug Test</h1>
+    <p>Testing Cloudinary video: https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4</p>
+    
+    <div class="video-container">
+        <video id="testVideo" controls muted playsInline preload="auto">
+            <source src="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="controls">
+        <button onclick="playVideo()">Play</button>
+        <button onclick="pauseVideo()">Pause</button>
+        <button onclick="restartVideo()">Restart</button>
+        <button onclick="muteVideo()">Mute</button>
+        <button onclick="unmuteVideo()">Unmute</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+    
+    <div class="log" id="log">
+        <div>Video test initialized. Click buttons to test video functionality.</div>
+    </div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const log = document.getElementById('log');
+        
+        function logMessage(message) {
+            const div = document.createElement('div');
+            div.textContent = `[${new Date().toISOString()}] ${message}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+        
+        // Video event listeners
+        video.addEventListener('loadstart', () => logMessage('Video: loadstart'));
+        video.addEventListener('loadeddata', () => logMessage('Video: loadeddata'));
+        video.addEventListener('loadedmetadata', () => logMessage(`Video: loadedmetadata - Duration: ${video.duration}s, Dimensions: ${video.videoWidth}x${video.videoHeight}`));
+        video.addEventListener('canplay', () => logMessage('Video: canplay'));
+        video.addEventListener('canplaythrough', () => logMessage('Video: canplaythrough'));
+        video.addEventListener('play', () => logMessage('Video: play'));
+        video.addEventListener('playing', () => logMessage('Video: playing'));
+        video.addEventListener('pause', () => logMessage('Video: pause'));
+        video.addEventListener('waiting', () => logMessage('Video: waiting'));
+        video.addEventListener('seeking', () => logMessage('Video: seeking'));
+        video.addEventListener('seeked', () => logMessage('Video: seeked'));
+        video.addEventListener('ended', () => logMessage('Video: ended'));
+        video.addEventListener('error', (e) => {
+            logMessage(`Video: error - ${e.message || 'Unknown error'}`);
+            if (video.error) {
+                logMessage(`Video error code: ${video.error.code} - ${video.error.message}`);
+            }
+        });
+        video.addEventListener('stalled', () => logMessage('Video: stalled'));
+        video.addEventListener('suspend', () => logMessage('Video: suspend'));
+        video.addEventListener('progress', () => {
+            if (video.buffered.length > 0) {
+                const buffered = video.buffered.end(0);
+                const progress = (buffered / video.duration) * 100;
+                logMessage(`Video: progress - ${progress.toFixed(1)}% buffered`);
+            }
+        });
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime > 0 && Math.floor(video.currentTime) % 5 === 0) {
+                logMessage(`Video: timeupdate - ${video.currentTime.toFixed(1)}s`);
+            }
+        });
+        
+        // Control functions
+        function playVideo() {
+            video.play().then(() => {
+                logMessage('Play command succeeded');
+            }).catch(error => {
+                logMessage(`Play command failed: ${error.message}`);
+            });
+        }
+        
+        function pauseVideo() {
+            video.pause();
+            logMessage('Pause command executed');
+        }
+        
+        function restartVideo() {
+            video.currentTime = 0;
+            video.play().then(() => {
+                logMessage('Restart command succeeded');
+            }).catch(error => {
+                logMessage(`Restart command failed: ${error.message}`);
+            });
+        }
+        
+        function muteVideo() {
+            video.muted = true;
+            logMessage('Video muted');
+        }
+        
+        function unmuteVideo() {
+            video.muted = false;
+            logMessage('Video unmuted');
+        }
+        
+        function clearLog() {
+            log.innerHTML = '<div>Log cleared.</div>';
+        }
+        
+        // Browser info
+        logMessage(`Browser: ${navigator.userAgent}`);
+        logMessage(`Video element supported: ${typeof HTMLVideoElement !== 'undefined'}`);
+        logMessage(`Can play MP4: ${video.canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"')}`);
+        
+        // Try to autoplay
+        video.play().then(() => {
+            logMessage('Autoplay succeeded');
+        }).catch(error => {
+            logMessage(`Autoplay failed: ${error.message}`);
+        });
+    </script>
+</body>
+</html>
