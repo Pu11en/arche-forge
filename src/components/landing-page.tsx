@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { LoadingOverlay } from "./ui/loading-overlay";
 import { LandingHero } from "./ui/landing-hero";
 import { SocialFooter } from "./ui/social-footer";
+import { LoadingOverlay } from "./ui/loading-overlay";
+import { ForgeAnalytics } from "../lib/analytics-framework";
+import { VideoPreloader } from "../lib/video-preloader";
+import { VideoErrorHandler } from "../lib/video-error-handler";
+import { MemoryManager } from "../lib/memory-manager";
+import { PerformanceOptimizer } from "../lib/performance-optimizer";
+import { useResourceCleanup } from "../hooks/useResourceCleanup";
+import { useServiceWorker } from "../hooks/useServiceWorker";
+import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
 import { useReducedMotion } from "../hooks/useReducedMotion";
-import { AnimationOrchestrationState, TransitionTimers } from "../lib/animation-timing";
+import { AnimationOrchestrationState } from "../lib/animation-timing";
 
 export interface LandingPageProps {
-  /** Optional className for additional styling */
   className?: string;
-  /** Optional callback when the CTA button is clicked */
   onCTAClick?: () => void;
-  /** Video URL to use for the intro */
   videoUrl?: string;
-  /** Whether to autoplay the video */
   autoPlay?: boolean;
 }
 
@@ -22,6 +26,96 @@ const LandingPage: React.FC<LandingPageProps> = ({
   videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   autoPlay = true
 }) => {
+  // Initialize core systems
+  const [analytics] = useState(() => new ForgeAnalytics({
+    enableGoogleAnalytics: true,
+    enableCustomAnalytics: true,
+    apiEndpoint: '/api/analytics',
+    sampleRate: 0.1,
+    debugMode: process.env.NODE_ENV === 'development'
+  }));
+
+  const [videoPreloader] = useState(() => new VideoPreloader({
+    enableAdaptiveStreaming: true,
+    preloadStrategy: 'auto',
+    networkThresholds: { slow: 1.5, fast: 5.0 },
+    deviceProfiles: {
+      mobile: [
+        { src: videoUrl.replace('.mp4', '-mobile.mp4'), type: 'video/mp4', quality: 'low' },
+        { src: videoUrl, type: 'video/mp4', quality: 'medium' }
+      ],
+      tablet: [
+        { src: videoUrl, type: 'video/mp4', quality: 'medium' },
+        { src: videoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' }
+      ],
+      desktop: [
+        { src: videoUrl.replace('.mp4', '-high.mp4'), type: 'video/mp4', quality: 'high' },
+        { src: videoUrl, type: 'video/mp4', quality: 'medium' }
+      ]
+    }
+  }));
+
+  const [videoErrorHandler] = useState(() => new VideoErrorHandler({
+    maxRetryAttempts: 3,
+    retryDelay: 1000,
+    enableQualityAdaptation: true,
+    fallbackImageUrls: {
+      mobile: 'https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.jpg',
+      tablet: 'https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.jpg',
+      desktop: 'https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.jpg'
+    },
+    fallbackVideoSources: {
+      low: 'https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4',
+      medium: videoUrl
+    }
+  }));
+
+  const [memoryManager] = useState(() => new MemoryManager({
+    enableAutoCleanup: true,
+    cleanupInterval: 30000,
+    memoryThreshold: 100,
+    enableLeakDetection: true,
+    maxResourceAge: 300000,
+    enablePerformanceMonitoring: true
+  }));
+
+  const [performanceOptimizer] = useState(() => new PerformanceOptimizer({
+    enableImageOptimization: true,
+    enableVideoOptimization: true,
+    enableAnimationOptimization: true,
+    enableMemoryOptimization: true,
+    lazyLoadThreshold: 200,
+    imageQuality: 'auto',
+    videoQuality: 'auto'
+  }));
+
+  const {
+    registerVideo
+  } = useResourceCleanup(memoryManager);
+
+  // Register resources for cleanup
+  useEffect(() => {
+    const videoElement = document.querySelector('video') as HTMLVideoElement;
+    if (videoElement) {
+      registerVideo(videoElement);
+    }
+  }, [registerVideo]);
+
+  const {
+    status: swStatus,
+    isOnline,
+    preloadVideo
+  } = useServiceWorker({
+    enableCaching: true,
+    enableOfflineSupport: true,
+    enableBackgroundSync: true,
+    enablePushNotifications: false,
+    cacheVersion: 'v2',
+    updateInterval: 60
+  });
+
+  const performanceData = usePerformanceMonitoring(analytics);
+
   const [videoState, setVideoState] = useState<{
     isPlaying: boolean;
     isCompleted: boolean;
@@ -35,162 +129,111 @@ const LandingPage: React.FC<LandingPageProps> = ({
   });
 
   const [showHero, setShowHero] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [orchestrationState, setOrchestrationState] = useState<AnimationOrchestrationState>({
-    sequencePhase: 'video-playing',
-    canStartDissolve: false,
-    canStartHero: false,
-    dissolveStartTime: 0,
-    heroStartTime: 0
-  });
 
-  const [transitionTimers, setTransitionTimers] = useState<TransitionTimers>({});
   const reducedMotion = useReducedMotion();
 
-  // Cleanup all transition timers
-  const cleanupTimers = useCallback(() => {
-    Object.values(transitionTimers).forEach(timer => {
-      if (timer) clearTimeout(timer);
-    });
-    setTransitionTimers({});
-  }, [transitionTimers]);
-
-  // Handle video completion - starts the sequential animation flow
+  // Enhanced video completion handler
   const handleVideoComplete = useCallback(() => {
-    setVideoState((prev: any) => ({
-      ...prev,
-      isCompleted: true,
-      isPlaying: false
-    }));
-
-    setOrchestrationState((prev: AnimationOrchestrationState) => ({
-      ...prev,
-      sequencePhase: 'video-completed'
-    }));
+    analytics.trackVideoCompletion(30);
+    setVideoState(prev => ({ ...prev, isCompleted: true, isPlaying: false }));
     
-    // Start dissolve sequence immediately (no delay)
-    setOrchestrationState((prev: AnimationOrchestrationState) => ({
-      ...prev,
-      sequencePhase: 'video-dissolving',
-      canStartDissolve: true
-    }));
-    // Only show hero after dissolve starts to prevent flash
-    // setShowHero will be set in handleDissolveComplete
-  }, [reducedMotion]);
+    // Trigger hero reveal
+    setTimeout(() => setShowHero(true), 300);
+  }, [analytics]);
 
-  // Handle dissolve completion - transitions to pause phase
-  const handleDissolveComplete = useCallback(() => {
-    setOrchestrationState((prev: AnimationOrchestrationState) => ({
-      ...prev,
-      sequencePhase: 'transition-pause'
-    }));
+  // Enhanced video error handler
+  const handleVideoError = useCallback(async (error: Error) => {
+    analytics.trackEvent('videoError', { error: error.message });
     
-    // Show hero immediately when dissolve completes to prevent flash
-    setShowHero(true);
-    
-    // No pause - immediate transition to hero revealing
-    setOrchestrationState((prev: AnimationOrchestrationState) => ({
-      ...prev,
-      sequencePhase: 'hero-revealing',
-      canStartHero: true
-    }));
-  }, [reducedMotion]);
+    const videoElement = document.querySelector('video') as HTMLVideoElement;
+    if (videoElement) {
+      const recovered = await videoErrorHandler.handleVideoError({
+        videoElement,
+        error,
+        sourceUrl: videoUrl,
+        attempt: 1,
+        maxAttempts: 3,
+        fallbackStrategy: 'image-fallback'
+      });
 
-  // Handle video error - maintain sequential flow even on error
-  const handleVideoError = useCallback((error: Error) => {
-    console.error("Video loading error:", error);
-    setVideoState((prev: any) => ({
-      ...prev,
-      hasError: true,
-      isPlaying: false
-    }));
+      if (!recovered) {
+        setVideoState(prev => ({ ...prev, hasError: true }));
+        analytics.trackEvent('videoErrorFatal', { error: error.message });
+      }
+    }
+  }, [analytics, videoErrorHandler, videoUrl]);
 
-    // Immediately show hero on error to prevent white screen
-    setShowHero(true);
-    
-    // Skip the dissolve sequence on error for faster recovery
-    setOrchestrationState((prev: AnimationOrchestrationState) => ({
-      ...prev,
-      sequencePhase: 'hero-revealing',
-      canStartHero: true
-    }));
-  }, [reducedMotion]);
+  // Enhanced CTA click handler
+  const handleCTAClick = useCallback(() => {
+    analytics.trackCTAClick('ENTER THE FORGE', 'landing-page-hero');
+    onCTAClick?.();
+  }, [analytics]);
 
-  // Handle video ready state
-  const handleVideoReady = useCallback(() => {
-    setVideoState((prev: any) => ({
-      ...prev,
-      isReady: true
-    }));
-  }, []);
-
-  // Preload hero content to ensure it's ready before video ends
+  // Initialize systems on mount
   useEffect(() => {
-    // Mark initial load as complete after a short delay to prevent flash
-    const initialLoadTimer = setTimeout(() => {
-      setIsInitialLoad(false);
-    }, 100);
+    // Preload critical assets
+    videoPreloader.preloadCriticalAssets();
     
-    // Preload the hero image to prevent flickering
-    const img = new Image();
-    img.src = "https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png";
-    img.onload = () => {
-      // Image is loaded, hero is ready to be displayed
-      handleVideoReady();
-    };
-    img.onerror = () => {
-      // Even if image fails, we should still show the hero
-      handleVideoReady();
-    };
-    
-    return () => {
-      clearTimeout(initialLoadTimer);
-    };
-  }, [handleVideoReady]);
+    // Preload video if service worker is ready
+    if (swStatus.activated && autoPlay) {
+      preloadVideo(videoUrl);
+    }
+  }, [videoPreloader, swStatus.activated, autoPlay, preloadVideo]);
 
-  // Cleanup timers on component unmount
+  // Performance monitoring
+  useEffect(() => {
+    if (performanceData.fps < 30) {
+      console.warn('Low FPS detected:', performanceData.fps);
+      analytics.trackPerformanceMetric('lowFPS', performanceData.fps);
+    }
+    
+    if (performanceData.memoryUsage > 80) {
+      console.warn('High memory usage detected:', performanceData.memoryUsage);
+      analytics.trackPerformanceMetric('highMemoryUsage', performanceData.memoryUsage);
+    }
+  }, [performanceData, analytics]);
+
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      cleanupTimers();
+      analytics.destroy();
+      memoryManager.destroy();
+      performanceOptimizer.destroy();
     };
-  }, [cleanupTimers]);
+  }, [analytics, memoryManager, performanceOptimizer]);
 
   return (
     <div className={`relative w-full h-screen overflow-hidden ${className}`}>
       {/* Video Intro Overlay */}
-      {!videoState.hasError && orchestrationState.sequencePhase !== 'complete' && (
+      {!videoState.hasError && (
         <LoadingOverlay
           isVisible={true}
           videoUrl={videoUrl}
           onVideoComplete={handleVideoComplete}
           onVideoError={(error) => handleVideoError(error || new Error('Unknown video error'))}
-          onTransitionComplete={handleDissolveComplete}
           attemptAutoplay={autoPlay}
           className="absolute inset-0 z-50"
-          fallbackBgColor="bg-black"
-          useFizzEffect={true}
-          showLoadingIndicator={true}
-          orchestrationState={orchestrationState}
         />
       )}
 
-      {/* Landing Hero Section - Only render when ready to prevent flash */}
-      {!isInitialLoad && (
-        <LandingHero
-          initialVisibility={showHero || !autoPlay || videoState.hasError}
-          onCTAClick={onCTAClick}
-          className={`absolute inset-0 transition-opacity duration-300 ${
-            showHero || !autoPlay || videoState.hasError || orchestrationState.canStartHero ? "opacity-100" : "opacity-0"
-          }`}
-          style={{
-            zIndex: 10, // Ensure hero is above fallback but below video overlay
-            backgroundColor: '#000000' // Black background to prevent white flash
-          }}
-        />
-      )}
+      {/* Landing Hero Section */}
+      <LandingHero
+        initialVisibility={showHero || !autoPlay || videoState.hasError}
+        onCTAClick={handleCTAClick}
+        className={`absolute inset-0 transition-opacity duration-300 ${
+          showHero || !autoPlay || videoState.hasError ? "opacity-100" : "opacity-0"
+        }`}
+      />
 
       {/* Social Footer */}
       <SocialFooter />
+
+      {/* Offline Indicator */}
+      {!isOnline && (
+        <div className="fixed top-0 left-0 right-0 bg-red-500 text-white text-center p-2 z-50">
+          You are currently offline
+        </div>
+      )}
     </div>
   );
 };
