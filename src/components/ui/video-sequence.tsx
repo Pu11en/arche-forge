@@ -63,6 +63,15 @@ export const VideoSequence = ({
       // Start fading out intro video
       setIntroOpacity(0);
       
+      // Immediately start playing the looping video
+      const loopingVideo = loopingVideoRef.current;
+      if (loopingVideo) {
+        console.log('[VideoSequence] Starting looping video playback immediately');
+        loopingVideo.play().catch(error => {
+          console.warn('[VideoSequence] Failed to play looping video:', error);
+        });
+      }
+      
       // Start looping video after 1 second
       setTimeout(() => {
         setLoopingOpacity(1);
@@ -88,6 +97,16 @@ export const VideoSequence = ({
   // Handle intro video completion
   const handleIntroComplete = useCallback(() => {
     console.log('[VideoSequence] Intro video completed');
+    
+    // Immediately start the looping video to prevent white screen
+    const loopingVideo = loopingVideoRef.current;
+    if (loopingVideo) {
+      console.log('[VideoSequence] Starting looping video on intro complete');
+      loopingVideo.play().catch(error => {
+        console.warn('[VideoSequence] Failed to play looping video on intro complete:', error);
+      });
+    }
+    
     // If we haven't triggered the transition yet, do it now
     if (sequenceState === 'intro') {
       handleBullTriggerPoint();
@@ -198,12 +217,13 @@ export const VideoSequence = ({
           opacity: loopingOpacity,
           willChange: 'opacity', // GPU acceleration hint
           transform: 'translateZ(0)', // Force GPU layer
-          backgroundColor: '#000000' // Ensure black background
+          backgroundColor: '#000000', // Ensure black background
+          pointerEvents: loopingOpacity > 0 ? 'auto' : 'none' // Only interact when visible
         }}
       >
         <LoopingVideo
           videoUrl={loopingVideoUrl}
-          isVisible={true} // Always visible but controlled by parent opacity
+          isVisible={loopingOpacity > 0} // Visible when opacity is greater than 0
           onVideoError={handleVideoError}
           onVideoReady={() => console.log('[VideoSequence] Looping video is ready')}
           onVideoCanPlay={() => console.log('[VideoSequence] Looping video can play')}

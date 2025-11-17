@@ -185,23 +185,25 @@ export const LoopingVideo = ({
     }
   }, [isVisible, videoState.isLoaded, videoState.isPlaying, videoState.needsUserInteraction, videoElement]);
 
-  // Force video to play when it becomes visible during transition
+  // Force video to play when it becomes visible during transition - CRITICAL for preventing white screen
   useEffect(() => {
     const video = videoElement;
-    if (video && isVisible && videoState.isLoaded && !videoState.isPlaying) {
-      console.log('[LoopingVideo] Forcing video to play during transition');
-      console.log('[LoopingVideo] Video element state during force play - paused:', video.paused, 'currentTime:', video.currentTime, 'readyState:', video.readyState);
+    if (video && isVisible) {
+      console.log('[LoopingVideo] isVisible changed to true, forcing video to play immediately');
+      console.log('[LoopingVideo] Video element state - paused:', video.paused, 'currentTime:', video.currentTime, 'readyState:', video.readyState);
+      
+      // Play immediately regardless of loading state to prevent white screen
       const playPromise = video.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
-          console.log('[LoopingVideo] Force play successful');
+          console.log('[LoopingVideo] Force play successful on visibility change');
           setVideoState(prev => ({ ...prev, isPlaying: true }));
         }).catch(error => {
-          console.warn('[LoopingVideo] Force play failed:', error);
+          console.warn('[LoopingVideo] Force play failed on visibility change:', error);
         });
       }
     }
-  }, [isVisible, videoState.isLoaded, videoState.isPlaying, videoElement]);
+  }, [isVisible, videoElement]);
 
   // Set up event listeners for preloaded video
   useEffect(() => {
