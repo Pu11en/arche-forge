@@ -15,7 +15,7 @@ export interface ResourceRegistry {
   videos: Set<HTMLVideoElement>;
   images: Set<HTMLImageElement>;
   timers: Set<NodeJS.Timeout>;
-  intervals: Set<NodeJS.Interval>;
+  intervals: Set<ReturnType<typeof setInterval>>;
   eventListeners: Map<EventTarget, Array<{ type: string; listener: EventListener; options?: AddEventListenerOptions }>>;
   observers: Set<IntersectionObserver | MutationObserver | ResizeObserver | PerformanceObserver>;
   animations: Set<number>;
@@ -184,7 +184,7 @@ class MemoryManager {
     clearTimeout(timer);
   }
 
-  public clearInterval(interval: NodeJS.Interval): void {
+  public clearInterval(interval: ReturnType<typeof setInterval>): void {
     this.resources.intervals.delete(interval);
     clearInterval(interval);
   }
@@ -329,7 +329,7 @@ class MemoryManager {
     });
     
     // Clean up completed animations
-    this.resources.animations.forEach(animationId => {
+    this.resources.animations.forEach(_animationId => {
       // Animation frames are automatically cleaned up after execution
       // This is more for tracking purposes
     });
@@ -468,4 +468,3 @@ class MemoryManager {
 }
 
 export { MemoryManager };
-export type { MemoryStats, ResourceRegistry, MemoryManagerConfig };

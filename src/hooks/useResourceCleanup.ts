@@ -24,7 +24,7 @@ export const useResourceCleanup = (
     videos: HTMLVideoElement[];
     images: HTMLImageElement[];
     timers: NodeJS.Timeout[];
-    intervals: NodeJS.Interval[];
+    intervals: ReturnType<typeof setInterval>[];
     cleanupFunctions: (() => void)[];
   }>({
     videos: [],

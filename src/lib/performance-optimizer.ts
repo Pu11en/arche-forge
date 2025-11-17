@@ -131,7 +131,7 @@ class PerformanceOptimizer {
     }
   }
 
-  private getResponsiveImageSizes(img: HTMLImageElement): string {
+  private getResponsiveImageSizes(_img: HTMLImageElement): string {
     const deviceType = this.getDeviceType();
     
     switch (deviceType) {
@@ -324,7 +324,7 @@ class PerformanceOptimizer {
           
           // Load lazy content
           if (element.dataset.src) {
-            element.src = element.dataset.src;
+            (element as HTMLImageElement).src = element.dataset.src;
             delete element.dataset.src;
           }
           
@@ -393,4 +393,3 @@ class PerformanceOptimizer {
 }
 
 export { PerformanceOptimizer };
-export type { PerformanceConfig, OptimizationMetrics };
