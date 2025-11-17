@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { BullVideoHero } from "./ui/bull-video-hero";
 import { HeroText } from "./ui/hero-text";
 import { TMLoop } from "./ui/tm-loop";
-import { SocialFooter } from "./ui/social-footer";
 import { VideoIntro } from "./ui/video-intro";
 import { ForgeAnalytics } from "../lib/analytics-framework";
 import { MemoryManager } from "../lib/memory-manager";
@@ -23,37 +23,49 @@ const LandingPage: React.FC<LandingPageProps> = ({
   desktopBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4",
   mobileBackgroundVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4"
 }) => {
-  // Initialize core systems
-  const [analytics] = useState(() => new ForgeAnalytics({
-    enableGoogleAnalytics: true,
-    enableCustomAnalytics: true,
-    apiEndpoint: '/api/analytics',
-    sampleRate: 0.1,
-    debugMode: process.env.NODE_ENV === 'development'
-  }));
+  // Use refs to persist instances without causing re-renders
+  const analyticsRef = useRef<ForgeAnalytics | null>(null);
+  const memoryManagerRef = useRef<MemoryManager | null>(null);
+  const performanceOptimizerRef = useRef<PerformanceOptimizer | null>(null);
+  const isInitializedRef = useRef(false);
 
-  const [memoryManager] = useState(() => new MemoryManager({
-    enableAutoCleanup: true,
-    cleanupInterval: 30000,
-    memoryThreshold: 100,
-    enableLeakDetection: true,
-    maxResourceAge: 300000,
-    enablePerformanceMonitoring: true
-  }));
+  // Initialize core systems only once
+  useEffect(() => {
+    if (isInitializedRef.current) return;
+    
+    analyticsRef.current = new ForgeAnalytics({
+      enableGoogleAnalytics: true,
+      enableCustomAnalytics: true,
+      apiEndpoint: '/api/analytics',
+      sampleRate: 0.1,
+      debugMode: process.env.NODE_ENV === 'development'
+    });
 
-  const [performanceOptimizer] = useState(() => new PerformanceOptimizer({
-    enableImageOptimization: true,
-    enableVideoOptimization: true,
-    enableAnimationOptimization: true,
-    enableMemoryOptimization: true,
-    lazyLoadThreshold: 200,
-    imageQuality: 'auto',
-    videoQuality: 'auto'
-  }));
+    memoryManagerRef.current = new MemoryManager({
+      enableAutoCleanup: true,
+      cleanupInterval: 30000,
+      memoryThreshold: 100,
+      enableLeakDetection: true,
+      maxResourceAge: 300000,
+      enablePerformanceMonitoring: true
+    });
+
+    performanceOptimizerRef.current = new PerformanceOptimizer({
+      enableImageOptimization: true,
+      enableVideoOptimization: true,
+      enableAnimationOptimization: true,
+      enableMemoryOptimization: true,
+      lazyLoadThreshold: 200,
+      imageQuality: 'auto',
+      videoQuality: 'auto'
+    });
+
+    isInitializedRef.current = true;
+  }, []);
 
   const {
     registerVideo
-  } = useResourceCleanup(memoryManager);
+  } = useResourceCleanup(memoryManagerRef.current!);
 
   // Register resources for cleanup
   useEffect(() => {
@@ -74,7 +86,7 @@ const LandingPage: React.FC<LandingPageProps> = ({
     updateInterval: 60
   });
 
-  const performanceData = usePerformanceMonitoring(analytics);
+  const performanceData = usePerformanceMonitoring(analyticsRef.current || undefined);
 
   const [showVideoIntro, setShowVideoIntro] = useState(true);
   const showHeroText = true;
@@ -86,25 +98,27 @@ const LandingPage: React.FC<LandingPageProps> = ({
 
   // Performance monitoring
   useEffect(() => {
+    if (!analyticsRef.current) return;
+    
     if (performanceData.fps < 30) {
       logger.performance('medium', 'Low FPS detected:', performanceData.fps);
-      analytics.trackPerformanceMetric('lowFPS', performanceData.fps);
+      analyticsRef.current.trackPerformanceMetric('lowFPS', performanceData.fps);
     }
 
     if (performanceData.memoryUsage > 80) {
       logger.performance('high', 'High memory usage detected:', performanceData.memoryUsage);
-      analytics.trackPerformanceMetric('highMemoryUsage', performanceData.memoryUsage);
+      analyticsRef.current.trackPerformanceMetric('highMemoryUsage', performanceData.memoryUsage);
     }
-  }, [performanceData, analytics]);
+  }, [performanceData]);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      analytics.destroy();
-      memoryManager.destroy();
-      performanceOptimizer.destroy();
+      if (analyticsRef.current) analyticsRef.current.destroy();
+      if (memoryManagerRef.current) memoryManagerRef.current.destroy();
+      if (performanceOptimizerRef.current) performanceOptimizerRef.current.destroy();
     };
-  }, [analytics, memoryManager, performanceOptimizer]);
+  }, []);
 
   return (
     <div className={`relative w-full h-screen overflow-hidden ${className}`}>
@@ -132,8 +146,6 @@ const LandingPage: React.FC<LandingPageProps> = ({
             className="absolute inset-0"
           />
 
-          {/* Social Footer - always visible */}
-          <SocialFooter />
         </>
       )}
 

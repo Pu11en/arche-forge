@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import { SocialMediaIcons } from "./social-media-icons";
 import { useReducedMotion, useMotionProps } from "../../hooks/useReducedMotion";
 
 function Hero() {
@@ -385,10 +384,6 @@ function Hero() {
         </div>
         
         
-        {/* Social Media Icons with negative margin-top to move them up */}
-        <div className="-mt-4">
-          <SocialMediaIcons />
-        </div>
       </div>
     </div>
   );

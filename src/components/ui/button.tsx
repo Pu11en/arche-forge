@@ -1,9 +1,9 @@
-import React from "react";
+import * as React from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "secondary" | "outline" | "ghost" | "linkedin";
+  variant?: "default" | "secondary" | "outline" | "ghost";
   size?: "default" | "sm" | "lg" | "xl";
   asChild?: boolean;
 }
@@ -17,7 +17,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       secondary: "bg-gray-600 text-white hover:bg-gray-700",
       outline: "border border-gray-300 bg-white hover:bg-gray-50",
       ghost: "hover:bg-gray-100",
-      linkedin: `bg-blue-700 text-white hover:bg-blue-800 ${reducedMotion ? '' : 'hover:shadow-lg transition-all duration-300'}`,
     };
 
     const sizes: Record<string, string> = {

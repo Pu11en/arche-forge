@@ -73,11 +73,16 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
         backgroundColor: '#000000' // Black background to prevent white flash
       }}
     >
+      {/* Fallback background (visible while video loads or on error) */}
+      <div
+        className={`absolute inset-0 bg-black z-0 transition-opacity duration-1000 ${videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'}`}
+      />
+      
       {/* Looping Bull Video */}
       {!videoError && (
         <video
           ref={videoRef}
-          className={`absolute top-0 left-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute top-0 left-0 w-full h-full object-cover z-10 transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
           autoPlay
           loop
           muted
@@ -98,11 +103,6 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           Your browser does not support the video tag.
         </video>
       )}
-      
-      {/* Fallback background (visible while video loads or on error) */}
-      <div 
-        className={`absolute inset-0 bg-black z-0 transition-opacity duration-1000 ${videoLoaded && !videoError ? 'opacity-0' : 'opacity-100'}`}
-      />
     </div>
   );
 };
