@@ -226,38 +226,46 @@ export const LoopingVideo = ({
     };
   }, [handleVideoCanPlay, handleVideoLoadedData, handleVideoErrorNative, handleVideoPlay, handleVideoPause, videoElement]);
 
-  if (!isVisible) {
-    return null;
-  }
-
+  // Always render the component - let parent opacity control visibility
+  // This ensures the video element is in the DOM and ready to play
   return (
-    <div className={`fixed inset-0 ${fallbackBgColor} ${className}`} style={{ backgroundColor: '#000000' }}>
-      {/* Video Background */}
-      <video
-        style={{
-          ...getResponsiveVideoStyles(),
-          ...getPrefixedStyles({
-            opacity: videoState.isLoaded ? '1' : '0',
-            transition: `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`,
-            backgroundColor: '#000000' // Ensure black background
-          })
-        }}
-        autoPlay={true} // Force autoplay
-        muted
-        playsInline
-        preload="auto" // Force preload
-        loop={true}
-        onCanPlay={handleVideoCanPlay}
-        onLoadedData={handleVideoLoadedData}
-        onError={handleVideoError}
-        onPlay={handleVideoPlay}
-        onPause={handleVideoPause}
-        aria-label="Background video"
-        {...getVideoAttributes()}
-      >
-        <source src={videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+    <div
+      ref={containerRef}
+      className={`fixed inset-0 ${fallbackBgColor} ${className}`}
+      style={{
+        backgroundColor: '#000000',
+        opacity: videoState.isLoaded ? '1' : '0',
+        transition: `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`
+      }}
+    >
+      {/* Video element is attached via useEffect when videoElement prop is provided */}
+      {!videoElement && (
+        <video
+          style={{
+            ...getResponsiveVideoStyles(),
+            ...getPrefixedStyles({
+              opacity: videoState.isLoaded ? '1' : '0',
+              transition: `opacity ${reducedMotion ? '0' : '1'}s ease-in-out`,
+              backgroundColor: '#000000'
+            })
+          }}
+          autoPlay={true}
+          muted
+          playsInline
+          preload="auto"
+          loop={true}
+          onCanPlay={handleVideoCanPlay}
+          onLoadedData={handleVideoLoadedData}
+          onError={handleVideoError}
+          onPlay={handleVideoPlay}
+          onPause={handleVideoPause}
+          aria-label="Background video"
+          {...getVideoAttributes()}
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
       
       {/* Debug information */}
       {false && (
