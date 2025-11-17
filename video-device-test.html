@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Device Detection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .device-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .video-info {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .test-result {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        video {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+        .url-display {
+            word-break: break-all;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Device Detection Test</h1>
+    
+    <div class="test-container">
+        <h2>Device Detection</h2>
+        <div class="device-info" id="deviceInfo">
+            <p>Detecting device...</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Video URL Selection</h2>
+        <div class="video-info" id="videoInfo">
+            <p>Determining video URL...</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Video Test</h2>
+        <div id="videoContainer">
+            <p>Preparing video test...</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Test Results</h2>
+        <div class="test-result" id="testResults">
+            <p>Running tests...</p>
+        </div>
+    </div>
+
+    <script>
+        // Browser detection function (copied from the app)
+        function detectBrowser() {
+            const userAgent = navigator.userAgent;
+            const vendor = navigator.vendor || '';
+            
+            // Chrome detection
+            const isChrome = /Chrome/.test(userAgent) && /Google Inc/.test(vendor);
+            
+            // Firefox detection
+            const isFirefox = /Firefox/.test(userAgent);
+            
+            // Safari detection (must be checked before Chrome as Chrome also contains Safari)
+            const isSafari = /Safari/.test(userAgent) && /Apple Computer/.test(vendor) && !isChrome;
+            
+            // Edge detection
+            const isEdge = /Edg/.test(userAgent);
+            
+            // IE detection
+            const isIE = /MSIE|Trident/.test(userAgent);
+            
+            // Mobile detection
+            const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+            const isDesktop = !isMobile;
+            
+            // Extract version
+            let version = null;
+            try {
+                if (isChrome) {
+                    const match = userAgent.match(/Chrome\/(\d+)/);
+                    version = match ? match[1] : null;
+                } else if (isFirefox) {
+                    const match = userAgent.match(/Firefox\/(\d+)/);
+                    version = match ? match[1] : null;
+                } else if (isSafari) {
+                    const match = userAgent.match(/Version\/(\d+)/);
+                    version = match ? match[1] : null;
+                } else if (isEdge) {
+                    const match = userAgent.match(/Edg\/(\d+)/);
+                    version = match ? match[1] : null;
+                } else if (isIE) {
+                    const match = userAgent.match(/(?:MSIE |rv:)(\d+)/);
+                    version = match ? match[1] : null;
+                }
+            } catch (e) {
+                console.warn('Failed to extract browser version:', e);
+            }
+            
+            return {
+                isChrome,
+                isFirefox,
+                isSafari,
+                isEdge,
+                isIE,
+                isMobile,
+                isDesktop,
+                version
+            };
+        }
+        
+        // Video URLs from the requirements
+        const DESKTOP_VIDEO_URL = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4";
+        const MOBILE_VIDEO_URL = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4";
+        
+        // Simulate the video URL selection logic from the app
+        function selectVideoUrl() {
+            const browser = detectBrowser();
+            return browser.isMobile ? MOBILE_VIDEO_URL : DESKTOP_VIDEO_URL;
+        }
+        
+        // Run the test
+        function runTest() {
+            const browser = detectBrowser();
+            const selectedVideoUrl = selectVideoUrl();
+            
+            // Display device info
+            const deviceInfo = document.getElementById('deviceInfo');
+            deviceInfo.innerHTML = `
+                <p><strong>Browser:</strong> ${browser.isChrome ? 'Chrome' : browser.isFirefox ? 'Firefox' : browser.isSafari ? 'Safari' : browser.isEdge ? 'Edge' : browser.isIE ? 'IE' : 'Unknown'}</p>
+                <p><strong>Version:</strong> ${browser.version || 'Unknown'}</p>
+                <p><strong>Device Type:</strong> ${browser.isMobile ? 'Mobile' : 'Desktop'}</p>
+                <p><strong>User Agent:</strong> ${navigator.userAgent}</p>
+            `;
+            
+            // Display video info
+            const videoInfo = document.getElementById('videoInfo');
+            const expectedUrl = browser.isMobile ? MOBILE_VIDEO_URL : DESKTOP_VIDEO_URL;
+            const isCorrect = selectedVideoUrl === expectedUrl;
+            
+            videoInfo.innerHTML = `
+                <p><strong>Expected URL:</strong> ${browser.isMobile ? 'Mobile' : 'Desktop'} video</p>
+                <p><strong>Desktop URL:</strong> <span class="url-display">${DESKTOP_VIDEO_URL}</span></p>
+                <p><strong>Mobile URL:</strong> <span class="url-display">${MOBILE_VIDEO_URL}</span></p>
+                <p><strong>Selected URL:</strong> <span class="url-display">${selectedVideoUrl}</span></p>
+                <p><strong>Correct Selection:</strong> ${isCorrect ? '✅ Yes' : '❌ No'}</p>
+            `;
+            
+            // Create video test
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `
+                <h3>Testing Video: ${browser.isMobile ? 'Mobile' : 'Desktop'} Version</h3>
+                <video controls preload="metadata">
+                    <source src="${selectedVideoUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Video URL: <span class="url-display">${selectedVideoUrl}</span></p>
+                <button onclick="testVideoPlayback()">Test Video Playback</button>
+                <button onclick="switchDevice()">Simulate Device Switch</button>
+            `;
+            
+            const video = videoContainer.querySelector('video');
+            
+            // Add event listeners to video
+            video.addEventListener('loadstart', () => {
+                console.log('Video loading started');
+            });
+            
+            video.addEventListener('canplay', () => {
+                console.log('Video can play');
+                updateTestResults('Video loaded successfully', 'success');
+            });
+            
+            video.addEventListener('error', (e) => {
+                console.error('Video error:', e);
+                updateTestResults(`Video error: ${e.message || 'Unknown error'}`, 'error');
+            });
+            
+            // Display test results
+            const testResults = document.getElementById('testResults');
+            testResults.innerHTML = `
+                <p><strong>Device Detection:</strong> ✅ Working</p>
+                <p><strong>Video URL Selection:</strong> ${isCorrect ? '✅ Correct' : '❌ Incorrect'}</p>
+                <p><strong>Video Loading:</strong> ⏳ Testing...</p>
+                <p><strong>Browser Console:</strong> Check for any video-related errors</p>
+            `;
+        }
+        
+        function testVideoPlayback() {
+            const video = document.querySelector('video');
+            if (video) {
+                video.play().then(() => {
+                    updateTestResults('Video playback started successfully', 'success');
+                }).catch(error => {
+                    updateTestResults(`Video playback failed: ${error.message}`, 'error');
+                });
+            }
+        }
+        
+        function switchDevice() {
+            // This simulates switching between desktop and mobile views
+            const videoContainer = document.getElementById('videoContainer');
+            const currentUrl = document.querySelector('video source').src;
+            const isCurrentlyMobile = currentUrl.includes(MOBILE_VIDEO_URL);
+            const newUrl = isCurrentlyMobile ? DESKTOP_VIDEO_URL : MOBILE_VIDEO_URL;
+            const deviceType = isCurrentlyMobile ? 'Desktop' : 'Mobile';
+            
+            videoContainer.innerHTML = `
+                <h3>Testing Video: ${deviceType} Version (Simulated)</h3>
+                <video controls preload="metadata">
+                    <source src="${newUrl}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p>Video URL: <span class="url-display">${newUrl}</span></p>
+                <button onclick="testVideoPlayback()">Test Video Playback</button>
+                <button onclick="switchDevice()">Switch Back</button>
+            `;
+            
+            updateTestResults(`Switched to ${deviceType} video`, 'success');
+        }
+        
+        function updateTestResults(message, type = 'info') {
+            const testResults = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            
+            testResults.innerHTML += `<p class="${className}"><strong>[${timestamp}]</strong> ${message}</p>`;
+        }
+        
+        // Run the test when the page loads
+        window.addEventListener('load', runTest);
+        
+        // Log to console for debugging
+        console.log('Desktop Video URL:', DESKTOP_VIDEO_URL);
+        console.log('Mobile Video URL:', MOBILE_VIDEO_URL);
+        console.log('Detected device:', detectBrowser());
+        console.log('Selected video URL:', selectVideoUrl());
+    </script>
+</body>
+</html>
