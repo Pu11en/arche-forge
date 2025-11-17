@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import { detectBrowser } from "../../lib/browser-detection";
+import { logger } from "../../lib/logger";
 
 export interface BullVideoHeroProps {
   /** Desktop background video URL */
@@ -27,17 +28,16 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
 
   // Handle video events
   const handleVideoCanPlay = useCallback(() => {
-    console.log('BullVideoHero: Video can play');
+    logger.videoDebug('Video can play');
     const video = videoRef.current;
     
     if (video) {
-      console.log('BullVideoHero: Video duration:', video.duration);
-      console.log('BullVideoHero: Video readyState:', video.readyState);
+      logger.videoDebug('Video duration:', video.duration, 'readyState:', video.readyState);
       
       // Attempt to ensure video is playing
       if (video.paused && video.readyState >= 2) {
         video.play().catch(error => {
-          console.warn('BullVideoHero: Autoplay failed after canplay:', error);
+          logger.warn('BullVideoHero: Autoplay failed after canplay:', error);
         });
       }
     }
@@ -50,29 +50,21 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
     const errorCode = videoElement.error?.code || 'Unknown';
     const errorMessage = videoElement.error?.message || 'No error message available';
     
-    console.error('BullVideoHero: Video failed to load:', { errorCode, errorMessage });
+    logger.error('BullVideoHero: Video failed to load:', { errorCode, errorMessage });
     setVideoError(true);
   }, []);
 
   const handleVideoPlay = useCallback(() => {
-    console.log('BullVideoHero: Video started playing');
+    logger.videoDebug('Video started playing');
   }, []);
 
   const handleVideoWaiting = useCallback(() => {
-    console.log('BullVideoHero: Video waiting (buffering)');
+    logger.videoDebug('Video waiting (buffering)');
   }, []);
 
   const handleVideoPlaying = useCallback(() => {
-    console.log('BullVideoHero: Video playing');
+    logger.videoDebug('Video playing');
   }, []);
-
-  // Debug logging for BullVideoHero state
-  console.log('BullVideoHero render state:', {
-    videoLoaded,
-    videoError,
-    videoUrl,
-    className
-  });
 
   return (
     <div

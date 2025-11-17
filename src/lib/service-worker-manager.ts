@@ -3,6 +3,8 @@
  * Handles service worker registration, communication, and lifecycle management
  */
 
+import { logger } from './logger';
+
 export interface ServiceWorkerConfig {
   enableCaching: boolean;
   enableOfflineSupport: boolean;
@@ -54,17 +56,17 @@ class ServiceWorkerManager {
 
   public async register(): Promise<boolean> {
     if (!('serviceWorker' in navigator)) {
-      console.warn('Service Worker not supported');
+      logger.warn('Service Worker not supported');
       return false;
     }
 
     try {
-      console.log('Service Worker: Registering...');
+      logger.serviceWorker('Registering...');
       this.registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/'
       });
 
-      console.log('Service Worker: Registered successfully');
+      logger.serviceWorker('Registered successfully');
       
       // Set up event listeners
       this.setupEventListeners();
@@ -74,7 +76,7 @@ class ServiceWorkerManager {
       
       return true;
     } catch (error) {
-      console.error('Service Worker: Registration failed:', error);
+      logger.error('Service Worker: Registration failed:', error);
       return false;
     }
   }
@@ -84,7 +86,7 @@ class ServiceWorkerManager {
 
     // Update found
     this.registration.addEventListener('updatefound', () => {
-      console.log('Service Worker: Update found');
+      logger.serviceWorker('Update found');
       const newWorker = this.registration?.installing;
       
       if (newWorker) {
@@ -99,7 +101,7 @@ class ServiceWorkerManager {
 
     // Controller change
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('Service Worker: Controller changed');
+      logger.serviceWorker('Controller changed');
       window.location.reload();
     });
 
@@ -124,7 +126,7 @@ class ServiceWorkerManager {
         break;
         
       default:
-        console.log('Service Worker: Unknown message type:', type, data);
+        logger.serviceWorker('Unknown message type:', type, data);
     }
   }
 
@@ -142,7 +144,7 @@ class ServiceWorkerManager {
     try {
       await this.registration.update();
     } catch (error) {
-      console.warn('Service Worker: Update check failed:', error);
+      logger.warn('Service Worker: Update check failed:', error);
     }
   }
 

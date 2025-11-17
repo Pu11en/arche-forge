@@ -1,0 +1,3820 @@
+{
+  "timestamp": "2025-11-17T05:10:33.364Z",
+  "results": {
+    "buildTest": {
+      "passed": false,
+      "message": "Test failed: Execution context was destroyed, most likely because of a navigation."
+    },
+    "videoPlaybackTest": {
+      "passed": false,
+      "message": ""
+    },
+    "transitionTest": {
+      "passed": false,
+      "message": ""
+    },
+    "errorHandlingTest": {
+      "passed": false,
+      "message": ""
+    },
+    "crossBrowserTest": {
+      "passed": false,
+      "message": ""
+    }
+  },
+  "summary": {
+    "passed": 0,
+    "total": 5,
+    "successRate": "0.0%"
+  },
+  "consoleMessages": [
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "warn",
+      "text": "Error while trying to use the following icon from the Manifest: http://localhost:4173/apple-touch-icon.png (Download error or resource isn't a valid image)"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Update found"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 ()"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Controller changed"
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "warn",
+      "text": "Low FPS detected: 9"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registered successfully"
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Service Worker: Registering..."
+    },
+    {
+      "type": "log",
+      "text": "Performing comprehensive cleanup..."
+    }
+  ]
+}

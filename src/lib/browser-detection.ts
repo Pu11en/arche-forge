@@ -2,6 +2,8 @@
  * Browser detection utilities for handling cross-browser compatibility
  */
 
+import { logger } from './logger';
+
 export interface BrowserInfo {
   isChrome: boolean;
   isFirefox: boolean;
@@ -59,7 +61,7 @@ export function detectBrowser(): BrowserInfo {
       version = match ? match[1] : null;
     }
   } catch (e) {
-    console.warn('Failed to extract browser version:', e);
+    logger.warn('Failed to extract browser version:', e);
   }
   
   return {
@@ -97,7 +99,7 @@ export function supportsVideoFormat(format: 'webm' | 'mp4' | 'ogg'): boolean {
  * For Cloudinary videos, always return 'mp4' for maximum compatibility
  */
 export function getOptimalVideoFormat(): 'webm' | 'mp4' | 'ogg' {
-  console.log('BrowserDetection: Using MP4 format for Cloudinary videos');
+  logger.browserDetection('Using MP4 format for Cloudinary videos');
   // Always use MP4 for Cloudinary videos to ensure maximum compatibility
   // MP4 is universally supported and works well with external hosting
   return 'mp4';
@@ -109,21 +111,21 @@ export function getOptimalVideoFormat(): 'webm' | 'mp4' | 'ogg' {
 export function requiresUserInteractionForAutoplay(): boolean {
   const browser = detectBrowser();
   
-  console.log('BrowserDetection: Checking autoplay requirements for:', browser);
+  logger.browserDetection('Checking autoplay requirements for:', browser);
   
   // Safari and mobile browsers typically require user interaction
   if (browser.isSafari || browser.isMobile) {
-    console.log('BrowserDetection: User interaction required for Safari/Mobile');
+    logger.browserDetection('User interaction required for Safari/Mobile');
     return true;
   }
   
   // Older versions of Chrome might also have restrictions
   if (browser.isChrome && browser.version && parseInt(browser.version) < 66) {
-    console.log('BrowserDetection: User interaction required for older Chrome');
+    logger.browserDetection('User interaction required for older Chrome');
     return true;
   }
   
-  console.log('BrowserDetection: Autoplay should work without user interaction');
+  logger.browserDetection('Autoplay should work without user interaction');
   return false;
 }
 
@@ -243,7 +245,7 @@ export function isSecureContext(): boolean {
   // Check if window.isSecureContext is available (modern browsers)
   if (typeof window !== 'undefined' && 'isSecureContext' in window) {
     const isSecure = (window as any).isSecureContext;
-    console.log('BrowserDetection: isSecureContext (native):', isSecure);
+    logger.browserDetection('isSecureContext (native):', isSecure);
     return isSecure;
   }
   
@@ -254,22 +256,22 @@ export function isSecureContext(): boolean {
     
     // HTTPS is always secure
     if (protocol === 'https:') {
-      console.log('BrowserDetection: HTTPS protocol detected, context is secure');
+      logger.browserDetection('HTTPS protocol detected, context is secure');
       return true;
     }
     
     // HTTP on localhost is considered secure for development
     if (protocol === 'http:' && (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.startsWith('10.'))) {
-      console.log('BrowserDetection: Localhost detected, treating as secure context');
+      logger.browserDetection('Localhost detected, treating as secure context');
       return true;
     }
     
-    console.log('BrowserDetection: Non-secure context detected:', protocol, hostname);
+    logger.browserDetection('Non-secure context detected:', protocol, hostname);
     return false;
   }
   
   // Default to false for SSR or unknown environments
-  console.log('BrowserDetection: Unable to determine context security, defaulting to false');
+  logger.browserDetection('Unable to determine context security, defaulting to false');
   return false;
 }
 
@@ -280,26 +282,26 @@ export function requiresUserInteractionForAutoplayEnhanced(): boolean {
   const browser = detectBrowser();
   const isSecure = isSecureContext();
   
-  console.log('BrowserDetection: Enhanced autoplay check:', { browser, isSecure });
+  logger.browserDetection('Enhanced autoplay check:', { browser, isSecure });
   
   // In non-secure contexts, autoplay is almost always blocked
   if (!isSecure) {
-    console.log('BrowserDetection: Non-secure context, user interaction required');
+    logger.browserDetection('Non-secure context, user interaction required');
     return true;
   }
   
   // Safari and mobile browsers typically require user interaction even in secure contexts
   if (browser.isSafari || browser.isMobile) {
-    console.log('BrowserDetection: User interaction required for Safari/Mobile even in secure context');
+    logger.browserDetection('User interaction required for Safari/Mobile even in secure context');
     return true;
   }
   
   // Older versions of Chrome might also have restrictions
   if (browser.isChrome && browser.version && parseInt(browser.version) < 66) {
-    console.log('BrowserDetection: User interaction required for older Chrome');
+    logger.browserDetection('User interaction required for older Chrome');
     return true;
   }
   
-  console.log('BrowserDetection: Autoplay should work without user interaction in secure context');
+  logger.browserDetection('Autoplay should work without user interaction in secure context');
   return false;
 }

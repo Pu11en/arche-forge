@@ -5,6 +5,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { MemoryManager } from '../lib/memory-manager';
+import { logger } from '../lib/logger';
 
 export interface UseResourceCleanupOptions {
   enableAutoCleanup: boolean;
@@ -152,7 +153,7 @@ export const useResourceCleanup = (
           try {
             cleanup();
           } catch (error) {
-            console.warn('Cleanup function failed:', error);
+            logger.warn('Cleanup function failed:', error);
           }
         });
 

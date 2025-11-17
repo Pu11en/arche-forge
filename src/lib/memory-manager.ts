@@ -3,6 +3,8 @@
  * Provides automatic cleanup, resource monitoring, and leak detection
  */
 
+import { logger } from './logger';
+
 export interface MemoryStats {
   usedJSHeapSize: number;
   totalJSHeapSize: number;
@@ -262,7 +264,7 @@ class MemoryManager {
   }
 
   private handleMemoryPressure(stats: MemoryStats): void {
-    console.warn(`Memory pressure detected: ${stats.usedJSHeapSize.toFixed(2)}MB used`);
+    logger.warn(`Memory pressure detected: ${stats.usedJSHeapSize.toFixed(2)}MB used`);
     
     // Trigger garbage collection if available
     if ('gc' in window) {
@@ -289,7 +291,7 @@ class MemoryManager {
     });
     
     if (isIncreasing) {
-      console.warn('Potential memory leak detected - memory consistently increasing');
+      logger.warn('Potential memory leak detected - memory consistently increasing');
       this.performLeakDetection();
     }
   }
@@ -305,7 +307,7 @@ class MemoryManager {
 
     leakChecks.forEach(check => {
       if (check.resources.size > 50) { // Arbitrary threshold for potential leaks
-        console.warn(`Potential leak in ${check.name}: ${check.resources.size} resources registered`);
+        logger.warn(`Potential leak in ${check.name}: ${check.resources.size} resources registered`);
       }
     });
   }
@@ -350,7 +352,7 @@ class MemoryManager {
       video.removeAttribute('src');
       video.removeAttribute('poster');
     } catch (error) {
-      console.warn('Video cleanup failed:', error);
+      logger.warn('Video cleanup failed:', error);
     }
   }
 
@@ -360,7 +362,7 @@ class MemoryManager {
       image.removeAttribute('src');
       image.removeAttribute('srcset');
     } catch (error) {
-      console.warn('Image cleanup failed:', error);
+      logger.warn('Image cleanup failed:', error);
     }
   }
 
@@ -374,7 +376,7 @@ class MemoryManager {
       const memoryUsage = quality.droppedVideoFrames / quality.totalVideoFrames;
       
       if (memoryUsage > 0.1) { // More than 10% dropped frames
-        console.warn('High memory usage detected in video playback');
+        logger.warn('High memory usage detected in video playback');
         this.handleVideoMemoryPressure(video);
       }
       
@@ -401,7 +403,7 @@ class MemoryManager {
   }
 
   public cleanupAll(): void {
-    console.log('Performing comprehensive cleanup...');
+    logger.log('Performing comprehensive cleanup...');
     
     // Clean up videos
     this.resources.videos.forEach(video => this.cleanupVideo(video));

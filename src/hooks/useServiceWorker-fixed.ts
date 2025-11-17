@@ -6,7 +6,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ServiceWorkerManager, ServiceWorkerConfig, ServiceWorkerStatus, CacheInfo } from '../lib/service-worker-manager';
-import { logger } from '../lib/logger';
 
 // Singleton instance to prevent multiple registrations
 let singletonManager: ServiceWorkerManager | null = null;
@@ -29,7 +28,7 @@ export const useServiceWorker = (config: ServiceWorkerConfig) => {
   useEffect(() => {
     // Use singleton pattern to prevent multiple registrations
     if (!singletonManager || JSON.stringify(config) !== JSON.stringify(singletonConfig)) {
-      logger.serviceWorker('Creating singleton instance');
+      console.log('Service Worker: Creating singleton instance');
       singletonManager = new ServiceWorkerManager(config);
       singletonConfig = { ...config };
       managerRef.current = singletonManager;
@@ -45,7 +44,7 @@ export const useServiceWorker = (config: ServiceWorkerConfig) => {
         }
       });
     } else {
-      logger.serviceWorker('Using existing singleton instance');
+      console.log('Service Worker: Using existing singleton instance');
       managerRef.current = singletonManager;
       
       // Update status from existing manager

@@ -4,6 +4,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { ForgeAnalytics } from '../lib/analytics-framework';
+import { logger } from '../lib/logger';
 
 export interface PerformanceData {
   fps: number;
@@ -76,7 +77,7 @@ export const usePerformanceMonitoring = (analytics?: ForgeAnalytics) => {
 
       analytics?.trackPerformanceMetric('networkLatency', latency);
     } catch (error) {
-      console.warn('Network latency measurement failed:', error);
+      logger.warn('Network latency measurement failed:', error);
     }
   }, [analytics]);
 

@@ -3,6 +3,8 @@
  * Tracks user engagement, performance metrics, and interaction patterns
  */
 
+import { logger } from './logger';
+
 export interface AnalyticsEvent {
   name: string;
   timestamp: number;
@@ -224,7 +226,7 @@ class ForgeAnalytics {
     }
 
     if (this.config.debugMode) {
-      console.log('Analytics Event:', event);
+      logger.debug('Analytics Event:', event);
     }
   }
 
@@ -307,7 +309,7 @@ class ForgeAnalytics {
       body: JSON.stringify(event)
     }).catch(error => {
       if (this.config.debugMode) {
-        console.error('Analytics error:', error);
+        logger.error('Analytics error:', error);
       }
     });
   }
