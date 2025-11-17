@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { LandingPage } from "./components/landing-page";
 import { AboutPage } from "./components/about-page";
