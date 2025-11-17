@@ -14,7 +14,6 @@ interface BullVideoOverlayProps {
  * and proper z-index layering (z-25)
  */
 export const BullVideoOverlay = ({
-  videoUrl,
   isVisible,
   opacity,
   onVideoReady,
