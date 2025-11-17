@@ -1,29 +1,51 @@
-import { useState } from "react";
-import { Hero } from "./components/ui/animated-hero";
-import { LoadingOverlay } from "./components/ui/loading-overlay";
+import { VideoSequence } from "./components/ui/video-sequence";
+import { SocialMediaIcons } from "./components/ui/social-media-icons";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Handle the completion of the loading overlay transition
-  const handleTransitionComplete = () => {
-    setIsLoading(false);
-  };
+  // Video URLs
+  const introVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4";
+  const loopVideoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1762222741/1103_1_zdmn3a.mp4";
 
   return (
     <div className="App relative">
-      {/* Loading Overlay - appears on top */}
-      <LoadingOverlay
-        isVisible={isLoading}
-        onTransitionComplete={handleTransitionComplete}
-        videoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763122736/kling_20251114_Image_to_Video_an_animate_5015_2_d1ayqf.mp4"
-        attemptAutoplay={true}
-        showPlayButton={true}
-        playButtonText="Enter ArcheForge"
+      {/* Video Sequence - plays intro once, then loops the bull video */}
+      <VideoSequence
+        introVideoUrl={introVideoUrl}
+        loopVideoUrl={loopVideoUrl}
       />
       
-      {/* Main Content - displayed underneath */}
-      <Hero />
+      {/* Content Overlay */}
+      <div className="relative z-20 container mx-auto py-20 lg:py-32 flex items-center justify-center flex-col gap-3 min-h-screen">
+        {/* Logo */}
+        <div className="text-center max-w-5xl mx-auto px-4">
+          <div className="flex justify-center mb-4">
+            <img
+              src="https://res.cloudinary.com/djg0pqts6/image/upload/v1762217661/Archeforge_nobackground_krynqu.png"
+              alt="ARCHE FORGE"
+              className="max-w-full h-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]"
+              style={{
+                width: 'clamp(200px, 50vw, 400px)',
+                height: 'auto',
+                objectFit: 'contain'
+              }}
+            />
+          </div>
+          
+          {/* Description */}
+          <div className="max-w-3xl mx-auto mt-4">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed tracking-tight text-black drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)]" style={{ fontFamily: 'Orbitron, sans-serif', fontWeight: '500' }}>
+              Today's AI interactions lack soul.<br className="hidden sm:block" />
+              Ditch the robotic scripts that break the connection. Our goal is to mirror<br className="hidden sm:block" />
+              your identity, making AI feel less like a tool and more like you.
+            </p>
+          </div>
+        </div>
+        
+        {/* Social Media Icons */}
+        <div className="mt-4 mb-4">
+          <SocialMediaIcons />
+        </div>
+      </div>
     </div>
   );
 }

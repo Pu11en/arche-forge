@@ -26,7 +26,7 @@ import {
 
 const LoadingOverlay = ({
   isVisible = true,
-  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763122736/kling_20251114_Image_to_Video_an_animate_5015_2_d1ayqf.mp4",
+  videoUrl = "https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4",
   videoUrls = {},
   fallbackBgColor = "bg-black",
   onVideoLoaded,
@@ -97,6 +97,7 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoCanPlay = useCallback(() => {
+    console.log('[LoadingOverlay] Video can play');
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
@@ -108,7 +109,9 @@ const LoadingOverlay = ({
     
     // Set minimum display time if not already set
     if (!hasMinDisplayTimeElapsed.current) {
+      console.log('[LoadingOverlay] Setting minimum display timer');
       minDisplayTimeRef.current = setTimeout(() => {
+        console.log('[LoadingOverlay] Minimum display time elapsed');
         hasMinDisplayTimeElapsed.current = true;
       }, 1500); // Minimum 1.5 seconds display time
     }
@@ -181,11 +184,17 @@ const LoadingOverlay = ({
   }, []);
 
   const handleVideoEnded = useCallback(() => {
+    console.log('[LoadingOverlay] Video ended, starting transition');
     setVideoState(prev => ({
       ...prev,
       isPlaying: false,
       transitionState: 'dissolving'
     }));
+    
+    // Force the video to pause to ensure it doesn't continue playing
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   }, []);
 
   // Handle user interaction to play video
@@ -219,14 +228,16 @@ const LoadingOverlay = ({
       // Attempt to play the video
       const playVideo = async () => {
         try {
+          console.log('[LoadingOverlay] Attempting to play video');
           await video.play();
+          console.log('[LoadingOverlay] Video play successful');
           setVideoState(prev => ({
             ...prev,
             isPlaying: true,
             autoplayAttempted: true
           }));
         } catch (error) {
-          console.warn("Video autoplay failed:", error);
+          console.warn("[LoadingOverlay] Video autoplay failed:", error);
           setVideoState(prev => ({
             ...prev,
             autoplayAttempted: true,
@@ -237,6 +248,7 @@ const LoadingOverlay = ({
 
       // Start playing when video can play
       if (videoState.isLoaded && hasMinDisplayTimeElapsed.current && !videoState.autoplayAttempted) {
+        console.log('[LoadingOverlay] Conditions met for autoplay');
         playVideo();
       }
     }
@@ -295,13 +307,15 @@ const LoadingOverlay = ({
   // Handle transition state changes
   useEffect(() => {
     if (videoState.transitionState === 'dissolving') {
+      console.log('[LoadingOverlay] Starting dissolve transition');
       const timer = setTimeout(() => {
+        console.log('[LoadingOverlay] Transition complete, calling onTransitionComplete');
         setVideoState(prev => ({
           ...prev,
           transitionState: 'complete'
         }));
         onTransitionComplete?.();
-      }, reducedMotion ? 0 : 1500); // 1.5 seconds for the transition
+      }, reducedMotion ? 0 : 800); // Reduced to 0.8 seconds for faster transition
 
       return () => clearTimeout(timer);
     }
@@ -320,7 +334,7 @@ const LoadingOverlay = ({
     dissolving: {
       opacity: 0,
       transition: {
-        duration: reducedMotion ? 0 : 1.5, // 1.5 seconds for dissolve
+        duration: reducedMotion ? 0 : 0.8, // Reduced to 0.8 seconds for faster transition
         ease: "easeInOut"
       }
     },
@@ -333,7 +347,10 @@ const LoadingOverlay = ({
     }
   };
 
-  if (!isVisible || videoState.transitionState === 'complete') return null;
+  if (!isVisible || videoState.transitionState === 'complete') {
+    console.log('[LoadingOverlay] Not rendering - isVisible:', isVisible, 'transitionState:', videoState.transitionState);
+    return null;
+  }
 
   // Get safe z-index value
   const safeZIndex = getSafeZIndex();
@@ -396,7 +413,11 @@ const LoadingOverlay = ({
     <motion.div
       ref={containerRef}
       className={className}
-      style={getResponsiveStyles()}
+      style={{
+        ...getResponsiveStyles(),
+        // Ensure the overlay stays on top during transition
+        zIndex: videoState.transitionState === 'dissolving' ? '9999999' : safeZIndex
+      }}
       variants={overlayVariants}
       initial="hidden"
       animate={videoState.transitionState === 'dissolving' ? 'dissolving' : 'visible'}
