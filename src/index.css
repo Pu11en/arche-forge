@@ -369,3 +369,31 @@ body {
     }
   }
 }
+
+/* Landing Page Responsive Adjustments */
+@media (max-width: 767px) {
+  #heroText p:first-child {
+    font-size: 1.75rem !important;
+  }
+  #heroText p:last-child {
+    font-size: 1.25rem !important;
+  }
+  #enterForgeBtn {
+    padding: 16px 28px !important;
+    font-size: 0.9rem !important;
+  }
+  #trademarkOverlay {
+    bottom: 90px !important;
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #heroText p:first-child {
+    font-size: 2.5rem !important;
+  }
+  #heroText p:last-child {
+    font-size: 1.75rem !important;
+  }
+}

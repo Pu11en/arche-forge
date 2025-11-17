@@ -8,62 +8,62 @@ interface TMPhrase {
 }
 
 const TM_PHRASES: TMPhrase[] = [
-  { id: 1, text: "Forge Your Digital Legacy" },
-  { id: 2, text: "Where AI Meets Humanity" },
-  { id: 3, text: "Crafting Tomorrow's Intelligence" },
-  { id: 4, text: "SoulPrint: Your AI Echo" },
-  { id: 5, text: "Remember the Human Touch" },
-  { id: 6, text: "AI That's Truly You" },
-  { id: 7, text: "Beyond Code, Beyond Algorithms" },
-  { id: 8, text: "Personalized AI Evolution" },
-  { id: 9, text: "The Forge of Consciousness" },
-  { id: 10, text: "Echoes of Your Digital Self" },
-  { id: 11, text: "AI That Remembers" },
-  { id: 12, text: "Crafting Intelligence with Soul" },
-  { id: 13, text: "Your AI, Your Reflection" },
-  { id: 14, text: "The Human-AI Convergence" },
-  { id: 15, text: "Soulful Artificial Minds" },
-  { id: 16, text: "Digital Identity Forged" },
-  { id: 17, text: "AI Beyond Imitation" },
-  { id: 18, text: "Personal Evolution Engine" },
-  { id: 19, text: "The Conscious AI Forge" },
-  { id: 20, text: "Your Digital Soul Companion" },
-  { id: 21, text: "AI That Understands Humanity" },
-  { id: 22, text: "Forging Digital Consciousness" },
-  { id: 23, text: "SoulPrint Revolution" },
-  { id: 24, text: "Human-Centric AI Design" },
-  { id: 25, text: "The Memory of Machines" },
-  { id: 26, text: "AI That Feels Human" },
-  { id: 27, text: "Digital Soul Crafting" },
-  { id: 28, text: "Consciousness in Code" },
-  { id: 29, text: "Your AI Reflection" },
-  { id: 30, text: "The Forge of Digital Souls" },
-  { id: 31, text: "AI Personalization Mastery" },
-  { id: 32, text: "Human-AI Symbiosis" },
-  { id: 33, text: "Digital Identity Evolution" },
-  { id: 34, text: "Soulful Technology" },
-  { id: 35, text: "AI That Remembers You" },
-  { id: 36, text: "The Conscious Forge" },
-  { id: 37, text: "Digital Soul Engineering" },
-  { id: 38, text: "AI Humanity Bridge" },
-  { id: 39, text: "Your Personal AI Forge" },
-  { id: 40, text: "Conscious Digital Crafting" },
-  { id: 41, text: "SoulPrint Innovation" },
-  { id: 42, text: "Human-AI Integration" },
-  { id: 43, text: "Digital Soul Preservation" },
-  { id: 44, text: "AI Personal Evolution" },
-  { id: 45, text: "The Soulful Algorithm" },
-  { id: 46, text: "Conscious AI Creation" },
-  { id: 47, text: "Your Digital Legacy Builder" },
-  { id: 48, text: "AI Soul Crafting" },
-  { id: 49, text: "Human Memory in AI" },
-  { id: 50, text: "The Forge of Digital Humanity" }
+  { id: 1, text: "Forged in fire" },
+  { id: 2, text: "Made to remember" },
+  { id: 3, text: "AI with soul" },
+  { id: 4, text: "Crafted with purpose" },
+  { id: 5, text: "Beyond the algorithm" },
+  { id: 6, text: "Intelligence that listens" },
+  { id: 7, text: "Your digital echo" },
+  { id: 8, text: "Memory meets machine" },
+  { id: 9, text: "Built for humanity" },
+  { id: 10, text: "The conscious forge" },
+  { id: 11, text: "AI that evolves" },
+  { id: 12, text: "Personalized intelligence" },
+  { id: 13, text: "Digital soul crafting" },
+  { id: 14, text: "Where code meets character" },
+  { id: 15, text: "Your AI companion" },
+  { id: 16, text: "Forging connections" },
+  { id: 17, text: "Intelligence with identity" },
+  { id: 18, text: "The human touch" },
+  { id: 19, text: "AI that adapts" },
+  { id: 20, text: "Soulful technology" },
+  { id: 21, text: "Digital legacy builder" },
+  { id: 22, text: "Consciousness in code" },
+  { id: 23, text: "Your reflection" },
+  { id: 24, text: "The memory keeper" },
+  { id: 25, text: "AI that understands" },
+  { id: 26, text: "Crafted intelligence" },
+  { id: 27, text: "Beyond automation" },
+  { id: 28, text: "The forge of tomorrow" },
+  { id: 29, text: "Intelligence reimagined" },
+  { id: 30, text: "Your digital twin" },
+  { id: 31, text: "AI with awareness" },
+  { id: 32, text: "Personalized evolution" },
+  { id: 33, text: "The soul of AI" },
+  { id: 34, text: "Memory in motion" },
+  { id: 35, text: "Crafted for you" },
+  { id: 36, text: "Intelligence that grows" },
+  { id: 37, text: "Digital consciousness" },
+  { id: 38, text: "The human algorithm" },
+  { id: 39, text: "AI that cares" },
+  { id: 40, text: "Forged with intention" },
+  { id: 41, text: "Your intelligent partner" },
+  { id: 42, text: "Beyond the machine" },
+  { id: 43, text: "The evolution engine" },
+  { id: 44, text: "AI that resonates" },
+  { id: 45, text: "Digital soul keeper" },
+  { id: 46, text: "Intelligence with heart" },
+  { id: 47, text: "Your AI essence" },
+  { id: 48, text: "The forge of identity" },
+  { id: 49, text: "Memory transformed" },
+  { id: 50, text: "AI that's truly yours" }
 ];
 
 // Timing constants for the TM loop
-const TRANSITION_DURATION = 1.75; // seconds (average of 1.5-2s range)
-const DISPLAY_DURATION = 1.75; // seconds
-const TOTAL_CYCLE = TRANSITION_DURATION + DISPLAY_DURATION;
+const TRANSITION_DURATION = 0.6; // seconds for fade transition
+const DISPLAY_DURATION = 1.4; // seconds for display
+const TOTAL_CYCLE = 2.0; // Total cycle time: 2 seconds as specified
 
 export interface TMLoopProps {
   /** Whether the TM loop should be visible */
@@ -96,38 +96,33 @@ const TMLoop: React.FC<TMLoopProps> = ({
 
   return (
     <div
-      className={`absolute inset-0 pointer-events-none z-5 ${className}`}
+      className={`fixed bottom-0 left-0 right-0 pointer-events-none ${className}`}
       style={{
-        opacity: 0.15, // Low opacity as top layer
+        zIndex: 1,
+        paddingBottom: '30px',
+        width: '100%',
+        textAlign: 'center'
       }}
     >
-      <div className="flex items-center justify-center h-full">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentPhrase.id}
-            initial={reducedMotion ? { opacity: 1 } : { opacity: 0, scale: 0.95 }}
-            animate={reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 1.05 }}
-            transition={{
-              duration: reducedMotion ? 0 : TRANSITION_DURATION,
-              ease: [0.25, 0.46, 0.45, 0.94] // Custom easing
-            }}
-            className="text-center"
-          >
-            <p
-              className="text-white font-medium text-lg sm:text-xl md:text-2xl tracking-wide"
-              style={{
-                fontFamily: 'Orbitron, sans-serif',
-                textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-                maxWidth: '600px',
-                lineHeight: '1.4'
-              }}
-            >
-              {currentPhrase.text}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentPhrase.id}
+          initial={reducedMotion ? { opacity: 1 } : { opacity: 0 }}
+          animate={reducedMotion ? { opacity: 1 } : { opacity: 1 }}
+          exit={reducedMotion ? { opacity: 0 } : { opacity: 0 }}
+          transition={{
+            duration: reducedMotion ? 0 : TRANSITION_DURATION,
+            ease: "easeOut"
+          }}
+          style={{
+            color: 'rgba(255, 255, 255, 0.3)',
+            fontSize: '0.875rem',
+            letterSpacing: '0.05em'
+          }}
+        >
+          {currentPhrase.text}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };
