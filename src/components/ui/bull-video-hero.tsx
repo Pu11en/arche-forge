@@ -93,6 +93,7 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           onPlay={handleVideoPlay}
           onWaiting={handleVideoWaiting}
           onPlaying={handleVideoPlaying}
+          poster="/bull2.png"
           style={{
             objectFit: 'cover',
             width: '100vw',
@@ -102,6 +103,19 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           <source src={videoUrl} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+      )}
+      
+      {/* Poster image fallback when video fails */}
+      {videoError && (
+        <div
+          className="absolute inset-0 w-full h-full z-10"
+          style={{
+            backgroundImage: 'url(/bull2.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
       )}
     </div>
   );

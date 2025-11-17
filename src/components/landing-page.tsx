@@ -96,6 +96,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setShowVideoIntro(false);
   };
 
+  // Add timeout fallback for video intro (5 seconds)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (showVideoIntro) {
+        setShowVideoIntro(false);
+      }
+    }, 5000); // 5 seconds timeout
+
+    return () => clearTimeout(timer);
+  }, [showVideoIntro]);
+
   // Performance monitoring
   useEffect(() => {
     if (!analyticsRef.current) return;
