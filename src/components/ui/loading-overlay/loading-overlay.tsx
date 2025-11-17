@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Play } from "lucide-react";
 import { useReducedMotion } from "../../../hooks/useReducedMotion";
+import { useVideoPerformanceMonitoring } from "../../../hooks/useVideoPerformanceMonitoring";
 import { LoadingOverlayProps, VideoState } from "./loading-types";
 import { ANIMATION_TIMING } from "../../../lib/animation-timing";
 import {
@@ -79,6 +80,18 @@ const LoadingOverlay = ({
   
   const reducedMotion = useReducedMotion();
   
+  // Video performance monitoring
+  const {
+    metrics: videoMetrics,
+    trackAutoplayAttempt,
+    getPerformanceAnalysis
+  } = useVideoPerformanceMonitoring(videoRef.current, {
+    enableMetrics: true,
+    enableNetworkMonitoring: true,
+    enableFPSMonitoring: true,
+    debugMode: process.env.NODE_ENV === 'development'
+  });
+  
   // Simplified video source - always use the provided MP4 URL from Cloudinary
   const getOptimalVideoSource = useCallback(() => {
     console.log('LoadingOverlay: Using Cloudinary MP4 video URL:', videoUrl);
@@ -118,6 +131,15 @@ const LoadingOverlay = ({
 
   const handleVideoCanPlay = useCallback(() => {
     console.log('LoadingOverlay: Video can play');
+    const video = videoRef.current;
+    
+    // Check video duration and ready state
+    if (video) {
+      console.log('LoadingOverlay: Video duration:', video.duration);
+      console.log('LoadingOverlay: Video readyState:', video.readyState);
+      console.log('LoadingOverlay: Video buffered:', video.buffered.length > 0 ? video.buffered.end(0) : 'none');
+    }
+    
     setVideoState(prev => ({
       ...prev,
       isLoaded: true,
@@ -236,19 +258,42 @@ const LoadingOverlay = ({
       const video = videoRef.current;
       
       try {
-        await video.play();
+        // Ensure video is ready before attempting play
+        if (video.readyState < 2) {
+          console.log('LoadingOverlay: Video not ready, waiting for canplay event');
+          await new Promise((resolve) => {
+            const handleCanPlay = () => {
+              video.removeEventListener('canplay', handleCanPlay);
+              resolve(void 0);
+            };
+            video.addEventListener('canplay', handleCanPlay);
+          });
+        }
+        
+        // Set optimal playback properties
+        video.muted = true;
+        video.volume = 0;
+        
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          await playPromise;
+        }
+        
         console.log('LoadingOverlay: Video started playing after user interaction');
         setVideoState(prev => ({
           ...prev,
           isPlaying: true,
-          needsUserInteraction: false
+          needsUserInteraction: false,
+          hasError: false,
+          loadingState: 'ready'
         }));
       } catch (error) {
         console.error("LoadingOverlay: Video play failed even with user interaction:", error);
         setVideoState(prev => ({
           ...prev,
           hasError: true,
-          loadingState: 'error'
+          loadingState: 'error',
+          isPlaying: false
         }));
       }
     }
@@ -260,20 +305,53 @@ const LoadingOverlay = ({
       const video = videoRef.current;
       const isSecure = isSecureContext();
       
-      // Attempt to play the video
-      const playVideo = async () => {
+      // Attempt to play the video with enhanced retry logic
+      const playVideo = async (retryCount = 0) => {
         try {
-          console.log('LoadingOverlay: Attempting autoplay in secure context:', isSecure);
-          await video.play();
+          console.log(`LoadingOverlay: Attempting autoplay (attempt ${retryCount + 1}) in secure context:`, isSecure);
+          
+          // Ensure video is properly loaded before attempting play
+          if (video.readyState < 2) {
+            console.log('LoadingOverlay: Video not ready, waiting for canplay event');
+            await new Promise((resolve) => {
+              const handleCanPlay = () => {
+                video.removeEventListener('canplay', handleCanPlay);
+                resolve(void 0);
+              };
+              video.addEventListener('canplay', handleCanPlay);
+            });
+          }
+          
+          // Set video properties for better autoplay success
+          video.muted = true;
+          video.playsInline = true;
+          video.volume = 0;
+          
+          const playPromise = video.play();
+          
+          // Handle play promise (some browsers return promises)
+          if (playPromise !== undefined) {
+            await playPromise;
+          }
+          
           console.log('LoadingOverlay: Autoplay successful');
           setVideoState(prev => ({
             ...prev,
             isPlaying: true,
-            autoplayAttempted: true
+            autoplayAttempted: true,
+            needsUserInteraction: false
           }));
         } catch (error) {
-          console.warn("LoadingOverlay: Autoplay failed, requiring user interaction:", error);
+          console.warn(`LoadingOverlay: Autoplay failed (attempt ${retryCount + 1}):`, error);
           console.log("LoadingOverlay: Secure context:", isSecure);
+          console.log("LoadingOverlay: Video readyState:", video.readyState);
+          
+          // Retry logic for transient failures
+          if (retryCount < 2) {
+            console.log('LoadingOverlay: Retrying autoplay after short delay');
+            setTimeout(() => playVideo(retryCount + 1), 500);
+            return;
+          }
           
           // If we're in a non-secure context, show the play button immediately
           if (!isSecure) {
@@ -283,12 +361,17 @@ const LoadingOverlay = ({
           setVideoState(prev => ({
             ...prev,
             autoplayAttempted: true,
-            needsUserInteraction: true
+            needsUserInteraction: true,
+            isPlaying: false
           }));
         }
       };
 
-      playVideo();
+      // Track autoplay attempt for monitoring
+      trackAutoplayAttempt();
+      
+      // Add a small delay to ensure DOM is fully ready
+      setTimeout(() => playVideo(), 100);
     }
   }, [isVisible, videoState.isLoaded, videoState.autoplayAttempted, attemptAutoplay]);
 
@@ -297,6 +380,11 @@ const LoadingOverlay = ({
     if (isVisible && attemptAutoplay && !videoState.isPlaying && !videoState.hasError) {
       const fallbackTimer = setTimeout(() => {
         console.log('LoadingOverlay: Fallback timer triggered, completing video');
+        setVideoState(prev => ({
+          ...prev,
+          transitionState: 'complete',
+          playbackState: 'completed'
+        }));
         onVideoComplete?.();
       }, 3000);
       
@@ -459,11 +547,16 @@ const LoadingOverlay = ({
     paddingLeft: 'env(safe-area-inset-left, 0)'
   });
 
+  // Performance analysis and debug logging
+  const performanceAnalysis = getPerformanceAnalysis();
+  
   // Debug logging for overlay state
   console.log('LoadingOverlay render state:', {
     isVisible,
     videoState,
     orchestrationState,
+    videoMetrics,
+    performanceAnalysis,
     animateState: videoState.transitionState === 'complete' ? 'exit' :
       orchestrationState?.sequencePhase === 'video-dissolving' ? 'dissolving' :
       videoState.transitionState === 'dissolving' ? 'dissolving' :
@@ -516,7 +609,7 @@ const LoadingOverlay = ({
           // Add GPU acceleration for the video element
           ...getHardwareAccelerationStyles()
         }}
-        autoPlay={attemptAutoplay && !videoState.needsUserInteraction}
+        autoPlay={false} // We'll handle autoplay manually for better control
         muted
         playsInline
         preload="auto" // Ensure full preload for immediate playback

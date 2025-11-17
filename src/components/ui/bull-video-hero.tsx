@@ -28,12 +28,42 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
   // Handle video events
   const handleVideoCanPlay = useCallback(() => {
     console.log('BullVideoHero: Video can play');
+    const video = videoRef.current;
+    
+    if (video) {
+      console.log('BullVideoHero: Video duration:', video.duration);
+      console.log('BullVideoHero: Video readyState:', video.readyState);
+      
+      // Attempt to ensure video is playing
+      if (video.paused && video.readyState >= 2) {
+        video.play().catch(error => {
+          console.warn('BullVideoHero: Autoplay failed after canplay:', error);
+        });
+      }
+    }
+    
     setVideoLoaded(true);
   }, []);
 
-  const handleVideoError = useCallback(() => {
-    console.error('BullVideoHero: Video failed to load');
+  const handleVideoError = useCallback((event: React.SyntheticEvent<HTMLVideoElement>) => {
+    const videoElement = event.currentTarget;
+    const errorCode = videoElement.error?.code || 'Unknown';
+    const errorMessage = videoElement.error?.message || 'No error message available';
+    
+    console.error('BullVideoHero: Video failed to load:', { errorCode, errorMessage });
     setVideoError(true);
+  }, []);
+
+  const handleVideoPlay = useCallback(() => {
+    console.log('BullVideoHero: Video started playing');
+  }, []);
+
+  const handleVideoWaiting = useCallback(() => {
+    console.log('BullVideoHero: Video waiting (buffering)');
+  }, []);
+
+  const handleVideoPlaying = useCallback(() => {
+    console.log('BullVideoHero: Video playing');
   }, []);
 
   // Debug logging for BullVideoHero state
@@ -63,6 +93,9 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           preload="auto"
           onCanPlay={handleVideoCanPlay}
           onError={handleVideoError}
+          onPlay={handleVideoPlay}
+          onWaiting={handleVideoWaiting}
+          onPlaying={handleVideoPlaying}
           style={{
             objectFit: 'cover',
             width: '100vw',
@@ -70,6 +103,7 @@ const BullVideoHero: React.FC<BullVideoHeroProps> = ({
           }}
         >
           <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
         </video>
       )}
       

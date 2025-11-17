@@ -12,6 +12,7 @@ import { PerformanceOptimizer } from "../lib/performance-optimizer";
 import { useResourceCleanup } from "../hooks/useResourceCleanup";
 import { useServiceWorker } from "../hooks/useServiceWorker";
 import { usePerformanceMonitoring } from "../hooks/usePerformanceMonitoring";
+import { useVideoPerformanceMonitoring } from "../hooks/useVideoPerformanceMonitoring";
 
 export interface LandingPageProps {
   className?: string;
@@ -117,6 +118,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
   });
 
   const performanceData = usePerformanceMonitoring(analytics);
+  
+  // Video performance monitoring for intro video
+  const [introVideoElement, setIntroVideoElement] = useState<HTMLVideoElement | null>(null);
+  const {
+    metrics: introVideoMetrics,
+    getPerformanceAnalysis: getIntroVideoAnalysis
+  } = useVideoPerformanceMonitoring(introVideoElement, {
+    enableMetrics: true,
+    enableNetworkMonitoring: true,
+    enableFPSMonitoring: false, // Disabled for intro video to save resources
+    debugMode: process.env.NODE_ENV === 'development'
+  });
 
   const [videoState, setVideoState] = useState<{
     isPlaying: boolean;
@@ -136,7 +149,23 @@ const LandingPage: React.FC<LandingPageProps> = ({
   // Enhanced video completion handler
   const handleVideoComplete = useCallback(() => {
     console.log('LandingPage: Video completed, showing hero');
+    
+    // Log performance metrics
+    const performanceAnalysis = getIntroVideoAnalysis();
+    console.log('LandingPage: Intro video performance:', performanceAnalysis);
+    
+    // Track analytics with performance data
     analytics.trackVideoCompletion(30);
+    analytics.trackPerformanceMetric('videoLoadTime', introVideoMetrics.loadTime);
+    analytics.trackPerformanceMetric('videoPlayTime', introVideoMetrics.playTime);
+    
+    if (introVideoMetrics.errorCount > 0) {
+      analytics.trackEvent('videoPlaybackIssues', {
+        errorCount: introVideoMetrics.errorCount,
+        bufferEvents: introVideoMetrics.bufferEvents
+      });
+    }
+    
     setVideoState(prev => ({ ...prev, isCompleted: true, isPlaying: false }));
     
     // Show hero section immediately after intro video completes
@@ -146,13 +175,18 @@ const LandingPage: React.FC<LandingPageProps> = ({
     setTimeout(() => {
       setShowHeroText(true);
     }, 1500);
-  }, [analytics]);
+  }, [analytics, introVideoMetrics, getIntroVideoAnalysis]);
 
   // Enhanced video error handler
   const handleVideoError = useCallback(async (error: Error) => {
     analytics.trackEvent('videoError', { error: error.message });
     
+    // Set video element reference for performance monitoring
     const videoElement = document.querySelector('video') as HTMLVideoElement;
+    if (videoElement && !introVideoElement) {
+      setIntroVideoElement(videoElement);
+    }
+    
     if (videoElement) {
       const recovered = await videoErrorHandler.handleVideoError({
         videoElement,
@@ -166,9 +200,17 @@ const LandingPage: React.FC<LandingPageProps> = ({
       if (!recovered) {
         setVideoState(prev => ({ ...prev, hasError: true }));
         analytics.trackEvent('videoErrorFatal', { error: error.message });
+        
+        // Log performance analysis for debugging
+        const performanceAnalysis = getIntroVideoAnalysis();
+        console.error('LandingPage: Fatal video error with performance:', {
+          error: error.message,
+          performanceAnalysis,
+          videoMetrics: introVideoMetrics
+        });
       }
     }
-  }, [analytics, videoErrorHandler, introVideoUrl]);
+  }, [analytics, videoErrorHandler, introVideoUrl, introVideoElement, introVideoMetrics, getIntroVideoAnalysis]);
 
   // Initialize systems on mount
   useEffect(() => {
@@ -220,7 +262,9 @@ const LandingPage: React.FC<LandingPageProps> = ({
     autoPlay,
     videoState,
     isOnline,
-    swStatus
+    swStatus,
+    introVideoMetrics,
+    introVideoAnalysis: getIntroVideoAnalysis()
   });
 
   return (
