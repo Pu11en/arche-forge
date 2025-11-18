@@ -1,4 +1,5 @@
 import { SocialMediaIcons } from "./social-media-icons";
+import { SignatureGallery } from "./signature-gallery";
 
 /**
  * Hero component that displays the main content after the loading overlay
@@ -35,6 +36,9 @@ const Hero = () => {
       <div className="mt-4 mb-4">
         <SocialMediaIcons />
       </div>
+
+      {/* Signature gallery linking back to archaforge.com */}
+      <SignatureGallery />
     </div>
   );
 };
