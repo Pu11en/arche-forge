@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useReducedMotion } from "../../hooks/useReducedMotion";
 
 interface SocialIcon {
@@ -42,59 +41,33 @@ const socialIcons: SocialIcon[] = [
 ];
 
 export function SocialMediaIcons() {
-  const [hasAnimated, setHasAnimated] = useState(false);
   const reducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    // Trigger animation once when component mounts
-    if (!reducedMotion) {
-      const timer = setTimeout(() => {
-        setHasAnimated(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    } else {
-      setHasAnimated(true); // Skip animation if reduced motion is preferred
-    }
-  }, [reducedMotion]);
 
   return (
     <div className="w-full py-2 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-center items-center space-x-4 md:space-x-6">
-          {socialIcons.map((icon, index) => (
+        <div className="flex justify-center items-center space-x-6 md:space-x-8">
+          {socialIcons.map((icon) => (
             <a
               key={icon.name}
               href={icon.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`group relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full transition-all duration-300 social-icon-embossed bg-black/30 backdrop-blur-sm ${
-                reducedMotion ? '' : 'transform hover:scale-110 social-icon-glow'
+              className={`group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 transition-all duration-300 ${
+                reducedMotion ? '' : 'transform hover:scale-110'
               }`}
               aria-label={`Visit ${icon.name}`}
-              style={{
-                animation: !reducedMotion && !hasAnimated
-                  ? `socialPulse 0.5s ease-in-out ${index * 0.1}s both`
-                  : 'none',
-              }}
             >
               <svg
                 viewBox={icon.viewBox}
-                className="w-6 h-6 md:w-7 md:h-7 text-white"
+                className="w-6 h-6 md:w-7 md:h-7 text-black transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]"
                 fill="currentColor"
                 style={{
-                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.8))',
+                  filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))',
                 }}
               >
                 <path d={icon.path} />
               </svg>
-              
-              {/* Subtle reflection effect */}
-              <div 
-                className="absolute inset-0 rounded-full opacity-30 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%)',
-                }}
-              />
             </a>
           ))}
         </div>

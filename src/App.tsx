@@ -1,26 +1,20 @@
 import { useState } from "react";
+import { LandingPage } from "./components/ui/landing-page";
 import { Hero } from "./components/ui/animated-hero";
-import { VideoSequence } from "./components/ui/video-sequence";
 
 function App() {
-  const [showVideoSequence, setShowVideoSequence] = useState(true);
+  const [showLandingPage, setShowLandingPage] = useState(true);
 
-  const handleVideoSequenceComplete = () => {
-    setShowVideoSequence(false);
+  const handleEnterForge = () => {
+    setShowLandingPage(false);
   };
 
   return (
     <div className="App relative">
-      {/* Video Sequence with Intro → Looping Video */}
-      {showVideoSequence ? (
-        <VideoSequence
-          introVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763329342/1114_2_z4csev.mp4"
-          bullVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4"
-          loopingVideoUrl="https://res.cloudinary.com/djg0pqts6/video/upload/v1763117114/1103_2_yfa7mp.mp4"
-          onTransitionComplete={handleVideoSequenceComplete}
-        />
+      {showLandingPage ? (
+        <LandingPage onEnterForge={handleEnterForge} />
       ) : (
-        /* Main Content */
+        /* Partner/About Page */
         <div className="transition-opacity duration-1000 opacity-100">
           <Hero />
         </div>
