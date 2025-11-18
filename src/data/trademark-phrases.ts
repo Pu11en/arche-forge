@@ -96,5 +96,5 @@ export const TRADEMARK_PHRASES: TrademarkPhrase[] = [
   { id: 83, text: "Adios, Motherfucker™", hasTrademark: true }
 ];
 
-export const PHRASE_DISPLAY_DURATION = 2000; // 2.0 seconds for better readability
-export const PHRASE_OPACITY = 0.75; // 75% opacity for better visibility
+export const PHRASE_DISPLAY_DURATION = 1750; // 1.5-2.0 seconds per transition (using 1.75s average)
+export const PHRASE_OPACITY = 0.25; // Low opacity as specified - "top layer effect but low opacity"
