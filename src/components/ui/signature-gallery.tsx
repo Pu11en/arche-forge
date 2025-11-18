@@ -35,15 +35,11 @@ const SignatureGallery = () => {
           const imgUrl = getSignatureUrl(file);
 
           return (
-            <a
+            <div
               key={file}
-              href={SIGNATURE_DOMAIN}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex flex-col items-center gap-3"
-              aria-label={`Visit Arche Forge via ${label}'s signature`}
+              className="group flex flex-col items-center gap-3 rounded-xl border border-zinc-100 bg-white/80 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_15px_45px_rgba(0,0,0,0.15)]"
             >
-              <div className="w-full rounded-lg border border-zinc-100 bg-white/80 p-4 shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-shadow duration-300 group-hover:shadow-[0_15px_45px_rgba(0,0,0,0.15)]">
+              <div className="w-full">
                 <img
                   src={imgUrl}
                   alt={`${label} signature`}
@@ -52,7 +48,16 @@ const SignatureGallery = () => {
                 />
               </div>
               <span className="text-sm font-medium text-zinc-600">{label}</span>
-            </a>
+              <a
+                href={SIGNATURE_DOMAIN}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open archeforge.com from ${label}'s signature card`}
+                className="w-full rounded-md bg-black/90 px-4 py-2 text-center text-sm font-semibold text-white transition-colors duration-200 hover:bg-black"
+              >
+                Visit archeforge.com
+              </a>
+            </div>
           );
         })}
       </div>
