@@ -37,7 +37,7 @@ const Hero = () => {
         <SocialMediaIcons />
       </div>
 
-      {/* Signature gallery linking back to archaforge.com */}
+      {/* Signature gallery linking back to archeforge.com */}
       <SignatureGallery />
     </div>
   );
