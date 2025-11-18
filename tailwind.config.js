@@ -26,6 +26,7 @@ export default {
         'sans': ['Inter', 'Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         'heading': ['Montserrat', 'Inter', 'sans-serif'],
         'display': ['Montserrat', 'sans-serif'],
+        'decorative': ['Cinzel Decorative', 'serif'],
         'body': ['Inter', 'Manrope', 'sans-serif'],
       },
       // Mobile-specific spacing values
