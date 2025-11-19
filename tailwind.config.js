@@ -21,6 +21,14 @@ export default {
       'landscape-md': { 'raw': '(min-width: 640px) and (orientation: landscape)' },
     },
     extend: {
+      // Font families
+      fontFamily: {
+        'sans': ['Inter', 'Manrope', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'heading': ['Montserrat', 'Inter', 'sans-serif'],
+        'display': ['Montserrat', 'sans-serif'],
+        'decorative': ['Cinzel Decorative', 'serif'],
+        'body': ['Inter', 'Manrope', 'sans-serif'],
+      },
       // Mobile-specific spacing values
       spacing: {
         // Tighter spacing for mobile layouts
