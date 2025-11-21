@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { TM_PHRASES } from '../constants';
 
 export const HeroSection: React.FC = () => {
+  const navigate = useNavigate();
   // Time tracking logic
   const startTime = useRef<number>(performance.now());
 
@@ -20,8 +22,8 @@ export const HeroSection: React.FC = () => {
         setIndex((prevIndex) => (prevIndex + 1) % TM_PHRASES.length);
         // Step 3: Fade in
         setFade(true);
-      }, 800); 
-    }, 3000); 
+      }, 800);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -29,7 +31,7 @@ export const HeroSection: React.FC = () => {
   const handleEnterClick = () => {
     const endTime = performance.now();
     const timeSpentMs = endTime - startTime.current;
-    
+
     console.log("Time spent on landing:", timeSpentMs / 1000, "seconds");
 
     // Analytics event if gtag exists
@@ -40,15 +42,16 @@ export const HeroSection: React.FC = () => {
     }
 
     console.log("User entering the forge...");
+    navigate('/forge');
   };
 
   return (
     <div className="fixed inset-0 z-20 flex flex-col items-center justify-center text-center pointer-events-none">
       {/* Container to enable pointer events only on the button */}
       <div className="flex flex-col items-center justify-center w-full max-w-7xl px-4">
-        
+
         {/* Top Line: Cinzel - Increased size */}
-        <h2 
+        <h2
           className="font-cinzel text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide leading-none mb-3 opacity-90 z-10"
           style={{ textShadow: '0 0 20px rgba(255,255,255,0.1)' }}
         >
@@ -58,8 +61,8 @@ export const HeroSection: React.FC = () => {
         {/* Middle: Rotating Trademarks (Koulen) - Reduced size */}
         {/* Adjusted height for smaller font size */}
         <div className="h-12 md:h-20 lg:h-24 flex items-center justify-center overflow-visible w-full relative z-0">
-           <span 
-             className={`
+          <span
+            className={`
                font-koulen text-orange-500 
                text-4xl md:text-6xl lg:text-7xl
                tracking-wider uppercase
@@ -67,17 +70,17 @@ export const HeroSection: React.FC = () => {
                leading-none
                ${fade ? 'opacity-100' : 'opacity-0'}
              `}
-             style={{ 
-                textShadow: '0 0 30px rgba(249, 115, 22, 0.4)',
-                whiteSpace: 'nowrap' 
-             }}
-           >
-             {TM_PHRASES[index]}
-           </span>
+            style={{
+              textShadow: '0 0 30px rgba(249, 115, 22, 0.4)',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {TM_PHRASES[index]}
+          </span>
         </div>
 
         {/* Bottom Line: Inter - Increased size */}
-        <p 
+        <p
           className="font-inter text-white/80 text-xl md:text-3xl font-light tracking-wide mb-12 max-w-5xl leading-tight z-10 mt-3"
         >
           SoulPrint makes AI feel less like a tool and more like you.
@@ -97,3 +100,4 @@ export const HeroSection: React.FC = () => {
     </div>
   );
 };
+

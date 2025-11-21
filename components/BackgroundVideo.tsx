@@ -11,8 +11,8 @@ export const BackgroundVideo: React.FC = () => {
       // Browsers often block unmuted autoplay. We try to play with sound if allowed,
       // but fallback to muted if needed to ensure the visual loop works.
       // The spec asks for sound.
-      videoRef.current.muted = false; 
-      
+      videoRef.current.muted = false;
+
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
@@ -27,16 +27,16 @@ export const BackgroundVideo: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 w-screen h-screen overflow-hidden bg-black pointer-events-none select-none">
+    <div className="fixed inset-0 z-0 w-full h-full overflow-hidden bg-black pointer-events-none select-none">
       <video
         ref={videoRef}
         src={BACKGROUND_VIDEO_URL}
-        className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover opacity-100"
+        className="w-full h-full object-cover"
         autoPlay
         loop
         playsInline
-        // Note: We attempt unmuted via JS, but the attribute below acts as a fallback for some engines
-        // However, 'muted' attribute presence forces mute. We omit it to try for sound, handled in JS.
+      // Note: We attempt unmuted via JS, but the attribute below acts as a fallback for some engines
+      // However, 'muted' attribute presence forces mute. We omit it to try for sound, handled in JS.
       />
       {/* Optional overlay to ensure text contrast if video gets too bright, though spec implies full bleed/no dimming. 
           The spec says "no dimming", so we leave it raw. */}
