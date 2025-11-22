@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { TM_PHRASES } from '../constants';
+import { cn } from '../lib/utils';
 
-export const HeroSection: React.FC = () => {
-  const navigate = useNavigate();
+interface HeroSectionProps {
+  onEnter: () => void;
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
   // Time tracking logic
   const startTime = useRef<number>(performance.now());
 
@@ -42,13 +45,16 @@ export const HeroSection: React.FC = () => {
     }
 
     console.log("User entering the forge...");
-    navigate('/forge');
+    onEnter();
   };
 
   return (
-    <div className="fixed inset-0 z-20 flex flex-col items-center justify-center text-center pointer-events-none">
-      {/* Container to enable pointer events only on the button */}
-      <div className="flex flex-col items-center justify-center w-full max-w-7xl px-4">
+    <div
+      className="relative h-screen w-full flex flex-col items-center justify-center text-center pointer-events-none z-20"
+    >
+      <div
+        className="flex flex-col items-center justify-center w-full max-w-7xl px-4"
+      >
 
         {/* Top Line: Cinzel - Increased size */}
         <h2
@@ -63,7 +69,7 @@ export const HeroSection: React.FC = () => {
         <div className="h-12 md:h-20 lg:h-24 flex items-center justify-center overflow-visible w-full relative z-0">
           <span
             className={`
-               font-koulen text-orange-500 
+               font-koulen text-orange-500
                text-4xl md:text-6xl lg:text-7xl
                tracking-wider uppercase
                transition-opacity duration-[800ms] ease-in-out
@@ -100,4 +106,3 @@ export const HeroSection: React.FC = () => {
     </div>
   );
 };
-

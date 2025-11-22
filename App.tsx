@@ -1,36 +1,53 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
 import { BackgroundVideo } from './components/BackgroundVideo';
 import { IntroOverlay } from './components/IntroOverlay';
 import { HeroSection } from './components/HeroSection';
-import { Footer } from './components/Footer';
-import { ForgePage } from './pages/ForgePage';
-
-const LandingPage = () => (
-  <main className="relative w-screen h-screen overflow-hidden bg-black">
-    {/* Layer 1: Background Video (The Bull) - Z-Index 0 */}
-    <BackgroundVideo />
-
-    {/* Layer 2: Main Hero Content (Includes Trademarks) - Z-Index 20 */}
-    <HeroSection />
-
-    {/* Layer 3: Footer - Z-Index 30 */}
-    <Footer />
-
-    {/* Layer 4: Intro Overlay (Flash) - Z-Index 50 */}
-    <IntroOverlay />
-  </main>
-);
+import { ContentSection } from './components/ContentSection';
+import { cn } from './lib/utils';
 
 const App: React.FC = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/forge" element={<ForgePage />} />
-      </Routes>
-    </Router>
-  );
+    const [isScrollLocked, setIsScrollLocked] = useState(true);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    // Manage body scroll locking
+    useEffect(() => {
+        if (isScrollLocked) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isScrollLocked]);
+
+    const handleEnterForge = () => {
+        setIsScrollLocked(false);
+        // Small timeout to allow state update to propagate
+        setTimeout(() => {
+            contentRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 50);
+    };
+
+    return (
+        <main className="relative w-full bg-black min-h-screen">
+            {/* Intro Overlay (Flash) - Z-Index 50 */}
+            <IntroOverlay />
+
+            {/* Layer 1: Background Video (The Bull) - Fixed Background */}
+            <div className="fixed inset-0 z-0">
+                <BackgroundVideo />
+            </div>
+
+            {/* Layer 2: Main Hero Content (Includes Trademarks) - Relative Flow */}
+            <HeroSection onEnter={handleEnterForge} />
+
+            {/* Layer 3: Content Section - Relative Flow */}
+            <div ref={contentRef} className="relative z-10 bg-black w-full">
+                <ContentSection />
+            </div>
+        </main>
+    );
 };
 
 export default App;
