@@ -77,14 +77,14 @@ const PartnerCard: React.FC<{ partner: Partner; index: number }> = ({ partner, i
 
             <h3
                 style={{ transform: "translateZ(50px)" }}
-                className="font-cinzel text-2xl text-white mb-2 group-hover:text-amber-500 transition-colors duration-300 relative z-10"
+                className="font-cinzel text-2xl text-white mb-2 group-hover:text-orange-500 transition-colors duration-300 relative z-10"
             >
                 {partner.name}
             </h3>
 
             <div
                 style={{ transform: "translateZ(25px)" }}
-                className="h-[1px] w-12 bg-zinc-700 my-4 group-hover:bg-amber-500/50 transition-colors duration-300 relative z-10"
+                className="h-[1px] w-12 bg-zinc-700 my-4 group-hover:bg-orange-500/50 transition-colors duration-300 relative z-10"
             />
 
             <p

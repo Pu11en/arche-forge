@@ -29,9 +29,9 @@ export const ForgeDoctrineBlock: React.FC = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: index * 0.15, ease: "easeOut" }}
                         viewport={{ margin: "-50px" }}
-                        className="font-cinzel text-2xl md:text-4xl lg:text-5xl text-[#d4af37] text-center tracking-widest uppercase"
+                        className="font-cinzel text-2xl md:text-4xl lg:text-5xl text-orange-500 text-center tracking-widest uppercase"
                         style={{
-                            textShadow: '0 0 15px rgba(212, 175, 55, 0.2)',
+                            textShadow: '0 0 15px rgba(249, 115, 22, 0.2)',
                             opacity: 0.9
                         }}
                     >

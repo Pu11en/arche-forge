@@ -43,7 +43,7 @@ const DivisionCard: React.FC<{ division: Division; index: number }> = ({ divisio
 
             <motion.div
                 variants={{
-                    hover: { scale: 1.2, color: '#d4af37', rotate: 5 }
+                    hover: { scale: 1.2, color: '#f97316', rotate: 5 }
                 }}
                 transition={{ type: "spring", stiffness: 300 }}
                 className="relative z-10 text-zinc-500 mb-4"
@@ -53,7 +53,7 @@ const DivisionCard: React.FC<{ division: Division; index: number }> = ({ divisio
 
             <motion.h3
                 variants={{
-                    hover: { y: -5, color: '#d4af37' }
+                    hover: { y: -5, color: '#f97316' }
                 }}
                 className="relative z-10 font-cinzel text-xl text-white mb-2 transition-colors duration-300"
             >
