@@ -27,7 +27,7 @@ export const BackgroundVideo: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-0 w-full h-full overflow-hidden bg-black pointer-events-none select-none">
+    <div className="absolute inset-0 z-0 w-full h-full overflow-hidden bg-black pointer-events-none select-none">
       <video
         ref={videoRef}
         src={BACKGROUND_VIDEO_URL}
