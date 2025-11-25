@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SignatureModal } from './SignatureModal';
 
 interface Partner {
@@ -123,14 +124,56 @@ const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => vo
 export const PartnerShrineGrid: React.FC = () => {
     const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Check URL on mount and location changes
+    useEffect(() => {
+        const path = location.pathname;
+        const signatureMatch = path.match(/^\/signatures?\/(.+)$/);
+
+        if (signatureMatch) {
+            const partnerSlug = signatureMatch[1].toLowerCase();
+
+            // Map URL slugs to partners
+            const slugToName: Record<string, string> = {
+                'ben': 'Ben W',
+                'benw': 'Ben W',
+                'drew': 'Drew',
+                'lisa': 'Lisa',
+                'lisaq': 'Lisa',
+                'nick': 'Nick',
+                'nickh': 'Nick',
+                'glenn': 'Glenn',
+                'zachary': 'Zachary',
+                'zack': 'Zachary',
+                'sammy': 'Sammy',
+                'jimmy': 'Jimmy Blackbird',
+                'jimmyblackbird': 'Jimmy Blackbird',
+                'blackbird': 'Jimmy Blackbird'
+            };
+
+            const partnerName = slugToName[partnerSlug];
+            if (partnerName) {
+                const partner = PARTNERS.find(p => p.name === partnerName);
+                if (partner) {
+                    setSelectedPartner(partner);
+                    setIsModalOpen(true);
+                }
+            }
+        }
+    }, [location.pathname]);
 
     const handlePartnerClick = (partner: Partner) => {
+        const slug = partner.name.toLowerCase().replace(/\s+/g, '');
+        navigate(`/signature/${slug}`);
         setSelectedPartner(partner);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        navigate('/');
         setTimeout(() => setSelectedPartner(null), 300); // Clear after animation
     };
 
