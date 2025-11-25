@@ -23,7 +23,7 @@ export const ForgeDoctrineBlock: React.FC = () => {
                 }}
             />
 
-            <div className="relative z-10 flex flex-col items-center space-y-6">
+            <div className="relative z-10 flex flex-col items-center space-y-6 px-4">
                 {DOCTRINES.map((text, index) => (
                     <motion.h3
                         key={index}
@@ -36,7 +36,7 @@ export const ForgeDoctrineBlock: React.FC = () => {
                         }}
                         transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
                         viewport={{ margin: "-50px" }}
-                        className="font-cinzel text-xl md:text-3xl lg:text-4xl text-orange-500 text-center tracking-widest uppercase cursor-pointer"
+                        className="font-cinzel text-lg md:text-3xl lg:text-4xl text-orange-500 text-center tracking-widest uppercase cursor-pointer"
                         style={{
                             textShadow: '0 0 15px rgba(249, 115, 22, 0.2)',
                             opacity: 0.9

@@ -19,7 +19,7 @@ export const BrandCardGallery: React.FC = () => {
     const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
     return (
-        <section className="w-full bg-black py-32 flex flex-col items-center justify-center relative overflow-hidden min-h-[800px]">
+        <section className="w-full bg-black py-20 md:py-32 flex flex-col items-center justify-center relative overflow-hidden min-h-[800px]">
             {/* Enhanced Background Effects */}
             <div
                 className="absolute inset-0 opacity-10 pointer-events-none"
@@ -46,9 +46,9 @@ export const BrandCardGallery: React.FC = () => {
                 <div className="w-24 h-1 bg-orange-500/50 mx-auto rounded-full" />
             </motion.div>
 
-            {/* Card Container */}
+            {/* Card Container - Desktop (3D Stack) */}
             <motion.div
-                className="relative w-full max-w-6xl h-[500px] flex items-center justify-center perspective-1000"
+                className="hidden md:flex relative w-full max-w-6xl h-[500px] items-center justify-center perspective-1000"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => {
                     setIsHovered(false);
@@ -216,6 +216,50 @@ export const BrandCardGallery: React.FC = () => {
                     );
                 })}
             </motion.div>
+
+            {/* Card Container - Mobile (Vertical Grid) */}
+            <div className="md:hidden w-full px-4 flex flex-col items-center gap-8">
+                {BRANDS.map((brand) => (
+                    <div
+                        key={brand.id}
+                        className="relative w-full max-w-xs h-80 rounded-2xl overflow-hidden border border-zinc-800/50 shadow-2xl bg-gradient-to-br from-zinc-900 to-black backdrop-blur-sm"
+                        style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)" }}
+                    >
+                        {/* Noise texture */}
+                        <div
+                            className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
+                            style={{
+                                backgroundImage:
+                                    'url("data:image/svg+xml,%3Csvg viewBox=\\\'0 0 200 200\\\' xmlns=\\\'http://www.w3.org/2000/svg\\\'%3E%3Cfilter id=\\\'noiseFilter\\\'%3E%3CfeTurbulence type=\\\'fractalNoise\\\' baseFrequency=\\\'0.9\\\' numOctaves=\\\'4\\\' stitchTiles=\\\'stitch\\\'/%3E%3C/filter%3E%3Crect width=\\\'100%25\\\' height=\\\'100%25\\\' filter=\\\'url(%23noiseFilter)\\\'/%3E%3C/svg%3E")',
+                            }}
+                        />
+
+                        {/* Card content */}
+                        <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
+                            {brand.hasLogo ? (
+                                <>
+                                    {brand.id === 1 && <img src="/soulprint-logo.png" alt="SoulPrint" className="w-20 h-20 mb-4 object-contain" />}
+                                    {brand.id === 2 && <img src="/HalfSalt_noborder.png" alt="HalfSalt" className="w-20 h-20 mb-4 object-contain" />}
+                                    {brand.id === 5 && <img src="/image%201.png" alt="Sammi Sambar" className="w-20 h-20 mb-4 object-contain" />}
+                                    {brand.id === 9 && <img src="/CC%20candy%20Baltimore%20(4).png" alt="CC's Candy" className="w-20 h-20 mb-4 object-contain" />}
+                                </>
+                            ) : (
+                                <div className="mb-4 text-zinc-500 text-xs font-inter tracking-wider uppercase">Coming Soon</div>
+                            )}
+
+                            <h3 className="font-cinzel text-lg text-white tracking-widest uppercase mb-2">
+                                {brand.title}
+                            </h3>
+
+                            <p className="font-inter text-xs text-zinc-400 tracking-wide uppercase">
+                                {brand.subtitle}
+                            </p>
+
+                            <div className="w-12 h-px bg-orange-500/50 mt-6" />
+                        </div>
+                    </div>
+                ))}
+            </div>
 
             {/* Hover instruction */}
             <motion.p className="mt-16 text-zinc-500 text-sm font-inter tracking-wider uppercase" animate={{ opacity: isHovered ? 0 : 1 }}>

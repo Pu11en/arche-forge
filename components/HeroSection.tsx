@@ -58,7 +58,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
 
         {/* Top Line: Inter - Increased size */}
         <h2
-          className="font-inter text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide leading-none mb-3 opacity-90 z-10"
+          className="font-inter text-white text-2xl md:text-5xl lg:text-6xl font-bold tracking-wide leading-none mb-3 opacity-90 z-10"
           style={{ textShadow: '0 0 20px rgba(255,255,255,0.1)' }}
         >
           Today’s AI answers. We remember.
@@ -70,7 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
           <span
             className={`
                font-koulen text-orange-500
-               text-4xl md:text-6xl lg:text-7xl
+               text-3xl md:text-6xl lg:text-7xl
                tracking-wider uppercase
                transition-opacity duration-[800ms] ease-in-out
                leading-none
@@ -87,7 +87,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
 
         {/* Bottom Line: Inter - Increased size */}
         <p
-          className="font-inter text-white/80 text-xl md:text-3xl font-light tracking-wide mb-12 max-w-5xl leading-tight z-10 mt-3"
+          className="font-inter text-white/80 text-lg md:text-3xl font-light tracking-wide mb-12 max-w-5xl leading-tight z-10 mt-3"
         >
           SoulPrint makes AI feel less like a tool and more like you.
         </p>

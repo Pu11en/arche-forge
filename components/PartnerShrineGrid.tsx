@@ -75,7 +75,7 @@ const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => vo
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="group relative bg-zinc-900/50 border border-zinc-800 p-8 flex flex-col items-center text-center transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] backdrop-blur-sm cursor-pointer"
+            className="group relative bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 flex flex-col items-center text-center transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] backdrop-blur-sm cursor-pointer"
             aria-label={`View ${partner.name}'s signature`}
         >
             <div
