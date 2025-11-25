@@ -18,7 +18,7 @@ const PARTNERS: Partner[] = [
     { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png", slug: "nick" },
     { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn" },
     { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ZackF.png", slug: "zachary" },
-    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png", slug: "sammy" },
+    { name: "Sammi", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png", slug: "sammi" },
     { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png", slug: "jimmy" }
 ];
 
