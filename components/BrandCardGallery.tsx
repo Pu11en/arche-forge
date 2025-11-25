@@ -1,14 +1,27 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-// Brand items - REORDERED per user request: SoulPrint -> HalfSalt -> CC's -> Sammi -> Rest
-const BRANDS = [
+// Mobile Order: SoulPrint -> HalfSalt -> CC's -> Sammi -> Rest
+const MOBILE_BRANDS = [
     { id: 1, title: "SoulPrint™", subtitle: "The identity engine", gradient: "from-orange-500/20 to-red-500/20", hasLogo: true },
     { id: 2, title: "HalfSalt™ / FullBurn™", subtitle: "Threaded with intent", gradient: "from-amber-500/20 to-orange-500/20", hasLogo: true },
     { id: 9, title: "CC's Candy", subtitle: "Too sweet to stay silent", gradient: "from-pink-500/20 to-purple-500/20", hasLogo: true },
     { id: 5, title: "Sammi Sambar", subtitle: "She's not built for roads anymore", gradient: "from-yellow-500/20 to-amber-500/20", hasLogo: true },
     { id: 8, title: "Deius Round", subtitle: "This is not a course, it's a cannon", gradient: "from-purple-500/20 to-indigo-500/20", hasLogo: false },
     { id: 7, title: "Compliance Arcade™", subtitle: "Measuring what you mismanage", gradient: "from-blue-500/20 to-cyan-500/20", hasLogo: false },
+    { id: 6, title: "Residence Bureau", subtitle: "Signal over noise, presence over posture", gradient: "from-teal-500/20 to-cyan-500/20", hasLogo: false },
+    { id: 4, title: "Syndicate and Profit", subtitle: "Re roast the truth before it roast us", gradient: "from-red-500/20 to-pink-500/20", hasLogo: false },
+    { id: 3, title: "The Black Docket™", subtitle: "We don't practice law. We preach accountability.", gradient: "from-zinc-500/20 to-slate-600/20", hasLogo: false },
+];
+
+// Desktop Order: Centered SoulPrint (Index 4) with logos flanking
+const DESKTOP_BRANDS = [
+    { id: 8, title: "Deius Round", subtitle: "This is not a course, it's a cannon", gradient: "from-purple-500/20 to-indigo-500/20", hasLogo: false },
+    { id: 7, title: "Compliance Arcade™", subtitle: "Measuring what you mismanage", gradient: "from-blue-500/20 to-cyan-500/20", hasLogo: false },
+    { id: 5, title: "Sammi Sambar", subtitle: "She's not built for roads anymore", gradient: "from-yellow-500/20 to-amber-500/20", hasLogo: true },
+    { id: 2, title: "HalfSalt™ / FullBurn™", subtitle: "Threaded with intent", gradient: "from-amber-500/20 to-orange-500/20", hasLogo: true },
+    { id: 1, title: "SoulPrint™", subtitle: "The identity engine", gradient: "from-orange-500/20 to-red-500/20", hasLogo: true }, // CENTER (Index 4)
+    { id: 9, title: "CC's Candy", subtitle: "Too sweet to stay silent", gradient: "from-pink-500/20 to-purple-500/20", hasLogo: true },
     { id: 6, title: "Residence Bureau", subtitle: "Signal over noise, presence over posture", gradient: "from-teal-500/20 to-cyan-500/20", hasLogo: false },
     { id: 4, title: "Syndicate and Profit", subtitle: "Re roast the truth before it roast us", gradient: "from-red-500/20 to-pink-500/20", hasLogo: false },
     { id: 3, title: "The Black Docket™", subtitle: "We don't practice law. We preach accountability.", gradient: "from-zinc-500/20 to-slate-600/20", hasLogo: false },
@@ -56,7 +69,7 @@ export const BrandCardGallery: React.FC = () => {
                 }}
                 style={{ perspective: "2000px" }}
             >
-                {BRANDS.map((brand, index) => {
+                {DESKTOP_BRANDS.map((brand, index) => {
                     const centerIndex = 4; // SoulPrint is at index 4
                     const distanceFromCenter = Math.abs(index - centerIndex);
 
@@ -219,7 +232,7 @@ export const BrandCardGallery: React.FC = () => {
 
             {/* Card Container - Mobile (Vertical Grid) */}
             <div className="md:hidden w-full px-4 flex flex-col items-center gap-8">
-                {BRANDS.map((brand) => (
+                {MOBILE_BRANDS.map((brand) => (
                     <div
                         key={brand.id}
                         className="relative w-full max-w-xs h-80 rounded-2xl overflow-hidden border border-zinc-800/50 shadow-2xl bg-gradient-to-br from-zinc-900 to-black backdrop-blur-sm"
