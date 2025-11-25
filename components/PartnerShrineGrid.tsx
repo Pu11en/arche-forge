@@ -8,14 +8,14 @@ interface Partner {
 }
 
 const PARTNERS: Partner[] = [
-    { name: "Ben Woodard", role: "Founder / Imprint Architect", tone: "the rhythm keeper, the architect, the fire." },
-    { name: "Vicki Clary", role: "Creative Director / Resonance Anchor", tone: "precision, empathy, elegance." },
-    { name: "Zachary", role: "Director of Regulatory Accountability", tone: "documents, discipline, warhammer-level detail." },
-    { name: "Glenn (Lynx)", role: "AI Experience Designer", tone: "fluid motion, futuristic UI." },
-    { name: "Drew (Asset)", role: "Video Engine Architect", tone: "cinematic execution, speed, chaos." },
-    { name: "Nick (Motherfucket)", role: "Comedy Division Lead", tone: "disruption with a smirk." },
-    { name: "Lisa (Asha)", role: "Social Resonance Director", tone: "voice, pulse, brand cadence." },
-    { name: "Sammi", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot." }
+    { name: "Ben W", role: "ace", tone: "the rhythm keeper, the architect, the fire." },
+    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos." },
+    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence." },
+    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk." },
+    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI." },
+    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail." },
+    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot." },
+    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown." }
 ];
 
 const PartnerCard: React.FC<{ partner: Partner; index: number }> = ({ partner, index }) => {

@@ -56,9 +56,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
         className="flex flex-col items-center justify-center w-full max-w-7xl px-4"
       >
 
-        {/* Top Line: Cinzel - Increased size */}
+        {/* Top Line: Inter - Increased size */}
         <h2
-          className="font-cinzel text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide leading-none mb-3 opacity-90 z-10"
+          className="font-inter text-white text-3xl md:text-5xl lg:text-6xl font-bold tracking-wide leading-none mb-3 opacity-90 z-10"
           style={{ textShadow: '0 0 20px rgba(255,255,255,0.1)' }}
         >
           Today’s AI answers. We remember.

@@ -4,9 +4,8 @@ import { IntroOverlay } from './components/IntroOverlay';
 import { HeroSection } from './components/HeroSection';
 import { HeroHeaderBlock } from './components/HeroHeaderBlock';
 import { PartnerShrineGrid } from './components/PartnerShrineGrid';
-import { DivisionGrid3x3 } from './components/DivisionGrid3x3';
-import { LinkStrip } from './components/LinkStrip';
 import { ForgeDoctrineBlock } from './components/ForgeDoctrineBlock';
+import { BrandCardGallery } from './components/BrandCardGallery';
 import { SteelFooter } from './components/SteelFooter';
 import { cn } from './lib/utils';
 
@@ -48,8 +47,7 @@ const App: React.FC = () => {
             <div ref={contentRef} className="relative z-50 w-full bg-black" style={{ backgroundColor: 'black' }}>
                 <HeroHeaderBlock />
                 <PartnerShrineGrid />
-                <DivisionGrid3x3 />
-                <LinkStrip />
+                <BrandCardGallery />
                 <ForgeDoctrineBlock />
                 <SteelFooter />
             </div>
