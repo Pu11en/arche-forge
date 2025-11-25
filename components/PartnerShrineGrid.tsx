@@ -1,24 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { SignatureModal } from './SignatureModal';
 
 interface Partner {
     name: string;
     role: string;
     tone: string;
+    signatureUrl: string;
 }
 
 const PARTNERS: Partner[] = [
-    { name: "Ben W", role: "ace", tone: "the rhythm keeper, the architect, the fire." },
-    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos." },
-    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence." },
-    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk." },
-    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI." },
-    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail." },
-    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot." },
-    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown." }
+    { name: "Ben W", role: "ace", tone: "the rhythm keeper, the architect, the fire.", signatureUrl: "/signatures/BenWoodard.png" },
+    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png" },
+    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png" },
+    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png" },
+    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png" },
+    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ZackF.png" },
+    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png" },
+    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png" }
 ];
 
-const PartnerCard: React.FC<{ partner: Partner; index: number }> = ({ partner, index }) => {
+const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => void }> = ({ partner, index, onClick }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const x = useMotionValue(0);
@@ -57,18 +59,22 @@ const PartnerCard: React.FC<{ partner: Partner; index: number }> = ({ partner, i
         <motion.div
             ref={ref}
             role="listitem"
+            onClick={onClick}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
             viewport={{ once: true }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             style={{
                 rotateX,
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="group relative bg-zinc-900/50 border border-zinc-800 p-8 flex flex-col items-center text-center transition-all duration-300 hover:border-amber-500/30 hover:bg-zinc-900/80 backdrop-blur-sm cursor-pointer"
+            className="group relative bg-zinc-900/50 border border-zinc-800 p-8 flex flex-col items-center text-center transition-all duration-300 hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] backdrop-blur-sm cursor-pointer"
+            aria-label={`View ${partner.name}'s signature`}
         >
             <div
                 style={{ transform: "translateZ(75px)" }}
@@ -100,20 +106,57 @@ const PartnerCard: React.FC<{ partner: Partner; index: number }> = ({ partner, i
             >
                 "{partner.tone}"
             </p>
+
+            {/* Click indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                style={{ transform: "translateZ(40px)" }}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-orange-500 text-xs font-inter tracking-wider uppercase relative z-10"
+            >
+                Click to view signature
+            </motion.div>
         </motion.div>
     );
 };
 
 export const PartnerShrineGrid: React.FC = () => {
+    const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handlePartnerClick = (partner: Partner) => {
+        setSelectedPartner(partner);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setTimeout(() => setSelectedPartner(null), 300); // Clear after animation
+    };
+
     return (
-        <section className="relative w-full bg-black py-20 px-4 md:px-8 lg:px-16" aria-label="Partner Shrine Grid">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
-                    {PARTNERS.map((partner, index) => (
-                        <PartnerCard key={index} partner={partner} index={index} />
-                    ))}
+        <>
+            <section className="relative w-full bg-black py-20 px-4 md:px-8 lg:px-16" aria-label="Partner Shrine Grid">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" role="list">
+                        {PARTNERS.map((partner, index) => (
+                            <PartnerCard
+                                key={index}
+                                partner={partner}
+                                index={index}
+                                onClick={() => handlePartnerClick(partner)}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            {/* Signature Modal */}
+            <SignatureModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                partner={selectedPartner}
+            />
+        </>
     );
 };
