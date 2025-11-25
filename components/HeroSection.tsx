@@ -65,20 +65,22 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnter }) => {
         </h2>
 
         {/* Middle: Rotating Trademarks (Koulen) - Reduced size */}
-        {/* Adjusted height for smaller font size */}
-        <div className="h-12 md:h-20 lg:h-24 flex items-center justify-center overflow-visible w-full relative z-0">
+        {/* Adjusted height for wrapping on mobile */}
+        <div className="h-20 md:h-20 lg:h-24 flex items-center justify-center overflow-visible w-full relative z-0 px-4">
           <span
             className={`
                font-koulen text-orange-500
                text-3xl md:text-6xl lg:text-7xl
                tracking-wider uppercase
                transition-opacity duration-[800ms] ease-in-out
-               leading-none
+               leading-tight md:leading-none
+               text-center
                ${fade ? 'opacity-100' : 'opacity-0'}
              `}
             style={{
               textShadow: '0 0 30px rgba(249, 115, 22, 0.4)',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'normal',
+              maxWidth: '90%'
             }}
           >
             {TM_PHRASES[index]}

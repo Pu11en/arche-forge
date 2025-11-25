@@ -33,7 +33,7 @@ export const HeroHeaderBlock: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="font-cinzel text-5xl md:text-7xl font-bold tracking-widest mb-6 text-white"
+                    className="font-cinzel text-3xl md:text-5xl lg:text-7xl font-bold tracking-widest mb-6 text-white px-4"
                 >
                     ARCHETYPAL PARTNERS
                 </motion.h2>
@@ -57,7 +57,7 @@ export const HeroHeaderBlock: React.FC = () => {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="font-inter text-lg md:text-2xl text-zinc-400 font-light tracking-wide mb-2"
+                    className="font-inter text-base md:text-lg lg:text-2xl text-zinc-400 font-light tracking-wide mb-2 px-4"
                 >
                     "The human minds behind the machine that remembers."
                 </motion.p>
