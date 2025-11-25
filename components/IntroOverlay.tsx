@@ -6,8 +6,23 @@ export const IntroOverlay: React.FC = () => {
   const [opacity, setOpacity] = useState(100);
   const [visible, setVisible] = useState(true);
   const [isMuted, setIsMuted] = useState(true); // Start muted per request
+  const [videoSrc, setVideoSrc] = useState(INTRO_VIDEO_URL);
   const videoRef = useRef<HTMLVideoElement>(null);
   const sequenceStarted = useRef(false);
+
+  useEffect(() => {
+    const updateVideoSource = () => {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        setVideoSrc("https://res.cloudinary.com/djg0pqts6/video/upload/v1764091352/kling_20251117_Image_to_Video_The__camer_2081_1_pyvovf.mp4");
+      } else {
+        setVideoSrc(INTRO_VIDEO_URL);
+      }
+    };
+
+    updateVideoSource();
+    window.addEventListener('resize', updateVideoSource);
+    return () => window.removeEventListener('resize', updateVideoSource);
+  }, []);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent bubbling
@@ -27,7 +42,7 @@ export const IntroOverlay: React.FC = () => {
       sequenceStarted.current = true;
 
       // Fade out immediately upon video completion
-      const fadeDuration = 700; 
+      const fadeDuration = 700;
       setOpacity(0);
 
       const removeTimer = setTimeout(() => {
@@ -39,8 +54,8 @@ export const IntroOverlay: React.FC = () => {
     video.addEventListener('ended', startFadeSequence);
 
     // Playback Logic: Start muted to ensure autoplay works
-    video.muted = true; 
-    
+    video.muted = true;
+
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise.catch((error) => {
@@ -63,18 +78,18 @@ export const IntroOverlay: React.FC = () => {
       video.removeEventListener('ended', startFadeSequence);
       clearTimeout(safetyTimer);
     };
-  }, []);
+  }, [videoSrc]);
 
   if (!visible) return null;
 
   return (
-    <div 
+    <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity ease-out duration-[700ms]`}
       style={{ opacity: opacity / 100 }}
     >
       <video
         ref={videoRef}
-        src={INTRO_VIDEO_URL}
+        src={videoSrc}
         className="w-full h-full object-cover pointer-events-none"
         playsInline
         preload="auto"

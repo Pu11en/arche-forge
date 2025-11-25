@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-// Brand items with gradient colors - REORDERED to position cards with logos near center
+// Brand items - REORDERED per user request: SoulPrint -> HalfSalt -> CC's -> Sammi -> Rest
 const BRANDS = [
+    { id: 1, title: "SoulPrint™", subtitle: "The identity engine", gradient: "from-orange-500/20 to-red-500/20", hasLogo: true },
+    { id: 2, title: "HalfSalt™ / FullBurn™", subtitle: "Threaded with intent", gradient: "from-amber-500/20 to-orange-500/20", hasLogo: true },
+    { id: 9, title: "CC's Candy", subtitle: "Too sweet to stay silent", gradient: "from-pink-500/20 to-purple-500/20", hasLogo: true },
+    { id: 5, title: "Sammi Sambar", subtitle: "She's not built for roads anymore", gradient: "from-yellow-500/20 to-amber-500/20", hasLogo: true },
     { id: 8, title: "Deius Round", subtitle: "This is not a course, it's a cannon", gradient: "from-purple-500/20 to-indigo-500/20", hasLogo: false },
     { id: 7, title: "Compliance Arcade™", subtitle: "Measuring what you mismanage", gradient: "from-blue-500/20 to-cyan-500/20", hasLogo: false },
-    { id: 9, title: "CC's Candy", subtitle: "Too sweet to stay silent", gradient: "from-pink-500/20 to-purple-500/20", hasLogo: true },
-    { id: 2, title: "HalfSalt™ / FullBurn™", subtitle: "Threaded with intent", gradient: "from-amber-500/20 to-orange-500/20", hasLogo: true },
-    { id: 1, title: "SoulPrint™", subtitle: "The identity engine", gradient: "from-orange-500/20 to-red-500/20", hasLogo: true }, // CENTER - PINNACLE (index 4)
-    { id: 5, title: "Sammi Sambar", subtitle: "She's not built for roads anymore", gradient: "from-yellow-500/20 to-amber-500/20", hasLogo: true },
     { id: 6, title: "Residence Bureau", subtitle: "Signal over noise, presence over posture", gradient: "from-teal-500/20 to-cyan-500/20", hasLogo: false },
     { id: 4, title: "Syndicate and Profit", subtitle: "Re roast the truth before it roast us", gradient: "from-red-500/20 to-pink-500/20", hasLogo: false },
     { id: 3, title: "The Black Docket™", subtitle: "We don't practice law. We preach accountability.", gradient: "from-zinc-500/20 to-slate-600/20", hasLogo: false },

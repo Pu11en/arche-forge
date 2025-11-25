@@ -1,8 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BACKGROUND_VIDEO_URL } from '../constants';
 
 export const BackgroundVideo: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoSrc, setVideoSrc] = useState(BACKGROUND_VIDEO_URL);
+
+  useEffect(() => {
+    const updateVideoSource = () => {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        setVideoSrc("https://res.cloudinary.com/djg0pqts6/video/upload/v1763117120/1103_3_pexbu3.mp4");
+      } else {
+        setVideoSrc(BACKGROUND_VIDEO_URL);
+      }
+    };
+
+    updateVideoSource();
+    window.addEventListener('resize', updateVideoSource);
+    return () => window.removeEventListener('resize', updateVideoSource);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -24,13 +39,13 @@ export const BackgroundVideo: React.FC = () => {
         });
       }
     }
-  }, []);
+  }, [videoSrc]);
 
   return (
     <div className="absolute inset-0 z-0 w-full h-full overflow-hidden bg-black pointer-events-none select-none">
       <video
         ref={videoRef}
-        src={BACKGROUND_VIDEO_URL}
+        src={videoSrc}
         className="w-full h-full object-cover"
         autoPlay
         loop
