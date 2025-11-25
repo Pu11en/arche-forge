@@ -8,17 +8,18 @@ interface Partner {
     role: string;
     tone: string;
     signatureUrl: string;
+    slug?: string;
 }
 
 const PARTNERS: Partner[] = [
-    { name: "Ben W", role: "ace", tone: "the rhythm keeper, the architect, the fire.", signatureUrl: "/signatures/BenWoodard.png" },
-    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png" },
-    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png" },
-    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png" },
-    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png" },
-    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ZackF.png" },
-    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png" },
-    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png" }
+    { name: "Ben", role: "ace", tone: "the rhythm keeper, the architect, the fire.", signatureUrl: "/signatures/BenWoodard.png", slug: "ben" },
+    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png", slug: "drew" },
+    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png", slug: "lisa" },
+    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png", slug: "nick" },
+    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn" },
+    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ZackF.png", slug: "zachary" },
+    { name: "Sammy", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png", slug: "sammy" },
+    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png", slug: "jimmy" }
 ];
 
 const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => void }> = ({ partner, index, onClick }) => {
@@ -130,42 +131,24 @@ export const PartnerShrineGrid: React.FC = () => {
     // Check URL on mount and location changes
     useEffect(() => {
         const path = location.pathname;
-        const signatureMatch = path.match(/^\/signatures?\/(.+)$/);
+        const signatureMatch = path.match(/^\/signature\/(.+)$/); // Changed to singular /signature/
 
         if (signatureMatch) {
             const partnerSlug = signatureMatch[1].toLowerCase();
 
-            // Map URL slugs to partners
-            const slugToName: Record<string, string> = {
-                'ben': 'Ben W',
-                'benw': 'Ben W',
-                'drew': 'Drew',
-                'lisa': 'Lisa',
-                'lisaq': 'Lisa',
-                'nick': 'Nick',
-                'nickh': 'Nick',
-                'glenn': 'Glenn',
-                'zachary': 'Zachary',
-                'zack': 'Zachary',
-                'sammy': 'Sammy',
-                'jimmy': 'Jimmy Blackbird',
-                'jimmyblackbird': 'Jimmy Blackbird',
-                'blackbird': 'Jimmy Blackbird'
-            };
+            // Find partner by explicit slug or fallback to name matching (for backward compatibility if needed)
+            const partner = PARTNERS.find(p => p.slug === partnerSlug || p.name.toLowerCase().replace(/\s+/g, '') === partnerSlug);
 
-            const partnerName = slugToName[partnerSlug];
-            if (partnerName) {
-                const partner = PARTNERS.find(p => p.name === partnerName);
-                if (partner) {
-                    setSelectedPartner(partner);
-                    setIsModalOpen(true);
-                }
+            if (partner) {
+                setSelectedPartner(partner);
+                setIsModalOpen(true);
             }
         }
     }, [location.pathname]);
 
     const handlePartnerClick = (partner: Partner) => {
-        const slug = partner.name.toLowerCase().replace(/\s+/g, '');
+        // Use explicit slug if available, otherwise fallback to name
+        const slug = partner.slug || partner.name.toLowerCase().replace(/\s+/g, '');
         navigate(`/signature/${slug}`);
         setSelectedPartner(partner);
         setIsModalOpen(true);
