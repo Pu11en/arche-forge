@@ -19,6 +19,7 @@
 │   ├── HeroSection.tsx      # Main hero with rotating TM phrases
 │   ├── HeroHeaderBlock.tsx  # Parallax "Archetypal Partners" section
 │   ├── PartnerShrineGrid.tsx # 8 team members with 3D hover effects
+│   ├── BrandCardGallery.tsx # 9 brand cards with pyramid/fan-out animation
 │   ├── DivisionGrid3x3.tsx  # 7 ArcheForge divisions grid
 │   ├── LinkStrip.tsx        # Navigation strip with brand links
 │   ├── ForgeDoctrineBlock.tsx # Vertical doctrine text display
@@ -30,7 +31,11 @@
 ├── lib/
 │   └── utils.ts             # cn() utility for className composition
 ├── public/
-│   └── signatures/          # 8 PNG signature images (~580KB each)
+│   ├── signatures/          # 8 PNG signature images (~580KB each)
+│   ├── soulprint-logo.png   # SoulPrint brand logo (495KB)
+│   ├── HalfSalt_noborder.png # HalfSalt/FullBurn logo (64KB)
+│   ├── image 1.png          # Sammi Sambar logo (207KB)
+│   └── CC candy Baltimore (4).png # CC's Candy logo (1.8MB)
 ├── App.tsx                  # Main application component
 ├── index.tsx                # React entry point
 ├── index.html               # HTML entry point with font imports
@@ -79,6 +84,7 @@
      - Entrance animations (`whileInView`, `initial`, `animate`)
      - 3D hover effects (`whileHover`, `transformStyle: "preserve-3d"`)
      - Staggered animations (`delay: index * 0.1`)
+     - Pyramid/fan-out animations (BrandCardGallery - stacked cards that expand on hover)
 
 4. **No Traditional Routing**
    - React Router DOM is imported but NOT actively used
@@ -90,6 +96,22 @@
    - IntroOverlay fades out automatically after video plays
    - "Enter The Forge" button in HeroSection unlocks scroll and triggers smooth scroll to content
    - Uses native window scrolling (no custom scroll containers)
+
+6. **Page Structure** (Component Rendering Order in App.tsx)
+   ```
+   1. IntroOverlay (z-index 50) - Flash/intro video fade
+      ↓ (auto-fades after video ends)
+   2. Hero Container (h-screen)
+      - BackgroundVideo (full-screen video background)
+      - HeroSection (heading + rotating TM phrases + CTA button)
+      ↓ (on "Enter Forge" click)
+   3. Content Section (scrollable, z-index 50, black background)
+      - HeroHeaderBlock (Archetypal Partners parallax section)
+      - PartnerShrineGrid (8 team member cards)
+      - BrandCardGallery (9 brand cards with pyramid animation)
+      - ForgeDoctrineBlock (6 doctrine statements)
+      - SteelFooter (branding & attribution)
+   ```
 
 ### State Management
 
@@ -131,6 +153,44 @@ const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
   style={{ transformStyle: "preserve-3d" }}
 />
 ```
+
+**Pyramid/Fan-Out Animation** (BrandCardGallery.tsx):
+```typescript
+// 9 brand cards stacked in pyramid formation, expand into fan on hover
+const [isHovered, setIsHovered] = useState(false);
+const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+// Calculate position based on distance from center card (index 4)
+const centerIndex = 4;
+const distanceFromCenter = Math.abs(index - centerIndex);
+
+// Stacked pyramid state
+const stackedX = (index - centerIndex) * 12;
+const stackedY = distanceFromCenter * 22;
+const stackedScale = 1 - distanceFromCenter * 0.025;
+
+// Expanded fan-out state
+const expandedX = (index - centerIndex) * 160;
+const expandedY = distanceFromCenter * 25;
+const expandedScale = hoveredCard === index ? 1.05 : 1.0;
+
+<motion.div
+  animate={{
+    x: isHovered ? expandedX : stackedX,
+    y: isHovered ? expandedY : stackedY,
+    scale: isHovered ? expandedScale : stackedScale,
+  }}
+  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+/>
+```
+
+**Key Features of BrandCardGallery**:
+- 9 brand cards: SoulPrint, HalfSalt/FullBurn, Sammi Sambar, CC's Candy, and 5 "Coming Soon"
+- Cards positioned in pyramid with SoulPrint at center (pinnacle)
+- On hover: Cards fan out horizontally with spring physics
+- 4 brands have logo images, others show "Coming Soon" placeholder
+- Each card has gradient backgrounds, noise textures, glow effects, and corner accents
+- Logo images rotate 360° on individual card hover
 
 ## Styling Conventions
 
@@ -265,6 +325,31 @@ export const PARTNERS: Partner[] = [
 ];
 ```
 
+**Note on BRANDS array**: The 9 brand cards in `BrandCardGallery.tsx` use an inline `BRANDS` array (not in constants.ts). To add/modify brands:
+1. Open `components/BrandCardGallery.tsx`
+2. Update the `BRANDS` array at the top of the file
+3. For brands with logos, set `hasLogo: true` and add the logo image path in the component JSX
+4. Order is important: index 4 (SoulPrint) is the center/pinnacle card
+
+**Example** (adding a brand with logo):
+```typescript
+// BrandCardGallery.tsx
+const BRANDS = [
+  // ... existing brands
+  {
+    id: 10,
+    title: "New Brand",
+    subtitle: "Brand tagline",
+    gradient: "from-blue-500/20 to-green-500/20",
+    hasLogo: true
+  }
+];
+// Then add the logo rendering in the JSX:
+{brand.id === 10 && (
+  <motion.img src="/newbrand-logo.png" alt="New Brand Logo" className="w-24 h-24 mb-6 object-contain" />
+)}
+```
+
 ### Animation Guidelines
 
 1. **Viewport Animations**: Always use `viewport={{ once: true }}` to prevent re-triggering
@@ -388,13 +473,15 @@ git commit -m "fix: Resolve scroll lock issue on mobile"
 ### Recent Development Focus
 
 Based on recent commits:
-1. Brand color migration to orange (`#f97322`)
-2. Enlarging LinkStrip for better visibility
-3. Port configuration (4000)
-4. High-fidelity animations and accessibility improvements
-5. Native window scrolling implementation
-6. Tailwind v4 migration
-7. Hero parallax effects integration
+1. **BrandCardGallery component** - Advanced pyramid/fan-out animation with 9 brand cards
+2. **Brand assets** - Added 4 logo images (SoulPrint, HalfSalt/FullBurn, Sammi Sambar, CC's Candy)
+3. Brand color migration to orange (`#f97322`)
+4. Enlarging LinkStrip for better visibility
+5. Port configuration (4000)
+6. High-fidelity animations and accessibility improvements
+7. Native window scrolling implementation
+8. Tailwind v4 migration
+9. Hero parallax effects integration
 
 ### Deployment
 
@@ -565,6 +652,13 @@ https://res.cloudinary.com/djg0pqts6/video/upload/f_auto,q_auto/v1/archeforge/11
 - Named after team members (lowercase)
 - Referenced as `/signatures/filename.png`
 
+**Brand Logos** (`/public/`):
+- soulprint-logo.png (495KB) - SoulPrint identity engine logo
+- HalfSalt_noborder.png (64KB) - HalfSalt/FullBurn logo
+- image 1.png (207KB) - Sammi Sambar logo
+- CC candy Baltimore (4).png (1.8MB) - CC's Candy logo
+- Referenced directly as `/filename.png` (with URL encoding for spaces)
+
 ### Adding New Assets
 
 **For videos**:
@@ -580,10 +674,15 @@ https://res.cloudinary.com/djg0pqts6/video/upload/f_auto,q_auto/v1/archeforge/11
 
 ## Code Statistics
 
-- **Total Lines**: ~836 lines of TypeScript/JSX
-- **Component Count**: 13 components (including ui/ subdirectory)
+- **Total Lines**: ~1061 lines of TypeScript/JSX
+- **Component Count**: 14 components (including ui/ subdirectory)
 - **TypeScript Coverage**: 100% (all files use .tsx/.ts)
-- **Data Arrays**: 4 major arrays in constants.ts (87 TM phrases, 8 partners, 7 divisions, 8 links)
+- **Data Arrays**: 5 major arrays in constants.ts + BrandCardGallery.tsx
+  - 87 TM phrases (constants.ts)
+  - 8 partners (constants.ts)
+  - 7 divisions (constants.ts)
+  - 8 links (constants.ts)
+  - 9 brands (BrandCardGallery.tsx - inline array)
 
 ---
 
