@@ -100,12 +100,185 @@ export const BrandCardGallery: React.FC = () => {
                                 rotate: brand.id === 1 ? 0 : (isHovered ? expandedRotate : stackedRotate),
                                 rotateY: 0,
                                 scale: brand.id === 1 ? (isHovered ? 1.08 : 1) : (isHovered ? expandedScale : stackedScale),
-                                {/* Animated gradient border */}
-                                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-transparent to-orange-500/20 animate-pulse" />
-                                </div>
+                            }}
+                            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                            onMouseEnter={() => setHoveredCard(index)}
+                            onMouseLeave={() => setHoveredCard(null)}
+                        >
+                            {/* Animated gradient border */}
+                            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-transparent to-orange-500/20 animate-pulse" />
+                            </div>
 
-                                {/* Noise texture */ }
+                            {/* Noise texture */}
+                            <div
+                                className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
+                                style={{
+                                    backgroundImage:
+                                        'url("data:image/svg+xml,%3Csvg viewBox=\\\'0 0 200 200\\\' xmlns=\\\'http://www.w3.org/2000/svg\\\'%3E%3Cfilter id=\\\'noiseFilter\\\'%3E%3CfeTurbulence type=\\\'fractalNoise\\\' baseFrequency=\\\'0.9\\\' numOctaves=\\\'4\\\' stitchTiles=\\\'stitch\\\'/%3E%3C/filter%3E%3Crect width=\\\'100%25\\\' height=\\\'100%25\\\' filter=\\\'url(%23noiseFilter)\\\'/%3E%3C/svg%3E")',
+                                }}
+                            />
+
+                            {/* Glowing orb effect on hover */}
+                            <motion.div
+                                className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl"
+                                animate={{ opacity: hoveredCard === index ? 0.6 : 0, scale: hoveredCard === index ? 1.5 : 1 }}
+                                transition={{ duration: 0.5 }}
+                            />
+
+                            {/* Card content */}
+                            <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 text-center">
+                                {/* Logos or Coming Soon */}
+                                {brand.hasLogo ? (
+                                    <>
+                                        {brand.id === 1 && (
+                                            <motion.img
+                                                src="/soulprint-logo.png"
+                                                alt="SoulPrint Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 2 && (
+                                            <motion.img
+                                                src="/brands/half-salt.png"
+                                                alt="HalfSalt / FullBurn Logo"
+                                                className="w-24 h-24 mt-4 mb-2 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 5 && (
+                                            <motion.img
+                                                src="/image%201.png"
+                                                alt="Sammi Sambar Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 9 && (
+                                            <motion.img
+                                                src="/CC%20candy%20Baltimore%20(4).png"
+                                                alt="CC's Candy Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 8 && (
+                                            <motion.img
+                                                src="/brands/deius-round.png"
+                                                alt="Deius Round Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 7 && (
+                                            <motion.img
+                                                src="/brands/compliance-arcade.png"
+                                                alt="Compliance Arcade Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 6 && (
+                                            <motion.img
+                                                src="/brands/residence-bureau.png"
+                                                alt="Residence Bureau Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 4 && (
+                                            <motion.img
+                                                src="/brands/cynic-prophet.png"
+                                                alt="Cynic and Prophet Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                        {brand.id === 3 && (
+                                            <motion.img
+                                                src="/brands/black-docket.png"
+                                                alt="The Black Docket Logo"
+                                                className="w-24 h-24 mb-6 object-contain"
+                                                animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
+                                                transition={{ duration: 0.8 }}
+                                            />
+                                        )}
+                                    </>
+                                ) : (
+                                    <motion.div
+                                        className="mb-6 text-zinc-500 text-sm font-inter tracking-wider uppercase"
+                                        animate={{
+                                            opacity: hoveredCard === index ? 0.7 : 0.5,
+                                            scale: hoveredCard === index ? 1.05 : 1
+                                        }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        Coming Soon
+                                    </motion.div>
+                                )}
+
+                                {/* Brand title */}
+                                <motion.h3
+                                    className="font-cinzel text-lg md:text-xl text-white tracking-widest uppercase mb-4 relative"
+                                    animate={{
+                                        scale: hoveredCard === index ? 1.05 : 1,
+                                        textShadow: hoveredCard === index ? "0 0 20px rgba(249, 115, 22, 0.5)" : "0 0 0px rgba(249, 115, 22, 0)",
+                                    }}
+                                >
+                                    {brand.title}
+                                    {/* Animated underline */}
+                                    <motion.div
+                                        className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-0.5 bg-orange-500"
+                                        animate={{ width: hoveredCard === index ? "100%" : "0%" }}
+                                        transition={{ duration: 0.3 }}
+                                    />
+                                </motion.h3>
+
+                                {/* Subtitle */}
+                                <motion.p
+                                    className="font-inter text-sm text-zinc-400 tracking-wide uppercase"
+                                    animate={{ opacity: hoveredCard === index ? 1 : 0.6, y: hoveredCard === index ? 0 : 4 }}
+                                >
+                                    {brand.subtitle}
+                                </motion.p>
+
+                                {/* Decorative bottom line */}
+                                <motion.div
+                                    className="w-16 h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent mt-8"
+                                    animate={{ width: hoveredCard === index ? "120px" : "64px", opacity: hoveredCard === index ? 1 : 0.5 }}
+                                />
+                            </div>
+
+                            {/* Corner accents */}
+                            <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-orange-500/30" />
+                            <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-orange-500/30" />
+                            <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-orange-500/30" />
+                            <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-orange-500/30" />
+                        </motion.div>
+        </motion.div>
+            );
+})}
+        </motion.div >
+
+    {/* Card Container - Mobile (Vertical Grid) */ }
+    < div className="md:hidden w-full px-4 flex flex-col items-center gap-8" >
+        {
+            MOBILE_BRANDS.map((brand) => (
+                <div
+                    key={brand.id}
+                    className="relative w-full max-w-xs h-80 rounded-2xl overflow-hidden border border-zinc-800/50 shadow-2xl bg-gradient-to-br from-zinc-900 to-black backdrop-blur-sm"
+                    style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)" }}
+                >
+                    {/* Noise texture */}
                     <div
                         className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
                         style={{
@@ -114,211 +287,43 @@ export const BrandCardGallery: React.FC = () => {
                         }}
                     />
 
-                    {/* Glowing orb effect on hover */ }
-                    <motion.div
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-orange-500/20 rounded-full blur-3xl"
-                        animate={{ opacity: hoveredCard === index ? 0.6 : 0, scale: hoveredCard === index ? 1.5 : 1 }}
-                        transition={{ duration: 0.5 }}
-                    />
-
-                    {/* Card content */ }
-                    <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 text-center">
-                        {/* Logos or Coming Soon */}
+                    {/* Card content */}
+                    <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
                         {brand.hasLogo ? (
                             <>
-                                {brand.id === 1 && (
-                                    <motion.img
-                                        src="/soulprint-logo.png"
-                                        alt="SoulPrint Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 2 && (
-                                    <motion.img
-                                        src="/brands/half-salt.png"
-                                        alt="HalfSalt / FullBurn Logo"
-                                        className="w-24 h-24 mt-4 mb-2 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 5 && (
-                                    <motion.img
-                                        src="/image%201.png"
-                                        alt="Sammi Sambar Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 9 && (
-                                    <motion.img
-                                        src="/CC%20candy%20Baltimore%20(4).png"
-                                        alt="CC's Candy Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 8 && (
-                                    <motion.img
-                                        src="/brands/deius-round.png"
-                                        alt="Deius Round Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 7 && (
-                                    <motion.img
-                                        src="/brands/compliance-arcade.png"
-                                        alt="Compliance Arcade Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 6 && (
-                                    <motion.img
-                                        src="/brands/residence-bureau.png"
-                                        alt="Residence Bureau Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 4 && (
-                                    <motion.img
-                                        src="/brands/cynic-prophet.png"
-                                        alt="Cynic and Prophet Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
-                                {brand.id === 3 && (
-                                    <motion.img
-                                        src="/brands/black-docket.png"
-                                        alt="The Black Docket Logo"
-                                        className="w-24 h-24 mb-6 object-contain"
-                                        animate={{ scale: hoveredCard === index ? 1.1 : 1, rotate: hoveredCard === index ? 360 : 0 }}
-                                        transition={{ duration: 0.8 }}
-                                    />
-                                )}
+                                {brand.id === 1 && <img src="/soulprint-logo.png" alt="SoulPrint" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 2 && <img src="/brands/half-salt.png" alt="HalfSalt" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 5 && <img src="/image%201.png" alt="Sammi Sambar" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 9 && <img src="/CC%20candy%20Baltimore%20(4).png" alt="CC's Candy" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 8 && <img src="/brands/deius-round.png" alt="Deius Round" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 7 && <img src="/brands/compliance-arcade.png" alt="Compliance Arcade" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 6 && <img src="/brands/residence-bureau.png" alt="Residence Bureau" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 4 && <img src="/brands/cynic-prophet.png" alt="Cynic and Prophet" className="w-20 h-20 mb-4 object-contain" />}
+                                {brand.id === 3 && <img src="/brands/black-docket.png" alt="The Black Docket" className="w-20 h-20 mb-4 object-contain" />}
                             </>
                         ) : (
-                            <motion.div
-                                className="mb-6 text-zinc-500 text-sm font-inter tracking-wider uppercase"
-                                animate={{
-                                    opacity: hoveredCard === index ? 0.7 : 0.5,
-                                    scale: hoveredCard === index ? 1.05 : 1
-                                }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                Coming Soon
-                            </motion.div>
+                            <div className="mb-4 text-zinc-500 text-xs font-inter tracking-wider uppercase">Coming Soon</div>
                         )}
 
-                        {/* Brand title */}
-                        <motion.h3
-                            className="font-cinzel text-lg md:text-xl text-white tracking-widest uppercase mb-4 relative"
-                            animate={{
-                                scale: hoveredCard === index ? 1.05 : 1,
-                                textShadow: hoveredCard === index ? "0 0 20px rgba(249, 115, 22, 0.5)" : "0 0 0px rgba(249, 115, 22, 0)",
-                            }}
-                        >
+                        <h3 className="font-cinzel text-lg text-white tracking-widest uppercase mb-2">
                             {brand.title}
-                            {/* Animated underline */}
-                            <motion.div
-                                className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-0.5 bg-orange-500"
-                                animate={{ width: hoveredCard === index ? "100%" : "0%" }}
-                                transition={{ duration: 0.3 }}
-                            />
-                        </motion.h3>
+                        </h3>
 
-                        {/* Subtitle */}
-                        <motion.p
-                            className="font-inter text-sm text-zinc-400 tracking-wide uppercase"
-                            animate={{ opacity: hoveredCard === index ? 1 : 0.6, y: hoveredCard === index ? 0 : 4 }}
-                        >
+                        <p className="font-inter text-xs text-zinc-400 tracking-wide uppercase">
                             {brand.subtitle}
-                        </motion.p>
+                        </p>
 
-                        {/* Decorative bottom line */}
-                        <motion.div
-                            className="w-16 h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent mt-8"
-                            animate={{ width: hoveredCard === index ? "120px" : "64px", opacity: hoveredCard === index ? 1 : 0.5 }}
-                        />
+                        <div className="w-12 h-px bg-orange-500/50 mt-6" />
                     </div>
-
-                    {/* Corner accents */ }
-                                <div className="absolute top-4 left-4 w-8 h-8 border-t border-l border-orange-500/30" />
-                                <div className="absolute top-4 right-4 w-8 h-8 border-t border-r border-orange-500/30" />
-                                <div className="absolute bottom-4 left-4 w-8 h-8 border-b border-l border-orange-500/30" />
-                                <div className="absolute bottom-4 right-4 w-8 h-8 border-b border-r border-orange-500/30" />
-                            </motion.div>
-        </motion.div>
-    );
-})}
-            </motion.div >
-
-    {/* Card Container - Mobile (Vertical Grid) */ }
-    < div className = "md:hidden w-full px-4 flex flex-col items-center gap-8" >
-    {
-        MOBILE_BRANDS.map((brand) => (
-            <div
-                key={brand.id}
-                className="relative w-full max-w-xs h-80 rounded-2xl overflow-hidden border border-zinc-800/50 shadow-2xl bg-gradient-to-br from-zinc-900 to-black backdrop-blur-sm"
-                style={{ background: "linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)" }}
-            >
-                {/* Noise texture */}
-                <div
-                    className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
-                    style={{
-                        backgroundImage:
-                            'url("data:image/svg+xml,%3Csvg viewBox=\\\'0 0 200 200\\\' xmlns=\\\'http://www.w3.org/2000/svg\\\'%3E%3Cfilter id=\\\'noiseFilter\\\'%3E%3CfeTurbulence type=\\\'fractalNoise\\\' baseFrequency=\\\'0.9\\\' numOctaves=\\\'4\\\' stitchTiles=\\\'stitch\\\'/%3E%3C/filter%3E%3Crect width=\\\'100%25\\\' height=\\\'100%25\\\' filter=\\\'url(%23noiseFilter)\\\'/%3E%3C/svg%3E")',
-                    }}
-                />
-
-                {/* Card content */}
-                <div className="relative z-10 h-full flex flex-col items-center justify-center p-6 text-center">
-                    {brand.hasLogo ? (
-                        <>
-                            {brand.id === 1 && <img src="/soulprint-logo.png" alt="SoulPrint" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 2 && <img src="/brands/half-salt.png" alt="HalfSalt" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 5 && <img src="/image%201.png" alt="Sammi Sambar" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 9 && <img src="/CC%20candy%20Baltimore%20(4).png" alt="CC's Candy" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 8 && <img src="/brands/deius-round.png" alt="Deius Round" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 7 && <img src="/brands/compliance-arcade.png" alt="Compliance Arcade" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 6 && <img src="/brands/residence-bureau.png" alt="Residence Bureau" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 4 && <img src="/brands/cynic-prophet.png" alt="Cynic and Prophet" className="w-20 h-20 mb-4 object-contain" />}
-                            {brand.id === 3 && <img src="/brands/black-docket.png" alt="The Black Docket" className="w-20 h-20 mb-4 object-contain" />}
-                        </>
-                    ) : (
-                        <div className="mb-4 text-zinc-500 text-xs font-inter tracking-wider uppercase">Coming Soon</div>
-                    )}
-
-                    <h3 className="font-cinzel text-lg text-white tracking-widest uppercase mb-2">
-                        {brand.title}
-                    </h3>
-
-                    <p className="font-inter text-xs text-zinc-400 tracking-wide uppercase">
-                        {brand.subtitle}
-                    </p>
-
-                    <div className="w-12 h-px bg-orange-500/50 mt-6" />
                 </div>
-            </div>
-        ))
-    }
-            </div >
+            ))
+        }
+    </div >
 
     {/* Hover instruction */ }
-    < motion.p className = "mt-16 text-zinc-500 text-sm font-inter tracking-wider uppercase" animate = {{ opacity: isHovered ? 0 : 1 }}>
+    < motion.p className="mt-16 text-zinc-500 text-sm font-inter tracking-wider uppercase" animate={{ opacity: isHovered ? 0 : 1 }}>
         Hover to explore brands
-            </motion.p >
+    </motion.p >
         </section >
     );
 };
