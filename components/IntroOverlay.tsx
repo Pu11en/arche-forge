@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Mic, MicOff } from 'lucide-react';
 import { INTRO_VIDEO_URL } from '../constants';
 
 export const IntroOverlay: React.FC = () => {
@@ -99,19 +98,6 @@ export const IntroOverlay: React.FC = () => {
         preload="auto"
         muted={isMuted}
       />
-
-      {/* Mute/Unmute Toggle - Top Right Corner */}
-      <button
-        onClick={toggleMute}
-        className="absolute top-6 right-6 z-50 p-3 text-white/60 hover:text-white bg-black/20 hover:bg-black/40 backdrop-blur-sm rounded-full transition-all duration-300"
-        aria-label={isMuted ? "Unmute Intro" : "Mute Intro"}
-      >
-        {isMuted ? (
-          <MicOff className="w-5 h-5" strokeWidth={1.5} />
-        ) : (
-          <Mic className="w-5 h-5" strokeWidth={1.5} />
-        )}
-      </button>
     </div>
   );
 };
