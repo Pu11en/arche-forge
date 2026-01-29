@@ -9,18 +9,19 @@ interface Partner {
     tone: string;
     signatureUrl: string;
     slug?: string;
+    linkedinUrl?: string;
 }
 
 const PARTNERS: Partner[] = [
-    { name: "Ben", role: "ace", tone: "the rhythm keeper, the architect, the fire.", signatureUrl: "/signatures/BenWoodard.png", slug: "ben" },
-    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png", slug: "drew" },
-    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png", slug: "lisa" },
-    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png", slug: "nick" },
-    { name: "Glenn", role: "links", tone: "flu id motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn" },
-    { name: "Adrian Floyd", role: "Marketing Director", tone: "Everywhere and nowhere at the same time", signatureUrl: "/signatures/AdrianFloyd.png", slug: "adrian" },
-    { name: "Zachary", role: "moshi", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ZackF.png", slug: "zachary" },
-    { name: "Sammi", role: "Autonomous Persona", tone: "AI spirit animal, van soul, cult mascot.", signatureUrl: "/signatures/SammiSandbar.png", slug: "sammi" },
-    { name: "Jimmy Blackbird", role: "The Blackbird", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png", slug: "jimmy" }
+    { name: "Ben", role: "ace", tone: "the rhythm keeper, the architect, the fire.", signatureUrl: "/signatures/BenWoodard.png", slug: "ben", linkedinUrl: "https://www.linkedin.com/in/ben-woodard/" },
+    { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png", slug: "drew", linkedinUrl: "https://www.linkedin.com/in/drewpullen/" },
+    { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png", slug: "lisa", linkedinUrl: "https://www.linkedin.com/in/lisa-quible-98206a397/" },
+    { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png", slug: "nick", linkedinUrl: "https://www.linkedin.com/in/security-nick/" },
+    { name: "Glenn", role: "links", tone: "fluid motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn", linkedinUrl: "https://www.linkedin.com/in/glennluther/" },
+    { name: "Adrian", role: "Marketing Director", tone: "Everywhere and nowhere at the same time", signatureUrl: "/signatures/AdrianFloyd.png", slug: "adrian", linkedinUrl: "https://www.linkedin.com/in/adrian-floyd-21a50a3/" },
+    { name: "Reggie", role: "Perseus", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ReggieAlcos.png", slug: "reggie", linkedinUrl: "https://www.linkedin.com/in/reggiealcos/" },
+    { name: "David", role: "Dark Horse", tone: "goat", signatureUrl: "/signatures/DavidEydelzon.png", slug: "david", linkedinUrl: "https://www.linkedin.com/" },
+    { name: "Layla", role: "Nineteen", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png", slug: "layla" }
 ];
 
 const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => void }> = ({ partner, index, onClick }) => {
@@ -76,7 +77,7 @@ const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => vo
                 rotateY,
                 transformStyle: "preserve-3d",
             }}
-            className="group relative bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 flex flex-col items-center text-center hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] backdrop-blur-sm cursor-pointer transition-colors duration-300"
+            className="group relative bg-zinc-900/50 border border-zinc-800 p-6 md:p-8 min-h-[280px] flex flex-col items-center text-center hover:border-orange-500/50 hover:bg-zinc-900/80 hover:shadow-[0_0_30px_rgba(249,115,22,0.2)] backdrop-blur-sm cursor-pointer transition-colors duration-300"
             aria-label={`View ${partner.name}'s signature`}
         >
             <div
@@ -105,20 +106,18 @@ const PartnerCard: React.FC<{ partner: Partner; index: number; onClick: () => vo
 
             <p
                 style={{ transform: "translateZ(20px)" }}
-                className="font-inter text-zinc-500 italic font-light relative z-10 group-hover:text-zinc-300 transition-colors duration-300"
+                className="font-inter text-zinc-500 italic font-light relative z-10 group-hover:text-zinc-300 transition-colors duration-300 mb-8"
             >
                 "{partner.tone}"
             </p>
 
             {/* Click indicator */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
+            <div
                 style={{ transform: "translateZ(40px)" }}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-orange-500 text-xs font-inter tracking-wider uppercase relative z-10"
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 text-orange-500 text-xs font-inter tracking-wider uppercase z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             >
                 Click to view signature
-            </motion.div>
+            </div>
         </motion.div>
     );
 };
