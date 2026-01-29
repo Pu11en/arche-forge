@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowLeft } from 'lucide-react';
+import { X, ArrowLeft, Linkedin } from 'lucide-react';
 
 interface SignatureModalProps {
     isOpen: boolean;
@@ -9,6 +9,7 @@ interface SignatureModalProps {
         name: string;
         role: string;
         signatureUrl: string;
+        linkedinUrl?: string;
     } | null;
 }
 
@@ -101,22 +102,44 @@ export const SignatureModal: React.FC<SignatureModalProps> = ({ isOpen, onClose,
 
                                 {/* Partner Info Header */}
                                 <div className="relative z-10 p-6 border-b border-zinc-800 bg-black/40 backdrop-blur-sm">
-                                    <motion.h2
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.2 }}
-                                        className="font-cinzel text-2xl md:text-3xl text-white tracking-wider mb-1"
-                                    >
-                                        {partner.name}
-                                    </motion.h2>
-                                    <motion.p
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.25 }}
-                                        className="font-inter text-orange-500 uppercase tracking-widest text-xs font-semibold"
-                                    >
-                                        {partner.role}
-                                    </motion.p>
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <motion.h2
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.2 }}
+                                                className="font-cinzel text-2xl md:text-3xl text-white tracking-wider mb-1"
+                                            >
+                                                {partner.name}
+                                            </motion.h2>
+                                            <motion.p
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.25 }}
+                                                className="font-inter text-orange-500 uppercase tracking-widest text-xs font-semibold"
+                                            >
+                                                {partner.role}
+                                            </motion.p>
+                                        </div>
+
+                                        {/* LinkedIn Button */}
+                                        {partner.linkedinUrl && (
+                                            <motion.a
+                                                href={partner.linkedinUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                initial={{ opacity: 0, x: 10 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.3 }}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="flex items-center gap-2 px-3 py-2 bg-zinc-800/80 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 text-white rounded-lg transition-all duration-300"
+                                                aria-label={`${partner.name} on LinkedIn`}
+                                            >
+                                                <span className="text-sm font-inter">LinkedIn</span>
+                                            </motion.a>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Signature Image */}
