@@ -17,8 +17,8 @@ const PARTNERS: Partner[] = [
     { name: "Drew", role: "asset", tone: "cinematic execution, speed, chaos.", signatureUrl: "/signatures/DrewPullen.png", slug: "drew", linkedinUrl: "https://www.linkedin.com/in/drewpullen/" },
     { name: "Lisa", role: "asha", tone: "voice, pulse, brand cadence.", signatureUrl: "/signatures/LisaQ.png", slug: "lisa", linkedinUrl: "https://www.linkedin.com/in/lisa-quible-98206a397/" },
     { name: "Nick", role: "motherfucket", tone: "disruption with a smirk.", signatureUrl: "/signatures/NickH.png", slug: "nick", linkedinUrl: "https://www.linkedin.com/in/security-nick/" },
-    { name: "Glenn", role: "links", tone: "fluid motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn", linkedinUrl: "https://www.linkedin.com/in/glennluther/" },
-    { name: "Adrian", role: "Marketing Director", tone: "Everywhere and nowhere at the same time", signatureUrl: "/signatures/AdrianFloyd.png", slug: "adrian", linkedinUrl: "https://www.linkedin.com/in/adrian-floyd-21a50a3/" },
+    { name: "Glenn", role: "Raven", tone: "fluid motion, futuristic UI.", signatureUrl: "/signatures/GlennLuther.png", slug: "glenn", linkedinUrl: "https://www.linkedin.com/in/glennluther/" },
+    { name: "Adrian", role: "Sadie", tone: "Everywhere and nowhere at the same time", signatureUrl: "/signatures/AdrianFloyd.png", slug: "adrian", linkedinUrl: "https://www.linkedin.com/in/adrian-floyd-21a50a3/" },
     { name: "Reggie", role: "Perseus", tone: "documents, discipline, warhammer-level detail.", signatureUrl: "/signatures/ReggieAlcos.png", slug: "reggie", linkedinUrl: "https://www.linkedin.com/in/reggiealcos/" },
     { name: "David", role: "Dark Horse", tone: "goat", signatureUrl: "/signatures/DavidEydelzon.png", slug: "david", linkedinUrl: "https://www.linkedin.com/" },
     { name: "Layla", role: "Nineteen", tone: "stealth, observation, unknown.", signatureUrl: "/signatures/JimmyBlackbird.png", slug: "layla" }
